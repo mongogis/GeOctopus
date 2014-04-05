@@ -1,5 +1,5 @@
 #project name
-PROJECT(vct)
+PROJECT(hpgc)
 INCLUDE_DIRECTORIES(
 )
 
