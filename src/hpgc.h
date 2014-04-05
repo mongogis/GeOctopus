@@ -1,63 +1,86 @@
 #include <list>
-
+#include <stdlib.h>
+using namespace std;
 namespace hpgc{
 
-class Factory{
-public:
-	Algorithm & Create();
-	Factory(int argc, char ** argv);
-};
+	class Role
+	{
 
-class Algorithm{
-	Scheduler scheduler;
-	Partition partition;
-	Combinator combinator;
-public:
-	bool Run();
-}; 
+	};
 
-class Combinator{
-public:
-	bool Computing();
-};
+	class Process
+	{
+		Role role;
+	public:
+		bool isRole(Role role);
+	};
 
-class Cellar
-{
-};
+	class MetaData
+	{
+	public:
+	};
 
-class Barrel
-{
-};
+	class Cellar
+	{
+	};
 
-class Scheduler
-{
-	std::list<Role> roles;
-	std::list<Process> processes;
-	std::list<Cellar> cellars;
-public:
-	void Start();
-};
+	class Barrel
+	{
+	};
 
-class Role{
+	class geo_algorithm{
+	public:
+		bool Computing();
+	};
 
-};
+	class hpgc_scheduler
+	{
+		std::list<Role> roles;
+		std::list<Process> processes;
+		std::list<Cellar> cellars;
+	public:
+		void Start();
+	};
 
-class Process{
-	Role role;
-public:
-	bool isRole(Role role);
-};
+	class hpgc_partition
+	{
+	public:
+		Cellar * Partitioning();
+	};
 
-class Partition
-{
-public:
-	Cellar * Partitioning();
-};
 
-class MetaData
-{
-public:
-};
 
+	class hpgc_algorithm{
+		hpgc_scheduler scheduler;
+		hpgc_partition partition;
+		geo_algorithm algorithm;
+	public:
+		bool Run();
+	}; 
+
+	class hpgc_factory
+	{
+	private:
+		long fctid;
+		string fctname;
+		string description;
+	public:
+		long FID;
+		string Fname;
+		string	description;
+
+		hpgc_algorithm * create();
+		hpgc_factory(int argc, char ** argv);
+	};
+
+
+	class service_center
+	{
+	private:
+		static list<hpgc_factory *> _factory_list;
+	public:
+		service_center();
+		static hpgc_factory * create(int argc, char ** argv);
+	};
 
 }
