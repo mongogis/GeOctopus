@@ -2,11 +2,11 @@
 
 #define HPGC_INTERFACE_FACTORY_H_INCLUDE
 
-#include "IPartition.h"
+#include "IAlgorithm.h"
 
 namespace hpgc{
 
-	class IFactory
+	class IAlgorithmFactory
 	{
 	public:
 		virtual IAlgorithm  * Create(int argc, char ** argv) = 0;
