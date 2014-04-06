@@ -9,7 +9,7 @@ namespace hpgc{
 	class IFactory
 	{
 	public:
-		virtual IPartition * Create(int argc, char ** argv) = 0;
+		virtual IAlgorithm  * Create(int argc, char ** argv) = 0;
 	};
 
 }
