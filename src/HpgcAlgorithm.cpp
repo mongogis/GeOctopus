@@ -1,7 +1,15 @@
-#include "hpgc.h"
-using namespace hpgc;
+#include "HpgcAlgorithm.h"
 
-bool HpgcAlgorithm::Run()
+hpgc::HpgcAlgorithm::HpgcAlgorithm(IGeoAlgorithm * geoalgorithm, IPartition * partition, IScheduler * scheduler)
 {
-	return 0;
+	this->m_geoAlgorithm = geoalgorithm;
+	this->m_partition = partition;
+	this->m_scheduler = m_scheduler;
 }
+
+bool hpgc::HpgcAlgorithm::Run()
+{
+		
+}
+
+
