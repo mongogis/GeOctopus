@@ -7,6 +7,7 @@ namespace hpgc{
 	class IGeoAlgorithm
 	{
 	public:
+		virtual void Init() = 0;
 		virtual bool Computing() = 0;
 	};
 

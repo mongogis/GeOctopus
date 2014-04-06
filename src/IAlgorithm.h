@@ -8,6 +8,7 @@ class IAlgorithm
 {
 public:
 	virtual bool Run() = 0;
+	virtual void PreAlg() = 0;
 };
 
 }

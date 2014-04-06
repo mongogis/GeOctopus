@@ -9,7 +9,16 @@ hpgc::HpgcAlgorithm::HpgcAlgorithm(IGeoAlgorithm * geoalgorithm, IPartition * pa
 
 bool hpgc::HpgcAlgorithm::Run()
 {
-		
+	m_geoAlgorithm->Init();
+	PreAlg();
+	auto cellar = m_partition->Partitioning();
+	m_scheduler->Start();
 }
+
+void hpgc::HpgcAlgorithm::PreAlg()
+{
+
+}
+
 
 
