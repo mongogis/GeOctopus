@@ -17,7 +17,7 @@ namespace hpgc{
 	{
 	public:
 		HpgcAlgorithm(IGeoAlgorithm * geoalgorithm,IPartition * partition, IScheduler * scheduler);
-		virtual bool Run();
+		virtual void Run();
 		virtual void PreAlg();
 
 	private:

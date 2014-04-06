@@ -7,7 +7,7 @@ hpgc::HpgcAlgorithm::HpgcAlgorithm(IGeoAlgorithm * geoalgorithm, IPartition * pa
 	this->m_scheduler = m_scheduler;
 }
 
-bool hpgc::HpgcAlgorithm::Run()
+void hpgc::HpgcAlgorithm::Run()
 {
 	PreAlg();
 	m_scheduler->Work(m_cellar,m_processes);

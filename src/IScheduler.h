@@ -2,6 +2,11 @@
 
 #define HPGC_INTERFACE_SCHEDULER_H_INCLUDE 
 
+#include "ICellar.h"
+#include "Process.h"
+
+#include <list>
+
 namespace hpgc{
 
 	class IScheduler
