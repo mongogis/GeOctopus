@@ -5,7 +5,7 @@
 #include <cpl_port.h>
 #include <cpl_vsi.h>
 
-hpgc::IAlgorithmFactory * hpgc::Server::Create(int argc, char ** argv)
+static hpgc::IAlgorithmFactory * hpgc::Server::Create(int argc, char ** argv)
 {
 	if(m_instance =NULL)
 		m_instance=new ServiceCenter();
