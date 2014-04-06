@@ -5,7 +5,11 @@
 #include "IAlgorithm.h"
 #include "IGeoAlgorithm.h"
 #include "IPartition.h"
+#include "ICellar.h"
+#include "Process.h"
 #include "IScheduler.h"
+
+#include <list>
 
 namespace hpgc{
 
@@ -20,7 +24,9 @@ namespace hpgc{
 		IGeoAlgorithm * m_geoAlgorithm;
 		IPartition * m_partition;
 		IScheduler * m_scheduler;
-
+		ICellar * m_cellar;
+		std::list<Process> m_processes;
+		
 	};
 }
 

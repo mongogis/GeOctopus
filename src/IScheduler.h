@@ -7,7 +7,8 @@ namespace hpgc{
 	class IScheduler
 	{
 	public:
-		virtual void Start() = 0;
+		virtual void Work(ICellar * data,std::list<Process> proes) = 0;
+		virtual std::list<Process> InitProcess();
 	};
 
 }
