@@ -9,8 +9,14 @@ namespace hpgc{
 
 	class Server 
 	{
+	private:
+		ServiceCenter();
+		Server m_instance;
+		std::list<IAlgorithmFactory *> m_factory_list;
 	public:
-		IAlgorithmFactory * Create(int argc, char ** argv);
+		static IAlgorithmFactory * Create(int argc, char ** argv);
+		bool AddFactory(IAlgorithmFactory * pAlgFactory);
+		bool RemoveFactory(char * pFactoryName);
 	};
 }
 
