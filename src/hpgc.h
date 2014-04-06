@@ -29,6 +29,7 @@
 #include "IBarrel.h"
 #include "ICellar.h"
 #include "IData.h"
-#include "IFactory.h"
+#include "IAlgorithmFactory.h"
+#include "Server.h"
 	
 #endif

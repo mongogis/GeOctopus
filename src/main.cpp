@@ -14,7 +14,8 @@ using namespace hpgc;
 /// 如相应信息没有指定则使用默认值，参数有误则退出执行。
 void main(int argc, char ** argv)
 {
-	IFactory * pfactory = ServiceCenter.Create(argc, argv);
+	Server serverCenter;
+	IAlgorithmFactory * pfactory = serverCenter.Create(argc, argv);
 	IAlgorithm * palg = pfactory->Create(argc, argv);
 	palg->Run();
 }
