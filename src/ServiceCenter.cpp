@@ -11,7 +11,7 @@ ServiceCenter::ServiceCenter()
 	m_factory_list.push_back(NULL);
 }
 
-AlgFactory * ServiceCenter:: create(int argc, char ** argv)
+AlgFactory * ServiceCenter:: Create(int argc, char ** argv)
 {
 	if(m_instance =NULL)
 		m_instance=new ServiceCenter();
@@ -29,9 +29,9 @@ AlgFactory * ServiceCenter:: create(int argc, char ** argv)
 			return 0;
 	}
 
-	for(list<AlgFactory *>::iterator i=m_factory_list.begin();i!=_factory_list.end();i++)
+	for(std::list<AlgFactory *>::iterator i=m_instance->m_factory_list.begin();i!=m_instance->m_factory_list.end();i++)
 	{
-		if (EQUAL((*i)->Fname.c_str(),pszAlg))
+		if (EQUAL((*i)->GetName.c_str(),pszAlg))
 		{
 			return *i;
 		}
@@ -47,9 +47,9 @@ bool ServiceCenter::AddFactory(AlgFactory * pAlgFactory)
 
 bool ServiceCenter::RemoveFactory(char * pFactoryName)
 {
-	for(list<AlgFactory *>::iterator i=m_factory_list.begin();i!=m_factory_list.end();i++)
+	for(std::list<AlgFactory *>::iterator i=m_factory_list.begin();i!=m_factory_list.end();i++)
 	{
-		if (EQUAL((*i)->Fname.c_str(),pFactoryName))
+		if (EQUAL((*i)->GetName.c_str(),pFactoryName))
 		{
 			m_factory_list.remove(*i);
 		}
