@@ -2,11 +2,11 @@
 
 #define HGPC_ABSTRACT_FACTORY_H_INCLUDE 
 
-#include "IFactory.h"
+#include "IAlgorithmFactory.h"
 
 namespace hpgc{
 
-	class AbstractFactory : public IFactory
+	class AbstractFactory : public IAlgorithmFactory
 	{
 	public:
 	};
