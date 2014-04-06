@@ -10,6 +10,7 @@ namespace hpgc{
 	{
 	public:
 		virtual IAlgorithm  * Create(int argc, char ** argv) = 0;
+		virtual const char * GetName() = 0;
 	};
 
 }
