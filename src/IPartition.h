@@ -2,16 +2,34 @@
 
 #define HPGC_INTERFACE_PARTITION_H_INCLUDE
 
-#include "ICellar.h"
+#include "IData.h"
 
 namespace hpgc{
 
 	class IPartition
 	{
 	public:
-		virtual ICellar * Partitioning() = 0;
+		virtual MetaData * GetMetaData()=0;
+		virtual Cellar * Partitioning() = 0;
 	};
 
+	class EFC_Partition:public IPartition
+	{
+	public:
+		MetaData * GetMetaData();
+		Cellar * Partitioning();
+	private:
+		MetaData * m_Metadata;
+
+	};
+	class FCI_Partition:public IPartition
+	{
+	public:
+		MetaData * GetMetaData();
+		Cellar * Partitioning();
+	private:
+		MetaData * m_Metadata;
+	};
 }
 
 #endif
