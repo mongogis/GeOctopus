@@ -5,6 +5,7 @@ hpgc::MetaData * hpgc::EFC_Partition::GetMetaData()
 {
 	return m_Metadata;
 };
+
 hpgc::Cellar * hpgc::EFC_Partition::Partitioning()
 {
 	//假设数据源只有一个图层,每一千个要素一个桶
