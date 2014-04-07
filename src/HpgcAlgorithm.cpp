@@ -1,7 +1,41 @@
-#include "hpgc.h"
-using namespace hpgc;
+// 实现hpgcAlgorithm相关
+#include "HpgcAlgorithm.h"
+#include <stdio.h>
 
-bool HpgcAlgorithm::Run()
+bool hpgc::HpgcAlgorithm::Run()
 {
-	return 0;
-}
+	printf("This is IHpgcAlgorithm::Run()!");
+	return 1;
+};
+
+hpgc::HpgcAlgorithm::HpgcAlgorithm()
+{
+
+};
+
+hpgc::IPartition *hpgc::HpgcAlgorithm::GetPartition()
+{
+	return NULL;
+};
+void hpgc::HpgcAlgorithm::SetPartition(IPartition *)
+{
+
+};
+
+hpgc::IScheduler *hpgc::HpgcAlgorithm::GetScheduler()
+{
+	return NULL;
+};
+void hpgc::HpgcAlgorithm::SetScheduler(IScheduler *)
+{
+
+};
+
+hpgc::IGeoAlgorithm *hpgc::HpgcAlgorithm::GetGeoAlgorithm()
+{
+	return NULL;
+};
+void hpgc::HpgcAlgorithm::SetGeoAlgorithm(IGeoAlgorithm *)
+{
+
+};

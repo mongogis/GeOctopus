@@ -25,11 +25,13 @@
 /// 命名空间hpgc下只framework骨架类的东西，为所有地理算法所公用的部分。
 /// 如MPIObject, framework的公共接口，具体地理算法所实现的类不包含在其中。
 
-#include "IAlgorithm.h"
+#include "HpgcAlgorithm.h"
 #include "IBarrel.h"
 #include "ICellar.h"
 #include "IData.h"
-#include "IAlgorithmFactory.h"
-#include "Server.h"
-	
+#include "IFactory.h"
+#include "FactoryManager.h"
+#include "IPartition.h"
+#include "IScheduler.h"
+#include "IFactory.h"
 #endif

@@ -9,6 +9,7 @@ namespace hpgc{
 	public:
 	protected:
 	private:
+		
 	};
 
 }
