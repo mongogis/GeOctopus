@@ -20,10 +20,10 @@ namespace hpgc{
 		char ** flist;
 	public:
 		char * GetDataSource();
-		void SetDataSource();
+		void SetDataSource(char *);
 
 		char * GetLayer();
-		void SetLayer();
+		void SetLayer(char *);
 
 		void AddFeature(char *);
 		void RemoveFeature(char *);
@@ -32,6 +32,7 @@ namespace hpgc{
 		void unPack(const char *);
 
 		Barrel();
+		Barrel(char*,char*);
 		~Barrel();
 	};
 

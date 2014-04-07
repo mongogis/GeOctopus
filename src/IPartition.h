@@ -18,12 +18,17 @@ namespace hpgc{
 	public:
 		MetaData * GetMetaData();
 		Cellar * Partitioning();
+	private:
+		MetaData * m_Metadata;
+
 	};
 	class FCI_Partition:public IPartition
 	{
 	public:
 		MetaData * GetMetaData();
 		Cellar * Partitioning();
+	private:
+		MetaData * m_Metadata;
 	};
 }
 
