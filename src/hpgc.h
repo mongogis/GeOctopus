@@ -26,8 +26,6 @@
 /// 如MPIObject, framework的公共接口，具体地理算法所实现的类不包含在其中。
 
 #include "HpgcAlgorithm.h"
-#include "IBarrel.h"
-#include "ICellar.h"
 #include "IData.h"
 #include "IFactory.h"
 #include "FactoryManager.h"
