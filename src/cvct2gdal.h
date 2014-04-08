@@ -1,27 +1,16 @@
-#include "hpgc.h"
+#ifndef cvct2gdal_h__
+#define cvct2gdal_h__
 
-class cvct2gdal_Factory:public hpgc::IGeoAlgFactory
-{
+#include "IV2VAlgorithm.h"
 
-public:
-	const char * GetName();
-	const char * GetDescription();
-	hpgc::IGeoAlgorithm * Create(int argc, char ** argv);
-	cvct2gdal_Factory();
-};
+namespace hpgc{
 
-class cvct2gdal:public hpgc::IGeoAlgorithm
-{
-private:
-	hpgc::Barrel *m_barrel;
-	char * m_pPara1;
-	char * m_pPara2;
-public:
-	bool Computing();
-	hpgc::Barrel * GetBarrel();
-	void SetBarrel(hpgc::Barrel*);
-	void init(int argc, char ** argv);
-	void help();
-	cvct2gdal();
+	class Cvct2Gdal: public IV2VAlgorithm
+	{
+	public:
+		virtual bool Compute(VectorBarral * src, VectorBarral * dst);
+	};
+}
 
-};
+#endif // cvct2gdal_h__
+

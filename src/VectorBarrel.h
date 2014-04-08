@@ -1,44 +1,35 @@
-<<<<<<< HEAD
 #ifndef HPGCH_VECTOR_BARREL_H_INCLUDE
 
 #define HPGCH_VECTOR_BARREL_H_INCLUDE
 
-#include "IBarrel.h"
+#include <list>
 
 namespace hpgc{
 
-	class VectorBarral:public IBarrel
+	class VectorBarral
 	{
+
 	public:
-		VectorBarral();
-		~VectorBarral();
+
+		std::string GetDataSource();
+
+		std::string GetLayer();
+
+		std::list<int> GetFeatures();
+
+		VectorBarral(std::string datasource, std::string layer, std::list<int> features)
+			:m_datasource(datasource)
+			,m_layer(layer)
+			,m_features(features){
+
+		};
 
 	private:
-		
+		std::string m_datasource;
+		std::string m_layer;
+		std::list<int> m_features;
 	};
-	
+
 }
 
-=======
-#ifndef HPGCH_VECTOR_BARREL_H_INCLUDE
-
-#define HPGCH_VECTOR_BARREL_H_INCLUDE
-
-#include "IBarrel.h"
-
-namespace hpgc{
-
-	class VectorBarral:public IBarrel
-	{
-	public:
-		VectorBarral();
-		~VectorBarral();
-
-	private:
-		
-	};
-	
-}
-
->>>>>>> ac83431c1fba32b970c1af616d29106c6bf92625
 #endif

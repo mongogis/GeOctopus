@@ -1,8 +1,3 @@
-#include "hpgc.h"
-#include "port.h"
-
-using namespace hpgc;
-
 /// @brief 所有并行地理算法统一调用前端
 ///
 /// -np 进程个数，-hostfile 计算节点信息，-alg 算法名称，
@@ -15,49 +10,21 @@ using namespace hpgc;
 /// hpgc framework按照上述指定参数执行相应并行算法，
 /// 如相应信息没有指定则使用默认值，参数有误则退出执行。
 
-void main(int argc, char ** argv)
+#include "HpgcVectorAlgorithm.h"
+#include "cvct2gdal.h"
+#include "CvctPartition.h"
+#include "P2pScheduler.h"
+
+using namespace hpgc;
+
+int main(int argc, char ** argv)
 {
-	char * pstrScheduler=NULL;
-	hpgc::IScheduler* pScheduler=NULL;
+	auto partition = new CvctPartition();
+	auto scheduler = new P2pScheduler();
+	auto vct = new Cvct2Gdal();
+	auto alg = new HpgcVectorAlgorithm(vct,scheduler,partition);
 
-	char * pstrPartition=NULL;
-	hpgc::IPartition* pPartition=NULL;
+	alg->Run();
 
-	char * pstrGeoAlgorithm=NULL;
-	IGeoAlgorithm * pGeoAlgorithm =NULL;
-
-	for(int i = 1; i < argc; i++)
-		if (EQUAL(argv[i], "-par") && i < argc - 1)
-			if (pstrPartition==NULL)
-				pstrPartition = argv[++i];	
-			else if (EQUAL(argv[i], "-sch") && i < argc - 1)
-				if(pstrScheduler==NULL)
-					pstrScheduler = argv[++i];
-			else if (EQUAL(argv[i], "-alg") && i < argc - 1)
-				if (pstrGeoAlgorithm==NULL)
-				{
-					pstrGeoAlgorithm = argv[++i];
-					if (pstrGeoAlgorithm==NULL || pstrGeoAlgorithm =="")
-						continue;
-					else
-						break;
-				}
-
-	if (pstrGeoAlgorithm=NULL)
-		exit(1);
-
-	SchFactoryMan * pSchFactoryMan=SchFactoryMan::GetInstance();
-	pScheduler=pSchFactoryMan->FindFactory(pstrScheduler)->Create();
-
-	ParFactoryMan * pParFactoryMan=ParFactoryMan::GetInstance();
-	pPartition=pParFactoryMan->FindFactory(pstrPartition)->Create();
-
-	AlgFactoryMan * pAlgFactoryMan=AlgFactoryMan::GetInstance();
-	pGeoAlgorithm=pAlgFactoryMan->FindFactory(pstrGeoAlgorithm)->Create(argc,argv);
-
-	HpgcAlgorithm *pHpgcAlg=new HpgcAlgorithm();
-	pHpgcAlg->SetScheduler(pScheduler);
-	pHpgcAlg->SetPartition(pPartition);
-	pHpgcAlg->SetGeoAlgorithm(pGeoAlgorithm);
-	pHpgcAlg->Run();
+	return 1;
 }
