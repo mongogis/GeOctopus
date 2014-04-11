@@ -17,6 +17,8 @@ namespace hpgc{
 
 		virtual bool IsEmpty() ;
 
+		virtual int size();
+
 		~VectorCellar();
 
 	private:

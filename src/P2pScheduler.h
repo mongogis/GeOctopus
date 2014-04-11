@@ -8,6 +8,12 @@ namespace hpgc{
 	{
 	public:
 		virtual VectorCellar * Work(VectorCellar * data, std::list<Role> roles, IV2VAlgorithm * compute);
+		P2pScheduler(VectorCellar * data, std::list<Role> role, IV2VAlgorithm * alg);
+
+	private:
+		VectorCellar * m_celler;
+		std::list<Role> m_roles;
+		IV2VAlgorithm * m_algorithm;
 	};
 
 }

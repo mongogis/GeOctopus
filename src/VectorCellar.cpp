@@ -21,3 +21,8 @@ bool hpgc::VectorCellar::IsEmpty()
 hpgc::VectorCellar::~VectorCellar()
 {
 }
+
+int hpgc::VectorCellar::size()
+{
+	return this->m_barrels.size();
+}

@@ -5,6 +5,8 @@ hpgc::HpgcVectorAlgorithm::HpgcVectorAlgorithm(IV2VAlgorithm * alg, IVectorSched
 	m_algorithm = alg;
 	m_partition = par;
 	m_scheduler = she;
+
+	
 }
 
 void hpgc::HpgcVectorAlgorithm::Run()

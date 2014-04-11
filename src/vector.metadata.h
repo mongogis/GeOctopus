@@ -6,11 +6,8 @@ namespace hpgc{
 	class VectorMetaData
 	{
 	public:
-		VectorMetaData();
+		VectorMetaData(int argc,char ** argv);
 		~VectorMetaData();
-
-	private:
-
 	};
 
 }

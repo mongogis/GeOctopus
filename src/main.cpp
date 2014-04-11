@@ -14,6 +14,7 @@
 #include "test.h"
 #include "EfcPartition.h"
 #include "P2pScheduler.h"
+#include "vector.metadata.h"
 
 using namespace hpgc;
 
