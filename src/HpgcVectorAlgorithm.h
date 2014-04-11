@@ -9,6 +9,7 @@ namespace hpgc{
 
 	class HpgcVectorAlgorithm
 	{
+
 	public:
 		HpgcVectorAlgorithm(IV2VAlgorithm * alg, IVectorScheduler * she, IVectorPartition * par);
 		void Run();

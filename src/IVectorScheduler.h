@@ -4,7 +4,6 @@
 
 #include "Role.h"
 #include "IV2VAlgorithm.h"
-
 #include "VectorCellar.h"
 
 #include <list>

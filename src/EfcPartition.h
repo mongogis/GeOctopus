@@ -4,10 +4,10 @@
 #include "IVectorPartition.h"
 
 namespace hpgc{
-	class CvctPartition:public IVectorPartition
+	class EfcPartition:public IVectorPartition
 	{
 	public:
-		virtual VectorCellar * Partition();
+		virtual VectorCellar * Partition(VectorMetaData * data);
 	};
 }
 #endif // CvctPartition_h__

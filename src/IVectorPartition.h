@@ -2,12 +2,13 @@
 #define VectorPartition_h__
 
 #include "VectorCellar.h"
+#include "vector.metadata.h"
 
 namespace hpgc{
 	class IVectorPartition
 	{
 	public:
-		virtual VectorCellar * Partition() = 0;
+		virtual VectorCellar * Partition(VectorMetaData * meta) = 0;
 
 	};
 }

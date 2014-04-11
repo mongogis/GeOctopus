@@ -11,17 +11,18 @@
 /// 如相应信息没有指定则使用默认值，参数有误则退出执行。
 
 #include "HpgcVectorAlgorithm.h"
-#include "cvct2gdal.h"
-#include "CvctPartition.h"
+#include "test.h"
+#include "EfcPartition.h"
 #include "P2pScheduler.h"
 
 using namespace hpgc;
 
 int main(int argc, char ** argv)
 {
-	auto partition = new CvctPartition();
+	auto partition = new EfcPartition();
 	auto scheduler = new P2pScheduler();
-	auto vct = new Cvct2Gdal();
+	auto vct = new Test();
+
 	auto alg = new HpgcVectorAlgorithm(vct,scheduler,partition);
 
 	alg->Run();

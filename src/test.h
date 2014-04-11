@@ -5,7 +5,7 @@
 
 namespace hpgc{
 
-	class Cvct2Gdal: public IV2VAlgorithm
+	class Test: public IV2VAlgorithm
 	{
 	public:
 		virtual bool Compute(VectorBarral * src, VectorBarral * dst);
