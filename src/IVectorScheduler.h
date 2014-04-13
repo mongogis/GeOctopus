@@ -13,7 +13,7 @@ namespace hpgc{
 	class IVectorScheduler
 	{
 	public:
-		void Work(VectorCellar * data,std::list<Role> roles,IV2VAlgorithm * compute);	
+		virtual void Work(VectorCellar * data,std::list<Role> roles,IV2VAlgorithm * compute) = 0;	
 	};
 
 }
