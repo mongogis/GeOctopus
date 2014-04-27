@@ -13,4 +13,10 @@ task :publish do
     cp lib_file,"#{pub_dir}/lib"
 end
 
-task :default => :publish
+desc "test"
+task :test do
+    num = (ENV['n'] ? ENV('n') : '2').to_i
+    sh "mpiexec -n #{num} #{dir_lib}/hpgc.exe"
+end
+
+task :default => :test 

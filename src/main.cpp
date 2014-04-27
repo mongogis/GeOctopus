@@ -26,6 +26,7 @@ int main(int argc, char ** argv)
 	MPIObject::CreateMPI(argc, argv);
 
 	MPIObject mo;
+	mo.PrintMe();
 
 	auto partition = new EfcPartition();
 	auto scheduler = new M2sScheduler();
@@ -35,5 +36,7 @@ int main(int argc, char ** argv)
 
 	alg->Run();
 
-	return 1;
+	MPIObject::DestoryMPI();
+
+	return 0;
 }
