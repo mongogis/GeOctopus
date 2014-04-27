@@ -59,7 +59,9 @@ hpgc::VectorCellar * hpgc::EfcPartition::Partition(VectorMetaData * data)
 		}
 	});
 
-	
+	VectorClose(srcds);
+	VectorClean();
+
 	return cellar;
 }
 
