@@ -2,13 +2,14 @@
 
 #define HPGC_ROLE_H_INCLUDE
 
+#include "VectorBarrel.h"
+
 namespace hpgc{
 
-	class Role
+	class IRole
 	{
 	public:
-	protected:
-	private:
+		virtual int Action(VectorBarral * barral) = 0;
 	};
 
 }

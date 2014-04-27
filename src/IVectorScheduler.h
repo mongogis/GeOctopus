@@ -2,7 +2,7 @@
 
 #define HPGC_INTERFACE_SCHEDULER_H_INCLUDE 
 
-#include "Role.h"
+#include "IRole.h"
 #include "IV2VAlgorithm.h"
 #include "VectorCellar.h"
 
@@ -13,7 +13,7 @@ namespace hpgc{
 	class IVectorScheduler
 	{
 	public:
-		virtual void Work(VectorCellar * data,std::list<Role> roles,IV2VAlgorithm * compute) = 0;	
+		virtual void Work() = 0;	
 	};
 
 }

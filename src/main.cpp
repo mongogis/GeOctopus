@@ -13,15 +13,15 @@
 #include "HpgcVectorAlgorithm.h"
 #include "test.h"
 #include "EfcPartition.h"
-#include "P2pScheduler.h"
 #include "vector.metadata.h"
+#include "M2sScheduler.h"
 
 using namespace hpgc;
 
 int main(int argc, char ** argv)
 {
 	auto partition = new EfcPartition();
-	auto scheduler = new P2pScheduler();
+	auto scheduler = new M2sScheduler();
 	auto vct = new Test();
 
 	auto alg = new HpgcVectorAlgorithm(vct,scheduler,partition);

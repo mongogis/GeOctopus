@@ -1,5 +1,5 @@
-#ifndef vector.metadata_h__
-#define vector.metadata_h__
+#ifndef vector_metadata_h__
+#define vector_metadata_h__
 
 namespace hpgc{
 

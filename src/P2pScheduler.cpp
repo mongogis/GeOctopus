@@ -5,6 +5,7 @@ hpgc::VectorCellar * hpgc::P2pScheduler::Work(VectorCellar * data, std::list<Rol
 	int worker_count = m_roles.size();
 	int task_count = m_celler->size();
 	int chunk_size = task_count / worker_count;
+	return NULL;
 }
 
 hpgc::P2pScheduler::P2pScheduler(VectorCellar * data, std::list<Role> role, IV2VAlgorithm * alg)
