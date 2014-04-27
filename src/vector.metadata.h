@@ -7,7 +7,12 @@ namespace hpgc{
 	{
 	public:
 		VectorMetaData(int argc,char ** argv);
+		const char * GetSrcName();
+		const char * GetDstName();
 		~VectorMetaData();
+	private:
+		char * m_src;
+		char * m_dst;
 	};
 
 }

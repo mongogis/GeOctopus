@@ -1,6 +1,12 @@
 #include "EfcPartition.h"
+#include "geoalgorithm.format.h"
 
 hpgc::VectorCellar * hpgc::EfcPartition::Partition(VectorMetaData * data)
 {
-	return NULL;
+	RegisterVector();
+	auto srcds = VectorOpen(data->GetSrcName(), GA_ReadOnly);
+
+	auto cellar = new VectorCellar();
+	
+	return cellar;
 }
