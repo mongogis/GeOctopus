@@ -16,10 +16,17 @@
 #include "vector.metadata.h"
 #include "M2sScheduler.h"
 
+#include <mpiobject.h>
+
 using namespace hpgc;
 
 int main(int argc, char ** argv)
 {
+
+	MPIObject::CreateMPI(argc, argv);
+
+	MPIObject mo;
+
 	auto partition = new EfcPartition();
 	auto scheduler = new M2sScheduler();
 	auto vct = new Test();
