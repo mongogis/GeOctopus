@@ -11,12 +11,13 @@ namespace hpgc{
 	{
 
 	public:
-		HpgcVectorAlgorithm(IV2VAlgorithm * alg, IVectorScheduler * she, IVectorPartition * par);
+		HpgcVectorAlgorithm(IV2VAlgorithm * alg, IVectorScheduler * she, IVectorPartition * par,VectorMetaData * data);
 		void Run();
 	private:
 		IV2VAlgorithm * m_algorithm;
 		IVectorPartition * m_partition;
 		IVectorScheduler * m_scheduler;
+		VectorMetaData * m_metaData;
 	};
 
 

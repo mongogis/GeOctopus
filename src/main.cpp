@@ -28,11 +28,11 @@ int main(int argc, char ** argv)
 	MPIObject mo;
 	mo.PrintMe();
 
+	auto metadata = new VectorMetaData(argc, argv);
 	auto partition = new EfcPartition();
 	auto scheduler = new M2sScheduler();
 	auto vct = new Test();
-
-	auto alg = new HpgcVectorAlgorithm(vct,scheduler,partition);
+	auto alg = new HpgcVectorAlgorithm(vct,scheduler,partition,metadata);
 
 	alg->Run();
 

@@ -9,6 +9,13 @@ namespace hpgc{
 	{
 	public:
 		virtual void Work();
+		void SetMaster(IRole * master);
+		void SetSlave(IRole * slave);
+		void SetCellar(VectorCellar * cellar);
+	private:
+		IRole * m_master;
+		IRole * m_slave;
+		VectorCellar * m_cellar;
 	};
 
 }
