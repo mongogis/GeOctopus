@@ -3,7 +3,7 @@
 #include "SlaveRole.h"
 #include <mpiobject.h>
 
-hpgc::HpgcVectorAlgorithm::HpgcVectorAlgorithm(IV2VAlgorithm * alg, IVectorScheduler * she, IVectorPartition * par,VectorMetaData *meta)
+hpgc::HpgcVectorAlgorithm::HpgcVectorAlgorithm(IV2VAlgorithm * alg, IVectorScheduler * she, IVectorPartition * par, VectorMetaData *meta)
 {
 	m_algorithm = alg;
 	m_partition = par;
@@ -17,7 +17,7 @@ void hpgc::HpgcVectorAlgorithm::Run()
 
 	if (mo.IsMaster())
 	{
-		VectorCellar * cellar =  m_partition->Partition(m_metaData);
+		VectorCellar * cellar = m_partition->Partition(m_metaData);
 		IRole * master = new MasterRole();
 		m_scheduler->SetRole(master);
 		m_scheduler->SetCellar(cellar);
@@ -30,4 +30,5 @@ void hpgc::HpgcVectorAlgorithm::Run()
 	}
 
 	m_scheduler->Work(m_algorithm);
+
 }

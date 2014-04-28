@@ -1,6 +1,7 @@
 dir_lib = 'd:/projects/hpgc_prj/hpgc/Debug'
-dir_include = 'src'
+dir_include = './src'
 pub_dir = "c:/hpgc_runtime"
+test_dir = "d:/projects/hpgc/test"
 
 include_file = FileList.new("#{dir_include}/mpiobject/*.h","#{dir_include}/geoformat/*.h")
 lib_file = FileList.new("#{dir_lib}/mpiobject.lib","#{dir_lib}/geoformat.lib")
@@ -15,8 +16,8 @@ end
 
 desc "test"
 task :test do
-    num = (ENV['n'] ? ENV('n') : '2').to_i
-    sh "mpiexec -n #{num} #{dir_lib}/hpgc.exe"
+    num = (ENV['n'] ? ENV('n') : '3').to_i
+    sh "mpiexec -n #{num} #{dir_lib}/hpgc.exe -s #{test_dir} -d d:/test"
 end
 
 task :default => :test 

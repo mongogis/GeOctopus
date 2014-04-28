@@ -6,13 +6,16 @@ namespace hpgc{
 	class VectorMetaData
 	{
 	public:
-		VectorMetaData(int argc,char ** argv);
+		VectorMetaData(const char * src,const char * dst)
+			:m_src(src)
+			,m_dst(dst){
+		};
 		const char * GetSrcName();
 		const char * GetDstName();
 		~VectorMetaData();
 	private:
-		char * m_src;
-		char * m_dst;
+		const char * m_src;
+		const char * m_dst;
 	};
 
 }

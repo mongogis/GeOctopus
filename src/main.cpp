@@ -17,6 +17,7 @@
 #include "M2sScheduler.h"
 
 #include <mpiobject.h>
+#include <geoalgorithm.format.h>
 
 using namespace hpgc;
 
@@ -24,11 +25,25 @@ int main(int argc, char ** argv)
 {
 
 	MPIObject::CreateMPI(argc, argv);
-
 	MPIObject mo;
 
+	const char * pszSrcFile;
+	const char * pszDstFile;
 
-	auto metadata = new VectorMetaData(argc, argv);
+	for (int i = 1; i < argc; i++)
+	{
+		if (EQUAL(argv[i], "-s") && i < argc - 1)
+		{
+			pszSrcFile = argv[++i];
+		}
+
+		else if (EQUAL(argv[i], "-d") && i < argc - 1)
+		{
+			pszDstFile = argv[++i];
+		}
+	}
+
+	auto metadata = new VectorMetaData(pszSrcFile, pszDstFile);
 	auto partition = new EfcPartition(2);
 	auto scheduler = new M2sScheduler();
 	auto vct = new Test();

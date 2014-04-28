@@ -4,6 +4,6 @@
 int hpgc::MasterRole::Action()
 {
 	MPIObject mo;
-	mo.PrintMe("wo are master");
+	mo.PrintMe("I'm master");
 	return 1;
 }
