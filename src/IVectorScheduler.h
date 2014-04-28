@@ -13,13 +13,9 @@ namespace hpgc{
 	class IVectorScheduler
 	{
 	public:
-		virtual void Work() = 0;	
+		virtual void Work(IV2VAlgorithm * task) = 0;	
 		virtual void SetRole(IRole * role) = 0;
 		virtual void SetCellar(VectorCellar * cellar) = 0;
-
-		virtual int Run(VectorBarral * barral);
-		virtual int Stop(VectorBarral * barral);
-		virtual int Start(VectorBarral * barral);
 	};
 
 }

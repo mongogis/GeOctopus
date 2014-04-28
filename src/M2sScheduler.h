@@ -8,15 +8,13 @@ namespace hpgc{
 	class M2sScheduler: public IVectorScheduler
 	{
 	public:
-		virtual void Work();
+		virtual void Work(IV2VAlgorithm * alg);
 		virtual void SetRole(IRole * role);
 		virtual void SetCellar(VectorCellar * cellar);
-		virtual int Run(VectorBarral * barral);
-		virtual int Stop(VectorBarral * barral);
-		virtual int Start(VectorBarral * barral);
 	private:
 		IRole * m_role;
 		VectorCellar * m_cellar;
+		IV2VAlgorithm * m_alg;
 	};
 
 }

@@ -29,12 +29,5 @@ void hpgc::HpgcVectorAlgorithm::Run()
 		m_scheduler->SetCellar(NULL);
 	}
 
-	// 目的数据没有说明，这里要考虑
-	VectorBarral * src = new VectorBarral();
-	for (int algStatus = m_scheduler->Start(src);
-		algStatus != m_scheduler->Stop(src);
-		algStatus = m_scheduler->Run(src));
-	{
-		m_algorithm->Compute(src,src);
-	}
+	m_scheduler->Work(m_algorithm);
 }
