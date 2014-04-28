@@ -1,4 +1,4 @@
-dir_lib = 'd:\projects\hpgc_prj\hpgc\Debug'
+dir_lib = 'd:/projects/hpgc_prj/hpgc/Debug'
 dir_include = 'src'
 pub_dir = "c:/hpgc_runtime"
 

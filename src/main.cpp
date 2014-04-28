@@ -26,10 +26,10 @@ int main(int argc, char ** argv)
 	MPIObject::CreateMPI(argc, argv);
 
 	MPIObject mo;
-	mo.PrintMe();
+
 
 	auto metadata = new VectorMetaData(argc, argv);
-	auto partition = new EfcPartition();
+	auto partition = new EfcPartition(2);
 	auto scheduler = new M2sScheduler();
 	auto vct = new Test();
 	auto alg = new HpgcVectorAlgorithm(vct,scheduler,partition,metadata);

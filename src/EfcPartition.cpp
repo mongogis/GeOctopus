@@ -23,7 +23,7 @@ hpgc::VectorCellar * hpgc::EfcPartition::Partition(VectorMetaData * data)
 	auto cellar = new VectorCellar();
 
 	int count = 0;
-	int efc_index = 100;
+	int efc_index = m_efc;
 	OGRFeature * current = NULL;
 
 	std::for_each(begin(srcLayers),end(srcLayers), [&](OGRLayer * layer){
@@ -63,5 +63,10 @@ hpgc::VectorCellar * hpgc::EfcPartition::Partition(VectorMetaData * data)
 	VectorClean();
 
 	return cellar;
+}
+
+hpgc::EfcPartition::EfcPartition(int index)
+{
+	m_efc = index;
 }
 
