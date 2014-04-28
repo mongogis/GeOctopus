@@ -17,12 +17,20 @@ namespace hpgc{
 
 		std::list<int> GetFeatures();
 
+		void SetDataSource(std::string datasource);
+
+		void SetLayer(std::string layer);
+
+		void SetFeatures(std::list<int> feats);
+
 		VectorBarral(std::string datasource, std::string layer, std::list<int> features)
 			:m_datasource(datasource)
 			,m_layer(layer)
 			,m_features(features){
 
 		};
+
+		VectorBarral(){};
 
 	private:
 		std::string m_datasource;

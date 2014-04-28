@@ -7,7 +7,7 @@ namespace hpgc{
 	class SlaveRole : public IRole
 	{
 	public:
-		virtual int Action(VectorBarral * barral);
+		virtual int Action();
 	};
 }
 #endif // SlaveRole_h__

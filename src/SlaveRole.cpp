@@ -1,6 +1,6 @@
 #include "SlaveRole.h"
 
-int hpgc::SlaveRole::Action(hpgc::VectorBarral * barral)
+int hpgc::SlaveRole::Action()
 {
 	return 1;
 }

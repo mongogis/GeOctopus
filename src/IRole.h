@@ -9,7 +9,7 @@ namespace hpgc{
 	class IRole
 	{
 	public:
-		virtual int Action(VectorBarral * barral) = 0;
+		virtual int Action() = 0;
 	};
 
 }

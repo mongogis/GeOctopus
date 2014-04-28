@@ -7,7 +7,7 @@ namespace hpgc{
 	class MasterRole:public IRole
 	{
 	public:
-		virtual int Action(VectorBarral * barral);
+		virtual int Action();
 	};
 }
 #endif // MasterRole_h__

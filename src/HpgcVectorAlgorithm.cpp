@@ -1,6 +1,7 @@
 #include "HpgcVectorAlgorithm.h"
 #include "MasterRole.h"
 #include "SlaveRole.h"
+#include <mpiobject.h>
 
 hpgc::HpgcVectorAlgorithm::HpgcVectorAlgorithm(IV2VAlgorithm * alg, IVectorScheduler * she, IVectorPartition * par,VectorMetaData *meta)
 {
@@ -12,14 +13,28 @@ hpgc::HpgcVectorAlgorithm::HpgcVectorAlgorithm(IV2VAlgorithm * alg, IVectorSched
 
 void hpgc::HpgcVectorAlgorithm::Run()
 {
-	VectorCellar * cellar =  m_partition->Partition(m_metaData);
+	MPIObject mo;
 
-	IRole * master = new MasterRole();
-	IRole * slave = new SlaveRole();
+	if (mo.IsMaster())
+	{
+		VectorCellar * cellar =  m_partition->Partition(m_metaData);
+		IRole * master = new MasterRole();
+		m_scheduler->SetRole(master);
+		m_scheduler->SetCellar(cellar);
+	}
+	else
+	{
+		IRole * slave = new SlaveRole();
+		m_scheduler->SetRole(slave);
+		m_scheduler->SetCellar(NULL);
+	}
 
-	m_scheduler->SetCellar(cellar);
-	m_scheduler->SetMaster(master);
-	m_scheduler->SetSlave(slave);
-
-	m_scheduler->Work();
+	// 目的数据没有说明，这里要考虑
+	VectorBarral * src = new VectorBarral();
+	for (int algStatus = m_scheduler->Start(src);
+		algStatus != m_scheduler->Stop(src);
+		algStatus = m_scheduler->Run(src));
+	{
+		m_algorithm->Compute(src,src);
+	}
 }
