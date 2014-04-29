@@ -16,6 +16,8 @@ namespace hpgc{
 		virtual void Work(IV2VAlgorithm * task) = 0;	
 		virtual void SetRole(IRole * role) = 0;
 		virtual void SetCellar(VectorCellar * cellar) = 0;
+		virtual IRole * GetRole() = 0;
+		virtual VectorCellar * GetCellar() = 0;
 	};
 
 }
