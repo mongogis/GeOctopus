@@ -9,10 +9,10 @@ namespace hpgc{
 	{
 	public:
 		virtual int Action();
-		MasterRole(IVectorScheduler * schedular);
+		MasterRole(VectorCellar * cellar);
 
 	private:
-		IVectorScheduler * m_schedular;
+		VectorCellar * m_cellar;
 	};
 }
 #endif // MasterRole_h__

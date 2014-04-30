@@ -1,14 +1,13 @@
 #include "MasterRole.h"
 #include <mpiobject.h>
+#include <mpimessage.h>
 
 int hpgc::MasterRole::Action()
 {
-	MPIObject mo;
-	mo.PrintMe("I'm master");
 	return 1;
 }
 
-hpgc::MasterRole::MasterRole(IVectorScheduler * schedular)
+hpgc::MasterRole::MasterRole(VectorCellar * cellar)
 {
-	m_schedular = schedular;
+	m_cellar = cellar;
 }

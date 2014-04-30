@@ -13,10 +13,10 @@ std::vector<OGRLayer *> GetLayers(OGRDataSource * ds)
 	return layers;
 }
 
-hpgc::VectorCellar * hpgc::EfcPartition::Partition(VectorMetaData * data)
+hpgc::VectorCellar * hpgc::EfcPartition::Partition(MetaData * data)
 {
 	RegisterVector();
-	auto srcds = VectorOpen(data->GetSrcName(), GA_ReadOnly);
+	auto srcds = VectorOpen(data->GetDescription(), GA_ReadOnly);
 	auto srcLayers = GetLayers(srcds);
 	std::list<int> srcFeatures;
 

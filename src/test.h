@@ -8,7 +8,7 @@ namespace hpgc{
 	class Test: public IV2VAlgorithm
 	{
 	public:
-		virtual bool Compute(VectorBarral * src, VectorBarral * dst);
+		virtual bool Compute(VectorBarral * barrel);
 	};
 }
 

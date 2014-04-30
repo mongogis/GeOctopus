@@ -6,7 +6,7 @@
 namespace hpgc{
 	class IV2VAlgorithm{
 	public:
-		virtual bool Compute(VectorBarral * src , VectorBarral * dst) = 0;
+		virtual bool Compute(VectorBarral * barrel) = 0;
 	};
 }
 

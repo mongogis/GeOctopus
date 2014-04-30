@@ -4,47 +4,25 @@
 #include "MasterRole.h"
 #include "SlaveRole.h"
 
-void hpgc::M2sScheduler::SetRole(IRole * role)
-{
-	m_role = role;
-}
-
-void hpgc::M2sScheduler::SetCellar(VectorCellar * cellar)
-{
-	m_cellar = cellar;
-}
-
 void hpgc::M2sScheduler::Work(IV2VAlgorithm * task, HpgcVectorAlgorithm * hpgcAlg)
 {
 	MPIObject mo;
-
+	IRole * node = NULL;
 	if (mo.IsMaster())
 	{
-		auto meta = hpgcAlg->GetMetaData();
+		auto src = hpgcAlg->GetMetaData()->GetSrcMetaData();
 		auto partition = hpgcAlg->GetPartition();
-		VectorCellar * cellar =partition->Partition(meta);
-		IRole * master = new MasterRole(this);
-		this->SetRole(master);
-		this->SetCellar(cellar);
+		VectorCellar * srcCellar =partition->Partition(src);
+		node = new MasterRole(srcCellar);
 	}
 	else
 	{
-		IRole * slave = new SlaveRole(task);
-		this->SetRole(slave);
-		this->SetCellar(NULL);
+		auto dst = hpgcAlg->GetMetaData()->GetDstMetaData();
+		node = new SlaveRole(task,dst);
 	}
 
-	m_role->Action();
+	node->Action();
 }
 
-hpgc::IRole * hpgc::M2sScheduler::GetRole()
-{
-	return m_role;
-}
-
-hpgc::VectorCellar * hpgc::M2sScheduler::GetCellar()
-{
-	return m_cellar;
-}
 
 
