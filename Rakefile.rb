@@ -16,7 +16,7 @@ end
 
 desc "test"
 task :test do
-    num = (ENV['n'] ? ENV('n') : '3').to_i
+    num = (ENV['n'] ? ENV['n'] : '3').to_i
     sh "mpiexec -n #{num} #{dir_lib}/hpgc.exe -s #{test_dir} -d d:/test"
 end
 
