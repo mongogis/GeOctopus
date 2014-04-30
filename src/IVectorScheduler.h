@@ -5,15 +5,17 @@
 #include "IRole.h"
 #include "IV2VAlgorithm.h"
 #include "VectorCellar.h"
+#include "HpgcVectorAlgorithm.h"
 
 #include <list>
 
 namespace hpgc{
 
+	class HpgcVectorAlgorithm;
 	class IVectorScheduler
 	{
 	public:
-		virtual void Work(IV2VAlgorithm * task) = 0;	
+		virtual void Work(IV2VAlgorithm * task,HpgcVectorAlgorithm * hpgcAlg) = 0;	
 		virtual void SetRole(IRole * role) = 0;
 		virtual void SetCellar(VectorCellar * cellar) = 0;
 		virtual IRole * GetRole() = 0;

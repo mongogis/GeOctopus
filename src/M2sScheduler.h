@@ -2,13 +2,14 @@
 #define M2sScheduler_h__
 
 #include "IVectorScheduler.h"
+#include "HpgcVectorAlgorithm.h"
 
 namespace hpgc{
 
 	class M2sScheduler: public IVectorScheduler
 	{
 	public:
-		virtual void Work(IV2VAlgorithm * alg);
+		virtual void Work(IV2VAlgorithm * task, HpgcVectorAlgorithm * hpgcAlg);
 		virtual void SetRole(IRole * role);
 		virtual void SetCellar(VectorCellar * cellar);
 		virtual IRole * GetRole();

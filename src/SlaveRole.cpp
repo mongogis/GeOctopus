@@ -7,3 +7,8 @@ int hpgc::SlaveRole::Action()
 	mo.PrintMe("we are slave");
 	return 1;
 }
+
+hpgc::SlaveRole::SlaveRole(IV2VAlgorithm * task)
+{
+	m_alg = task;
+}

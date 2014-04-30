@@ -13,22 +13,25 @@ hpgc::HpgcVectorAlgorithm::HpgcVectorAlgorithm(IV2VAlgorithm * alg, IVectorSched
 
 void hpgc::HpgcVectorAlgorithm::Run()
 {
-	MPIObject mo;
+	m_scheduler->Work(m_algorithm,this);
+}
 
-	if (mo.IsMaster())
-	{
-		VectorCellar * cellar = m_partition->Partition(m_metaData);
-		IRole * master = new MasterRole();
-		m_scheduler->SetRole(master);
-		m_scheduler->SetCellar(cellar);
-	}
-	else
-	{
-		IRole * slave = new SlaveRole();
-		m_scheduler->SetRole(slave);
-		m_scheduler->SetCellar(NULL);
-	}
+hpgc::IVectorPartition * hpgc::HpgcVectorAlgorithm::GetPartition()
+{
+	return m_partition;
+}
 
-	m_scheduler->Work(m_algorithm);
+hpgc::IVectorScheduler * hpgc::HpgcVectorAlgorithm::GetScheduler()
+{
+	return m_scheduler;
+}
 
+hpgc::VectorMetaData * hpgc::HpgcVectorAlgorithm::GetMetaData()
+{
+	return m_metaData;
+}
+
+hpgc::IV2VAlgorithm * hpgc::HpgcVectorAlgorithm::GetAlgorithm()
+{
+	return m_algorithm;
 }

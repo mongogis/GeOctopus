@@ -24,16 +24,11 @@ using namespace hpgc;
 
 int main(int argc, char ** argv)
 {
-	BUG("ok");
-
 	MPIObject::CreateMPI(argc, argv);
 	MPIObject mo;
 
-	BUG("ok1");
-
 	const char * pszSrcFile;
 	const char * pszDstFile;
-
 
 	for (int i = 1; i < argc; i++)
 	{
@@ -47,9 +42,6 @@ int main(int argc, char ** argv)
 			pszDstFile = argv[++i];
 		}
 	}
-
-	BUG(pszDstFile);
-	BUG(pszSrcFile);
 
 	auto metadata = new VectorMetaData(pszSrcFile, pszDstFile);
 	auto partition = new EfcPartition(2);
