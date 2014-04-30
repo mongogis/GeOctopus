@@ -8,8 +8,7 @@
 
 namespace port {
 
-    typedef struct _b
-    {
+    typedef struct _b {
         ///数据信息
         long   DID;     ///数据编号
         long   nOffX;   ///开始位置

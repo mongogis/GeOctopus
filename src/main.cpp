@@ -22,20 +22,16 @@
 
 using namespace hpgc;
 
-int main(int argc, char ** argv)
-{
+int main(int argc, char ** argv) {
     MPIObject::CreateMPI(argc, argv);
     MPIObject mo;
     const char * pszSrcFile;
     const char * pszDstFile;
-    for (int i = 1; i < argc; i++)
-    {
-        if (EQUAL(argv[i], "-s") && i < argc - 1)
-        {
+    for (int i = 1; i < argc; i++) {
+        if (EQUAL(argv[i], "-s") && i < argc - 1) {
             pszSrcFile = argv[++i];
         }
-        else if (EQUAL(argv[i], "-d") && i < argc - 1)
-        {
+        else if (EQUAL(argv[i], "-d") && i < argc - 1) {
             pszDstFile = argv[++i];
         }
     }

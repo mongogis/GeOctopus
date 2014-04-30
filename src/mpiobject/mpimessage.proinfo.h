@@ -4,8 +4,7 @@
 
 #include "mpimessage.h"
 
-typedef struct
-{
+typedef struct {
     int PID;
     int DID;
     int bSuccess;

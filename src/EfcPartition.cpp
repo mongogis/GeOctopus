@@ -2,19 +2,16 @@
 #include "geoalgorithm.format.h"
 #include <algorithm>
 
-std::vector<OGRLayer *> GetLayers(OGRDataSource * ds)
-{
+std::vector<OGRLayer *> GetLayers(OGRDataSource * ds) {
     std::vector<OGRLayer *> layers;
     auto layerCount = ds->GetLayerCount();
-    for (int i = 0; i < layerCount; ++i)
-    {
+    for (int i = 0; i < layerCount; ++i) {
         layers.push_back(ds->GetLayer(i));
     }
     return layers;
 }
 
-hpgc::VectorCellar * hpgc::EfcPartition::Partition(MetaData * data)
-{
+hpgc::VectorCellar * hpgc::EfcPartition::Partition(MetaData * data) {
     RegisterVector();
     auto srcds = VectorOpen(data->GetDescription(), GA_ReadOnly);
     auto srcLayers = GetLayers(srcds);
@@ -24,14 +21,11 @@ hpgc::VectorCellar * hpgc::EfcPartition::Partition(MetaData * data)
     int efc_index = m_efc;
     OGRFeature * current = NULL;
     std::for_each(begin(srcLayers), end(srcLayers), [&](OGRLayer * layer) {
-        while (true)
-        {
+        while (true) {
             count++;
-            if (count <= efc_index)
-            {
+            if (count <= efc_index) {
                 current = layer->GetNextFeature();
-                if (current != NULL)
-                {
+                if (current != NULL) {
                     srcFeatures.push_back(current->GetFID());
                     continue;
                 }
@@ -41,12 +35,10 @@ hpgc::VectorCellar * hpgc::EfcPartition::Partition(MetaData * data)
                                                , srcFeatures));
             srcFeatures.clear();
             count = 0;
-            if (current == NULL)
-            {
+            if (current == NULL) {
                 break;
             }
-            else
-            {
+            else {
                 current = NULL;
             }
         }
@@ -55,8 +47,7 @@ hpgc::VectorCellar * hpgc::EfcPartition::Partition(MetaData * data)
     return cellar;
 }
 
-hpgc::EfcPartition::EfcPartition(int index)
-{
+hpgc::EfcPartition::EfcPartition(int index) {
     m_efc = index;
 }
 

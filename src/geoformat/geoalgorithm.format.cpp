@@ -1,32 +1,27 @@
 #include "geoalgorithm.format.h"
 
-OGRSFDriver * GetVectorDriver( const char * pszFormat )
-{
+OGRSFDriver * GetVectorDriver( const char * pszFormat ) {
     RegisterVector();
     return OGRSFDriverRegistrar::GetRegistrar()->GetDriverByName( pszFormat );
 }
 
-GDALDriver * GetRasterDriver( const char * pszFormat )
-{
+GDALDriver * GetRasterDriver( const char * pszFormat ) {
     RegisterRaster();
     return GetGDALDriverManager()->GetDriverByName( pszFormat );
 }
 
-OGRDataSource * VectorOpen( const char * pszFilename, GDALAccess eAccess )
-{
+OGRDataSource * VectorOpen( const char * pszFilename, GDALAccess eAccess ) {
     RegisterVector();
     return (OGRDataSource *)OGROpen(pszFilename, eAccess, NULL);
 }
 
-GDALDataset * RasterOpen( const char * pszFilename, GDALAccess eAccess )
-{
+GDALDataset * RasterOpen( const char * pszFilename, GDALAccess eAccess ) {
     RegisterRaster();
     return (GDALDataset *)GDALOpen(pszFilename, eAccess);
 }
 
 OGRDataSource * VectorCreate( const char * pszFormat, const char * pszFilename,
-                              char ** papszOptions/*=NULL*/ )
-{
+                              char ** papszOptions/*=NULL*/ ) {
     OGRSFDriver * poDriver = GetVectorDriver(pszFormat);
     OGRDataSource * poOGRDataSource =
         poDriver->CreateDataSource(pszFilename, papszOptions);
@@ -39,8 +34,7 @@ OGRDataSource * VectorCreate( const char * pszFormat, const char * pszFilename,
 }
 
 GDALDataset * RasterCreate( const char * pszFormat, const char * pszFilename,
-                            char ** papszOptions /*=NULL*/ )
-{
+                            char ** papszOptions /*=NULL*/ ) {
     int nXSize = atoi(CSLFetchNameValue(papszOptions, "XSize"));
     int nYSize = atoi(CSLFetchNameValue(papszOptions, "YSize"));
     int nBands = atoi(CSLFetchNameValue(papszOptions, "Bands"));
@@ -57,29 +51,24 @@ GDALDataset * RasterCreate( const char * pszFormat, const char * pszFilename,
     return poDS;
 }
 
-void VectorClose( OGRDataSource * poDS )
-{
+void VectorClose( OGRDataSource * poDS ) {
     OGR_DS_Destroy(poDS);
 }
 
-void RasterClose( GDALDataset * poDS )
-{
+void RasterClose( GDALDataset * poDS ) {
     GDALClose(poDS);
 }
 
-void VectorClean()
-{
+void VectorClean() {
     OGRCleanupAll();
 }
 
-void RasterClean()
-{
+void RasterClean() {
     GDALDestroyDriverManager();
 }
 
 char ** SetCreateMetaData( int xsize, int ysize, int bands ,
-                           GDALDataType eDataType)
-{
+                           GDALDataType eDataType) {
     char ** papszMetaData = NULL;
     papszMetaData = CSLAppendPrintf(papszMetaData, "Xsize=%d", xsize);
     papszMetaData = CSLAppendPrintf(papszMetaData, "YSize=%d", ysize);
@@ -89,19 +78,16 @@ char ** SetCreateMetaData( int xsize, int ysize, int bands ,
     return papszMetaData;
 }
 
-void RegisterAll()
-{
+void RegisterAll() {
     RegisterVector();
     RegisterRaster();
 }
 
-void RegisterVector()
-{
+void RegisterVector() {
     OGRRegisterAll();
 }
 
-void RegisterRaster()
-{
+void RegisterRaster() {
     GDALAllRegister();
 }
 

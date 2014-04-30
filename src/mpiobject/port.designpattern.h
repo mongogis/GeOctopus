@@ -27,20 +27,16 @@ namespace port {
     };
 
     template <typename T>
-    T * Singleton<T>::CreateInstance()
-    {
-        if (!m_pInstance)
-        {
+    T * Singleton<T>::CreateInstance() {
+        if (!m_pInstance) {
             m_pInstance = new T();
         }
         return m_pInstance;
     }
 
     template <typename T>
-    void Singleton<T>::DestoryInstance()
-    {
-        if (m_pInstance)
-        {
+    void Singleton<T>::DestoryInstance() {
+        if (m_pInstance) {
             delete m_pInstance;
             m_pInstance = NULL;
         }

@@ -24,8 +24,7 @@
  * Returns the amount of CPU time used by the current process,
  * in seconds, or -1.0 if an error occurred.
  */
-double getCPUTime( )
-{
+double getCPUTime( ) {
 #if defined(_WIN32)
     /* Windows -------------------------------------------------- */
     FILETIME createTime;
@@ -33,8 +32,7 @@ double getCPUTime( )
     FILETIME kernelTime;
     FILETIME userTime;
     if ( GetProcessTimes( GetCurrentProcess( ),
-                          &createTime, &exitTime, &kernelTime, &userTime ) != -1 )
-    {
+                          &createTime, &exitTime, &kernelTime, &userTime ) != -1 ) {
         SYSTEMTIME userSystemTime;
         if ( FileTimeToSystemTime( &userTime, &userSystemTime ) != -1 )
             return (double)userSystemTime.wHour * 3600.0 +

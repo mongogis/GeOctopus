@@ -14,11 +14,9 @@
 #define SLAVE_RANK 1
 
 
-int ProAcquireLock( int * pMutex )
-{
+int ProAcquireLock( int * pMutex ) {
     MPIObject oMPI;
-    if (oMPI.IsMaster())
-    {
+    if (oMPI.IsMaster()) {
         int sig1 = 0;
         MPIMessage rMsg1(&sig1, 1, MPI_INT, MPI_ANY_SOURCE, MSG_TAG_LOCK,
                          MPI_COMM_WORLD);
@@ -26,8 +24,7 @@ int ProAcquireLock( int * pMutex )
                          MPI_COMM_WORLD);
         MPIMessage sMsg(&sig1, 1, MPI_INT, MPI_ANY_SOURCE, MSG_TAG_DATA,
                         MPI_COMM_WORLD);
-        for (int ipro = 1; ipro < oMPI.GetOurSize(); ++ipro)
-        {
+        for (int ipro = 1; ipro < oMPI.GetOurSize(); ++ipro) {
             RecvMsg(rMsg1);
             MPI_Status status = GetStatus();
             sMsg.SetProcessId(status.MPI_SOURCE);
@@ -37,8 +34,7 @@ int ProAcquireLock( int * pMutex )
         }
         * pMutex = MASTER_RANK;
     }
-    if (oMPI.IsSlave())
-    {
+    if (oMPI.IsSlave()) {
         int sig = 0;
         MPIMessage sMsg(&sig, 1, MPI_INT, oMPI.GetMaster(), MSG_TAG_LOCK,
                         MPI_COMM_WORLD);
@@ -51,11 +47,9 @@ int ProAcquireLock( int * pMutex )
     return 1;
 }
 
-void ProReleaseLock()
-{
+void ProReleaseLock() {
     MPIObject oMPI;
-    if (oMPI.IsSlave())
-    {
+    if (oMPI.IsSlave()) {
         int sig = 0;
         MPIMessage sMsg(&sig, 1, MPI_INT, oMPI.GetMaster(), MSG_TAG_FREE,
                         MPI_COMM_WORLD);

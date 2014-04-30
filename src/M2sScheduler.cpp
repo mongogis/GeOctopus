@@ -5,19 +5,16 @@
 #include "SlaveRole.h"
 
 void hpgc::M2sScheduler::Work(IV2VAlgorithm * task,
-                              HpgcVectorAlgorithm * hpgcAlg)
-{
+                              HpgcVectorAlgorithm * hpgcAlg) {
     MPIObject mo;
     IRole * node = NULL;
-    if (mo.IsMaster())
-    {
+    if (mo.IsMaster()) {
         auto src = hpgcAlg->GetMetaData()->GetSrcMetaData();
         auto partition = hpgcAlg->GetPartition();
         VectorCellar * srcCellar = partition->Partition(src);
         node = new MasterRole(srcCellar);
     }
-    else
-    {
+    else {
         auto dst = hpgcAlg->GetMetaData()->GetDstMetaData();
         node = new SlaveRole(task, dst);
     }

@@ -12,8 +12,7 @@ namespace port {
         , PID(0)
         , bDone(0)
         , tStart(0.0)
-        , tEnd(0.0)
-    {
+        , tEnd(0.0) {
     }
 
 }

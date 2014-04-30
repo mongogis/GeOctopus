@@ -1,8 +1,7 @@
 #include "mpimessage.proinfo.h"
 #include "port.designpattern.h"
 
-typedef struct _Proinfo
-{
+typedef struct _Proinfo {
     ProcInfo m_Temp;
     MPI_Datatype m_NewMPIProInfo;
     MPI_Datatype m_OldMPIProInfo[3];
@@ -13,8 +12,7 @@ typedef struct _Proinfo
 
 } SaveTypeProInfo;
 
-_Proinfo::_Proinfo()
-{
+_Proinfo::_Proinfo() {
     MPI_Get_address(&m_Temp.PID, m_Displs);
     MPI_Get_address(&m_Temp.dfStart, m_Displs + 1);
     m_Displs[2] = sizeof(SaveTypeProInfo);
@@ -30,14 +28,12 @@ _Proinfo::_Proinfo()
     MPI_Type_commit(&m_NewMPIProInfo);
 }
 
-MPI_Datatype Commit_MPI_Type_ProInfo()
-{
+MPI_Datatype Commit_MPI_Type_ProInfo() {
     SaveTypeProInfo * poTemp = port::Singleton<SaveTypeProInfo>::CreateInstance();
     return poTemp->m_NewMPIProInfo;
 }
 
-void Free_MPI_Type_ProInfo()
-{
+void Free_MPI_Type_ProInfo() {
     SaveTypeProInfo * poTemp = port::Singleton<SaveTypeProInfo>::CreateInstance();
     MPI_Type_free(&poTemp->m_NewMPIProInfo);
     port::Singleton<SaveTypeProInfo>::DestoryInstance();

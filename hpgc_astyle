@@ -19,3 +19,5 @@
 --suffix=none
 --max-code-length=80
 --delete-empty-lines
+--break-closing-brackets
+--style=attach

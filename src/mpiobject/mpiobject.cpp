@@ -1,60 +1,49 @@
 #include "mpiobject.h"
 
-double MPIObject::GetTime() const
-{
+double MPIObject::GetTime() const {
     return MPI_Wtime();
 }
 
-int MPIObject::GetRank() const
-{
+int MPIObject::GetRank() const {
     return mpi_Rank;
 }
 
-int MPIObject::GetSize() const
-{
+int MPIObject::GetSize() const {
     return mpi_Size;
 }
 
-void MPIObject::GetBarrier() const
-{
+void MPIObject::GetBarrier() const {
     MPI_Barrier(mpi_Comm);
 }
 
-MPI_Comm MPIObject::GetComm() const
-{
+MPI_Comm MPIObject::GetComm() const {
     return mpi_Comm;
 }
 
-const char * MPIObject::GetNodeName() const
-{
+const char * MPIObject::GetNodeName() const {
     return mpi_Name;
 }
 
-int MPIObject::GetVersion() const
-{
+int MPIObject::GetVersion() const {
     return mpi_Version;
 }
 
-int MPIObject::GetSubVersion() const
-{
+int MPIObject::GetSubVersion() const {
     return mpi_SubVersion;
 }
 
-MPIObject * MPIObject::CreateMPI( int MPI_argc, char ** MPI_argv )
-{
+MPIObject * MPIObject::CreateMPI( int MPI_argc, char ** MPI_argv ) {
     return m_MPIObject ? m_MPIObject : m_MPIObject = new MPIObject(MPI_argc,
             MPI_argv);
 }
 
-void MPIObject::DestoryMPI()
-{
+void MPIObject::DestoryMPI() {
     delete m_MPIObject;
     m_MPIObject = NULL;
     MPI_Finalize();
 }
 
-MPIObject::MPIObject( MPI_Comm comm )
-{
+MPIObject::MPIObject( MPI_Comm comm ) {
     mpi_Comm = comm;
     MPI_Comm_rank(mpi_Comm, &mpi_Rank);
     MPI_Comm_size(mpi_Comm, &mpi_Size);
@@ -64,8 +53,7 @@ MPIObject::MPIObject( MPI_Comm comm )
     mpi_SubVersion = m_MPIObject->mpi_SubVersion;
 }
 
-MPIObject::MPIObject()
-{
+MPIObject::MPIObject() {
     mpi_Comm = m_MPIObject->mpi_Comm;
     mpi_Name = m_MPIObject->mpi_Name;
     mpi_Rank = m_MPIObject->mpi_Rank;
@@ -75,16 +63,14 @@ MPIObject::MPIObject()
     mpi_SubVersion = m_MPIObject->mpi_SubVersion;
 }
 
-MPIObject::MPIObject( int MPI_argc, char ** MPI_argv )
-{
+MPIObject::MPIObject( int MPI_argc, char ** MPI_argv ) {
     int flag;
     ///是否已经初始化系统
     MPI_Initialized(&flag);
     mpi_Len = MPI_MAX_PROCESSOR_NAME;
     mpi_Name = new char[mpi_Len];
     mpi_Comm = MPI_COMM_WORLD;
-    if (flag)
-    {
+    if (flag) {
         ///获得当前进程编号
         MPI_Comm_rank(mpi_Comm, &mpi_Rank);
         ///获得当前进程组的大小
@@ -94,8 +80,7 @@ MPIObject::MPIObject( int MPI_argc, char ** MPI_argv )
         ///获得版本号
         MPI_Get_version(&mpi_Version, &mpi_SubVersion);
     }
-    else
-    {
+    else {
         MPI_Init(&MPI_argc, &MPI_argv);
         MPI_Comm_rank(mpi_Comm, &mpi_Rank);
         MPI_Comm_size(mpi_Comm, &mpi_Size);
@@ -106,81 +91,64 @@ MPIObject::MPIObject( int MPI_argc, char ** MPI_argv )
     m_StartTime = MPI_Wtime();
 }
 
-MPIObject::~MPIObject()
-{
+MPIObject::~MPIObject() {
     ///什么也不做
 }
 
-bool MPIObject::IsMaster() const
-{
-    if (IsMe(m_MasterRank))
-    {
+bool MPIObject::IsMaster() const {
+    if (IsMe(m_MasterRank)) {
         return true;
     }
-    else
-    {
+    else {
         return false;
     }
 }
 
-bool MPIObject::IsSlave() const
-{
-    if (!IsMaster())
-    {
+bool MPIObject::IsSlave() const {
+    if (!IsMaster()) {
         return true;
     }
-    else
-    {
+    else {
         return false;
     }
 }
 
-int MPIObject::GetMaster() const
-{
+int MPIObject::GetMaster() const {
     return m_MasterRank;
 }
 
-int MPIObject::GetMe() const
-{
+int MPIObject::GetMe() const {
     return GetRank();
 }
 
-bool MPIObject::IsMe( const int rank ) const
-{
-    if (rank == mpi_Rank)
-    {
+bool MPIObject::IsMe( const int rank ) const {
+    if (rank == mpi_Rank) {
         return true;
     }
-    else
-    {
+    else {
         return false;
     }
 }
 
-double MPIObject::GetInitTime() const
-{
+double MPIObject::GetInitTime() const {
     return m_StartTime;
 }
 
-void MPIObject::PrintMe() const
-{
+void MPIObject::PrintMe() const {
     std::cout << "NodeName:" << GetNodeName()
               << ", Rank:" << GetMe()
               << "." << std::endl;
 }
 
-double MPIObject::GetNow() const
-{
+double MPIObject::GetNow() const {
     return GetTime();
 }
 
-const char * MPIObject::GetMyName() const
-{
+const char * MPIObject::GetMyName() const {
     return GetNodeName();
 }
 
-int MPIObject::GetOurSize() const
-{
+int MPIObject::GetOurSize() const {
     return GetSize();
 }
 
