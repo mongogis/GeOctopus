@@ -4,39 +4,37 @@
 
 #include <list>
 
-namespace hpgc{
+namespace hpgc {
 
-	class VectorBarral
-	{
+    class VectorBarral {
 
-	public:
+    public:
 
-		std::string GetDataSource();
+        std::string GetDataSource();
 
-		std::string GetLayer();
+        std::string GetLayer();
 
-		std::list<int> GetFeatures();
+        std::list<int> GetFeatures();
 
-		void SetDataSource(std::string datasource);
+        void SetDataSource(std::string datasource);
 
-		void SetLayer(std::string layer);
+        void SetLayer(std::string layer);
 
-		void SetFeatures(std::list<int> feats);
+        void SetFeatures(std::list<int> feats);
 
-		VectorBarral(std::string datasource, std::string layer, std::list<int> features)
-			:m_datasource(datasource)
-			,m_layer(layer)
-			,m_features(features){
+        VectorBarral(std::string datasource, std::string layer, std::list<int> features)
+            : m_datasource(datasource)
+            , m_layer(layer)
+            , m_features(features) {
+        };
 
-		};
+        VectorBarral() {};
 
-		VectorBarral(){};
-
-	private:
-		std::string m_datasource;
-		std::string m_layer;
-		std::list<int> m_features;
-	};
+    private:
+        std::string m_datasource;
+        std::string m_layer;
+        std::list<int> m_features;
+    };
 
 }
 

@@ -9,48 +9,45 @@
 #define NULL 0
 #endif
 
-namespace port
-{
+namespace port {
 
-template <typename T>
-class Singleton
-{
-public:
-	static T * CreateInstance();
-	static void DestoryInstance();
+    template <typename T>
+    class Singleton {
+    public:
+        static T * CreateInstance();
+        static void DestoryInstance();
 
-private:
-	static T * m_pInstance;
+    private:
+        static T * m_pInstance;
 
-	Singleton() {};
-	Singleton(const Singleton &) {};
-	Singleton & operator=(const Singleton &) {};
-	~Singleton() {};
-};
+        Singleton() {};
+        Singleton(const Singleton &) {};
+        Singleton & operator=(const Singleton &) {};
+        ~Singleton() {};
+    };
 
-template <typename T>
-T * Singleton<T>::CreateInstance()
-{
-	if (!m_pInstance)
-	{
-		m_pInstance = new T();
-	}
+    template <typename T>
+    T * Singleton<T>::CreateInstance()
+    {
+        if (!m_pInstance)
+        {
+            m_pInstance = new T();
+        }
+        return m_pInstance;
+    }
 
-	return m_pInstance;
-}
+    template <typename T>
+    void Singleton<T>::DestoryInstance()
+    {
+        if (m_pInstance)
+        {
+            delete m_pInstance;
+            m_pInstance = NULL;
+        }
+    }
 
-template <typename T>
-void Singleton<T>::DestoryInstance()
-{
-	if (m_pInstance)
-	{
-		delete m_pInstance;
-		m_pInstance = NULL;
-	}
-}
-
-template <typename T>
-T * Singleton<T>::m_pInstance = NULL;
+    template <typename T>
+    T * Singleton<T>::m_pInstance = NULL;
 
 }
 

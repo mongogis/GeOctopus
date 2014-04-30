@@ -20,4 +20,9 @@ task :test do
     sh "mpiexec -n #{num} #{dir_lib}/hpgc.exe -s #{test_dir} -d d:/test"
 end
 
+desc "Beautiful code"
+task :format do
+    sh 'astyle --options=hpgc_astyle --recursive src/*.cpp src/*.h'
+end
+
 task :default => :test 

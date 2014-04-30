@@ -4,13 +4,12 @@
 #include "IVectorScheduler.h"
 #include "HpgcVectorAlgorithm.h"
 
-namespace hpgc{
+namespace hpgc {
 
-	class M2sScheduler: public IVectorScheduler
-	{
-	public:
-		virtual void Work(IV2VAlgorithm * task, HpgcVectorAlgorithm * hpgcAlg);
-	};
+    class M2sScheduler: public IVectorScheduler {
+    public:
+        virtual void Work(IV2VAlgorithm * task, HpgcVectorAlgorithm * hpgcAlg);
+    };
 
 }
 

@@ -6,12 +6,12 @@
 
 typedef struct
 {
-	int PID;
-	int DID;
-	int bSuccess;
+    int PID;
+    int DID;
+    int bSuccess;
 
-	double dfStart;
-	double dfEnd;
+    double dfStart;
+    double dfEnd;
 
 } ProcInfo;
 

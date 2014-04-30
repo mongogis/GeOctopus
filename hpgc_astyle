@@ -5,9 +5,17 @@
 --indent-namespaces
 --indent-preprocessor
 
-
 --keep-one-line-statements
 --keep-one-line-blocks
 
 --break-closing-brackets
---brackets=attach
+
+--attach-namespaces
+--attach-classes 
+--attach-inlines
+--pad-oper
+--align-pointer=middle
+--align-reference=middle
+--suffix=none
+--max-code-length=80
+--delete-empty-lines

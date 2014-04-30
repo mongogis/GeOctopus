@@ -43,27 +43,24 @@ int Envelope::GetTag() const
 }
 
 Envelope::Envelope() :
-m_Comm(MPI_COMM_WORLD),
+    m_Comm(MPI_COMM_WORLD),
     m_ProcessID(MPI_ANY_SOURCE),
     m_Tag(MPI_ANY_TAG)
 {
-
 }
 
-Envelope::Envelope( MPI_Comm comm, int processid, int tag ) 
-    :m_Comm(comm)
-    ,m_ProcessID(processid)
-    ,m_Tag(tag)
+Envelope::Envelope( MPI_Comm comm, int processid, int tag )
+    : m_Comm(comm)
+    , m_ProcessID(processid)
+    , m_Tag(tag)
 {
-
 }
 
-Envelope::Envelope( const Envelope & envelope ) 
-    :m_Comm(envelope.m_Comm)
-    ,m_ProcessID(envelope.m_ProcessID)
-    ,m_Tag(envelope.m_Tag)
+Envelope::Envelope( const Envelope & envelope )
+    : m_Comm(envelope.m_Comm)
+    , m_ProcessID(envelope.m_ProcessID)
+    , m_Tag(envelope.m_Tag)
 {
-
 }
 
 /************************************************************************/
@@ -108,28 +105,25 @@ MPI_Datatype Data::GetDataType() const
     return m_DataType;
 }
 
-Data::Data() 
-    :m_Buffer(NULL)
-    ,m_Count(0)
-    ,m_DataType(MPI_INT)
+Data::Data()
+    : m_Buffer(NULL)
+    , m_Count(0)
+    , m_DataType(MPI_INT)
 {
-
 }
 
-Data::Data( void * buf, int count, MPI_Datatype datatpye ) 
-    :m_Buffer(buf)
-    ,m_Count(count)
-    ,m_DataType(datatpye)
+Data::Data( void * buf, int count, MPI_Datatype datatpye )
+    : m_Buffer(buf)
+    , m_Count(count)
+    , m_DataType(datatpye)
 {
-
 }
 
-Data::Data( const Data & data ) 
-    :m_Buffer(data.m_Buffer)
-    ,m_Count(data.m_Count)
-    ,m_DataType(data.m_DataType)
+Data::Data( const Data & data )
+    : m_Buffer(data.m_Buffer)
+    , m_Count(data.m_Count)
+    , m_DataType(data.m_DataType)
 {
-
 }
 
 Data::~Data()
@@ -218,23 +212,21 @@ MPI_Datatype MPIMessage::GetDataType() const
     return m_DataBody.GetDataType();
 }
 
-MPIMessage::MPIMessage( void * buf, int count, MPI_Datatype datatpye, int processid, int tag, MPI_Comm comm ) 
-    :m_Envelope(comm, processid, tag)
-    ,m_DataBody(buf, count, datatpye)
+MPIMessage::MPIMessage( void * buf, int count, MPI_Datatype datatpye,
+                        int processid, int tag, MPI_Comm comm )
+    : m_Envelope(comm, processid, tag)
+    , m_DataBody(buf, count, datatpye)
 {
-
 }
 
-MPIMessage::MPIMessage() 
-    :m_Envelope()
-    ,m_DataBody()
+MPIMessage::MPIMessage()
+    : m_Envelope()
+    , m_DataBody()
 {
-
 }
 
-MPIMessage::MPIMessage( const MPIMessage & msg ) 
-    :m_Envelope(msg.m_Envelope)
-    ,m_DataBody(msg.m_DataBody)
+MPIMessage::MPIMessage( const MPIMessage & msg )
+    : m_Envelope(msg.m_Envelope)
+    , m_DataBody(msg.m_DataBody)
 {
-
 }

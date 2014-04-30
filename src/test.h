@@ -3,13 +3,12 @@
 
 #include "IV2VAlgorithm.h"
 
-namespace hpgc{
+namespace hpgc {
 
-	class Test: public IV2VAlgorithm
-	{
-	public:
-		virtual bool Compute(VectorBarral * barrel);
-	};
+    class Test: public IV2VAlgorithm {
+    public:
+        virtual bool Compute(VectorBarral * barrel);
+    };
 }
 
 #endif // cvct2gdal_h__

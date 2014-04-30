@@ -42,7 +42,8 @@ int MPIObject::GetSubVersion() const
 
 MPIObject * MPIObject::CreateMPI( int MPI_argc, char ** MPI_argv )
 {
-    return m_MPIObject ? m_MPIObject : m_MPIObject = new MPIObject(MPI_argc, MPI_argv);
+    return m_MPIObject ? m_MPIObject : m_MPIObject = new MPIObject(MPI_argc,
+            MPI_argv);
 }
 
 void MPIObject::DestoryMPI()
@@ -55,10 +56,8 @@ void MPIObject::DestoryMPI()
 MPIObject::MPIObject( MPI_Comm comm )
 {
     mpi_Comm = comm;
-
     MPI_Comm_rank(mpi_Comm, &mpi_Rank);
     MPI_Comm_size(mpi_Comm, &mpi_Size);
-
     mpi_Name = m_MPIObject->mpi_Name;
     mpi_Len = m_MPIObject->mpi_Len;
     mpi_Version = m_MPIObject->mpi_Version;
@@ -84,7 +83,6 @@ MPIObject::MPIObject( int MPI_argc, char ** MPI_argv )
     mpi_Len = MPI_MAX_PROCESSOR_NAME;
     mpi_Name = new char[mpi_Len];
     mpi_Comm = MPI_COMM_WORLD;
-
     if (flag)
     {
         ///获得当前进程编号
@@ -96,7 +94,6 @@ MPIObject::MPIObject( int MPI_argc, char ** MPI_argv )
         ///获得版本号
         MPI_Get_version(&mpi_Version, &mpi_SubVersion);
     }
-
     else
     {
         MPI_Init(&MPI_argc, &MPI_argv);
@@ -105,7 +102,6 @@ MPIObject::MPIObject( int MPI_argc, char ** MPI_argv )
         MPI_Get_processor_name(mpi_Name, &mpi_Len);
         MPI_Get_version(&mpi_Version, &mpi_SubVersion);
     }
-
     ///记录系统启动时间
     m_StartTime = MPI_Wtime();
 }
@@ -121,7 +117,6 @@ bool MPIObject::IsMaster() const
     {
         return true;
     }
-
     else
     {
         return false;
@@ -134,7 +129,6 @@ bool MPIObject::IsSlave() const
     {
         return true;
     }
-
     else
     {
         return false;
@@ -157,7 +151,6 @@ bool MPIObject::IsMe( const int rank ) const
     {
         return true;
     }
-
     else
     {
         return false;

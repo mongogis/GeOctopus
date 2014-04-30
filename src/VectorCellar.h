@@ -1,29 +1,28 @@
 #ifndef HPGCH_VECTOR_CELLAR_H_INCLUDE
 
-#define HPGCH_VECTOR_CELLAR_H_INCLUDE 
+#define HPGCH_VECTOR_CELLAR_H_INCLUDE
 
 #include "VectorBarrel.h"
 
 #include <list>
 
-namespace hpgc{
+namespace hpgc {
 
-	class VectorCellar
-	{
-	public:
-		virtual void AddBarrel(VectorBarral * barrel) ;
+    class VectorCellar {
+    public:
+        virtual void AddBarrel(VectorBarral * barrel) ;
 
-		virtual VectorBarral * PopBarrel() ;
+        virtual VectorBarral * PopBarrel() ;
 
-		virtual bool IsEmpty() ;
+        virtual bool IsEmpty() ;
 
-		virtual int size();
+        virtual int size();
 
-		~VectorCellar();
+        ~VectorCellar();
 
-	private:
-		std::list<VectorBarral * > m_barrels;
-	};
+    private:
+        std::list<VectorBarral * > m_barrels;
+    };
 }
 
 #endif

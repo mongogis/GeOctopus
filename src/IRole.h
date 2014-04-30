@@ -4,13 +4,12 @@
 
 #include "VectorBarrel.h"
 
-namespace hpgc{
+namespace hpgc {
 
-	class IRole
-	{
-	public:
-		virtual int Action() = 0;
-	};
+    class IRole {
+    public:
+        virtual int Action() = 0;
+    };
 
 }
 

@@ -3,7 +3,7 @@
 
 bool hpgc::Test::Compute(VectorBarral * barrel)
 {
-	return true;
+    return true;
 }
 
 

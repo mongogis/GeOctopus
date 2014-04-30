@@ -5,26 +5,26 @@
 #include "IVectorPartition.h"
 #include "IVectorScheduler.h"
 
-namespace hpgc{
+namespace hpgc {
 
-	class IVectorScheduler;
-	class HpgcVectorAlgorithm
-	{
+    class IVectorScheduler;
+    class HpgcVectorAlgorithm {
 
-	public:
-		HpgcVectorAlgorithm(IV2VAlgorithm * alg, IVectorScheduler * she, IVectorPartition * par,VectorMetaData * data);
-		void Run();
+    public:
+        HpgcVectorAlgorithm(IV2VAlgorithm * alg, IVectorScheduler * she,
+                            IVectorPartition * par, VectorMetaData * data);
+        void Run();
 
-		IVectorPartition * GetPartition();
-		IVectorScheduler * GetScheduler();
-		VectorMetaData   * GetMetaData();
-		IV2VAlgorithm    * GetAlgorithm();
-	private:
-		IV2VAlgorithm * m_algorithm;
-		IVectorPartition * m_partition;
-		IVectorScheduler * m_scheduler;
-		VectorMetaData * m_metaData;
-	};
+        IVectorPartition * GetPartition();
+        IVectorScheduler * GetScheduler();
+        VectorMetaData  *  GetMetaData();
+        IV2VAlgorithm   *  GetAlgorithm();
+    private:
+        IV2VAlgorithm * m_algorithm;
+        IVectorPartition * m_partition;
+        IVectorScheduler * m_scheduler;
+        VectorMetaData * m_metaData;
+    };
 
 
 }
