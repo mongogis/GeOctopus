@@ -1,0 +1,7 @@
+Import('env')
+
+env.Append(CPPPATH=Glob('.'))
+
+penv = env.Clone()
+penv.Append(LIBS=['gdal'],LIBPATH=["#gdallib"],CPPPATH=Glob('gdalinc'))
+penv.Library('geoformat',Glob('*.cpp'))

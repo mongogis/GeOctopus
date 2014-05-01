@@ -1,0 +1,9 @@
+Import('env')
+Import('module_sconscripts')
+
+penv = env.Clone()
+
+penv.SConscript(module_sconscripts)
+for subdir in module_sconscripts:
+    penv.SConscript("%s/SConscript" % subdir,{'env':env})
+penv.Program('hpgc',Glob('*.cpp'),LIBS=['geoformat','mpiobject'])
