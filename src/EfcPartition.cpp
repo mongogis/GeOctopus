@@ -1,6 +1,7 @@
 #include "EfcPartition.h"
 #include "geoalgorithm.format.h"
 #include <algorithm>
+#include <string>
 
 std::vector<OGRLayer *> GetLayers(OGRDataSource * ds) {
     std::vector<OGRLayer *> layers;

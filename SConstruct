@@ -1,7 +1,8 @@
 import os
 from project import Project
 
-common_env = Environment()
+# common_env = Environment(ENV=os.environ,CPPPATH=[],LIBPATH=[],tools=['mingw'])
+common_env = Environment(ENV=os.environ,CPPPATH=[],LIBPATH=[])
 common_env.Append(CPPDEFINES={"VERSON":1})
 
 release_env = common_env.Clone()
@@ -22,4 +23,3 @@ Export("modules")
 for mode, env in dict(release=release_env,
                       debug=debug_env).iteritems():
     env.SConscript('build/%s/SConscript' % mode, {'env': env})
-

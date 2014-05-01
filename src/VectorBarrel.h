@@ -3,6 +3,7 @@
 #define HPGCH_VECTOR_BARREL_H_INCLUDE
 
 #include <list>
+#include <string>
 
 namespace hpgc {
 

@@ -52,7 +52,7 @@ GDALDataset * RasterCreate( const char * pszFormat, const char * pszFilename,
 }
 
 void VectorClose( OGRDataSource * poDS ) {
-    OGR_DS_Destroy(poDS);
+    OGR_DS_Destroy((OGRDataSourceH)poDS);
 }
 
 void RasterClose( GDALDataset * poDS ) {

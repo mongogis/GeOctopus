@@ -1,7 +1,8 @@
 Import('env')
 
-env.Append(CPPPATH=Glob('.'))
+env.Append(CPPPATH=['.'])
+env['CPPPATH'].append('./geoformat')
 
 penv = env.Clone()
-penv.Append(LIBS=['gdal'],LIBPATH=["#gdallib"],CPPPATH=Glob('gdalinc'))
+penv.Append(LIBS=['gdal_i'],LIBPATH=[env['ENV']['GDALLIB']],CPPPATH=[env['ENV']['GDALINC']])
 penv.Library('geoformat',Glob('*.cpp'))

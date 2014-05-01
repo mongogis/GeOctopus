@@ -1,9 +1,17 @@
 Import('env')
-Import('module_sconscripts')
+Import('modules')
 
 penv = env.Clone()
 
-penv.SConscript(module_sconscripts)
-for subdir in module_sconscripts:
+for subdir in modules:
     penv.SConscript("%s/SConscript" % subdir,{'env':env})
-penv.Program('hpgc',Glob('*.cpp'),LIBS=['geoformat','mpiobject'])
+
+penv['CPPPATH'].append('./geoformat')
+penv['CPPPATH'].append('./mpiobject')
+
+penv['LIBPATH'].append(penv['ENV']['GDALLIB'])
+penv['LIBPATH'].append(penv["ENV"]["MPILIB"])
+
+penv['CPPPATH'].append(penv['ENV']['GDALINC'])
+penv['CPPPATH'].append(penv["ENV"]["MPIINC"])
+penv.Program('hpgc',Glob('*.cpp'),LIBS=['geoformat','mpiobject','gdal_i','mpi'])
