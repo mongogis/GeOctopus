@@ -11,7 +11,7 @@
 /// 如相应信息没有指定则使用默认值，参数有误则退出执行。
 
 #include "HpgcVectorAlgorithm.h"
-#include "test.h"
+#include "v2vproj.h"
 #include "EfcPartition.h"
 #include "vector.metadata.h"
 #include "M2sScheduler.h"
@@ -38,7 +38,7 @@ int main(int argc, char ** argv) {
     auto metadata = new VectorMetaData(pszSrcFile, pszDstFile);
     auto partition = new EfcPartition(2);
     auto scheduler = new M2sScheduler();
-    auto vct = new Test();
+    auto vct = new V2vProj(pszDstFile,"");
     auto alg = new HpgcVectorAlgorithm(vct, scheduler, partition, metadata);
     alg->Run();
     MPIObject::DestoryMPI();

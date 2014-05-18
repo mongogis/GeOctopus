@@ -9,7 +9,9 @@
 
 #include <ogr_api.h>
 #include <ogr_feature.h>
+#include <ogr_geometry.h>
 #include <ogr_spatialref.h>
+
 #include <ogrsf_frmts.h>
 
 #include <gdal.h>
