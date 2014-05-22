@@ -3,6 +3,7 @@
 #include <mpimessage.h>
 #include <mpioperator.recvmsg.h>
 #include "port.debug.h"
+#include <geoalgorithm.format.h>
 
 int hpgc::MasterRole::Action() {
     MPIObject mo;
@@ -15,6 +16,7 @@ int hpgc::MasterRole::Action() {
     }
     return 1;
 }
+
 
 hpgc::MasterRole::MasterRole(VectorCellar * cellar) {
     m_cellar = cellar;

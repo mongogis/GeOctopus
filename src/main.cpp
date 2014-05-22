@@ -24,9 +24,12 @@ using namespace hpgc;
 
 int main(int argc, char ** argv) {
     MPIObject::CreateMPI(argc, argv);
+    RegisterVector();
     MPIObject mo;
-    const char * pszSrcFile;
-    const char * pszDstFile;
+    const char * pszSrcFile = NULL;
+    const char * pszDstFile = NULL;
+    const char * pszSrcLayer = NULL;
+    const char * pszDstLayer = NULL;
     for (int i = 1; i < argc; i++) {
         if (EQUAL(argv[i], "-s") && i < argc - 1) {
             pszSrcFile = argv[++i];
@@ -35,10 +38,11 @@ int main(int argc, char ** argv) {
             pszDstFile = argv[++i];
         }
     }
-    auto metadata = new VectorMetaData(pszSrcFile, pszDstFile);
+    auto metadata = new VectorMetaData(pszSrcFile, pszSrcLayer, pszDstFile,
+                                       pszDstLayer);
     auto partition = new EfcPartition(2);
     auto scheduler = new M2sScheduler();
-    auto vct = new V2vProj(pszDstFile,"");
+    auto vct = new V2vProj(pszDstFile, "");
     auto alg = new HpgcVectorAlgorithm(vct, scheduler, partition, metadata);
     alg->Run();
     MPIObject::DestoryMPI();

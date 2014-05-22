@@ -5,15 +5,18 @@ namespace hpgc {
 
     class MetaData {
     public:
-        MetaData(const char * name);
-        const char * GetDescription();
+        MetaData(const char * ds, const char * layer);
+        const char * GetDataSourceName();
+        const char * GetLayerName();
     private:
-        const char * m_description;
+        const char * m_dataSource;
+        const char * m_layer;
     };
 
     class VectorMetaData {
     public:
-        VectorMetaData(const char * src, const char * dst);
+        VectorMetaData(const char * srcds, const char * srclayer, const char * dstds,
+                       const char * dstlayer);
         MetaData * GetSrcMetaData();
         MetaData * GetDstMetaData();
         ~VectorMetaData();

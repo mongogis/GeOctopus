@@ -6,7 +6,7 @@
 namespace hpgc {
     class EfcPartition: public IVectorPartition {
     public:
-        virtual VectorCellar * Partition(MetaData * data);
+        virtual VectorCellar * Partition(VectorMetaData * data);
         EfcPartition(int index);
 
     private:

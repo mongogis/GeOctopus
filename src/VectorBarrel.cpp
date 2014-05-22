@@ -1,27 +1,25 @@
 #include "VectorBarrel.h"
 
 
-std::string hpgc::VectorBarral::GetDataSource() {
-    return m_datasource;
+std::string hpgc::VectorBarral::GetSrcDataSource() {
+    return m_srcDatasource;
 }
 
-std::string hpgc::VectorBarral::GetLayer() {
-    return m_layer;
+std::string hpgc::VectorBarral::GetSrcLayer() {
+    return m_srcLayer;
 }
 
 std::list<int> hpgc::VectorBarral::GetFeatures() {
     return m_features;
 }
 
-void hpgc::VectorBarral::SetDataSource(std::string datasource) {
-    m_datasource = datasource;
+std::string hpgc::VectorBarral::GetDstDataSource() {
+    return m_dstDatasource;
 }
 
-void hpgc::VectorBarral::SetLayer(std::string layer) {
-    m_layer = layer;
+std::string hpgc::VectorBarral::GetDstLayer() {
+    return m_dstLayer;
 }
 
-void hpgc::VectorBarral::SetFeatures(std::list<int> feats) {
-    m_features = feats;
-}
+
 

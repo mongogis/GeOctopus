@@ -11,30 +11,33 @@ namespace hpgc {
 
     public:
 
-        std::string GetDataSource();
+        std::string GetSrcDataSource();
 
-        std::string GetLayer();
+        std::string GetSrcLayer();
 
         std::list<int> GetFeatures();
 
-        void SetDataSource(std::string datasource);
+        std::string GetDstDataSource();
 
-        void SetLayer(std::string layer);
+        std::string GetDstLayer();
 
-        void SetFeatures(std::list<int> feats);
-
-        VectorBarral(std::string datasource, std::string layer, std::list<int> features)
-            : m_datasource(datasource)
-            , m_layer(layer)
-            , m_features(features) {
+        VectorBarral(std::string srcds, std::string srclayer, std::list<int> features,
+                     std::string dstds, std::string dstlayer)
+            : m_srcDatasource(srcds)
+            , m_srcLayer(srclayer)
+            , m_features(features)
+            , m_dstDatasource(dstds)
+            , m_dstLayer(dstlayer) {
         };
 
         VectorBarral() {};
 
     private:
-        std::string m_datasource;
-        std::string m_layer;
+        std::string m_srcDatasource;
+        std::string m_srcLayer;
         std::list<int> m_features;
+        std::string m_dstDatasource;
+        std::string m_dstLayer;
     };
 
 }

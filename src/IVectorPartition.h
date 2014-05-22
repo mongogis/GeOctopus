@@ -7,7 +7,7 @@
 namespace hpgc {
     class IVectorPartition {
     public:
-        virtual VectorCellar * Partition(MetaData * meta) = 0;
+        virtual VectorCellar * Partition(VectorMetaData * meta) = 0;
 
     };
 }

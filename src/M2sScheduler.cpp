@@ -9,9 +9,9 @@ void hpgc::M2sScheduler::Work(IV2VAlgorithm * task,
     MPIObject mo;
     IRole * node = NULL;
     if (mo.IsMaster()) {
-        auto src = hpgcAlg->GetMetaData()->GetSrcMetaData();
+        auto meta = hpgcAlg->GetMetaData();
         auto partition = hpgcAlg->GetPartition();
-        VectorCellar * srcCellar = partition->Partition(src);
+        VectorCellar * srcCellar = partition->Partition(meta);
         node = new MasterRole(srcCellar);
     }
     else {
