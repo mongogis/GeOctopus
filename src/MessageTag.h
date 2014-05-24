@@ -29,11 +29,11 @@ namespace hpgc{
 		VectorBarral * Barrel;
 	};
 
-	void SendTaskInfo(TaskInfo & info, int process,int tag);
-	TaskInfo * ReceiveTaskInfo(int process,int tag);
+	void MPI_SendTaskInfo(TaskInfo & info, int process,int tag);
+	TaskInfo * MPI_ReceiveTaskInfo(int process,int tag);
 
-	void SendDataInfo(DataInfo & info, int process, int tag);
-	DataInfo * ReceiveDataInfo(int process, int tag);
+	void MPI_SendDataInfo(DataInfo & info, int process, int tag);
+	DataInfo * MPI_ReceiveDataInfo(int process, int tag);
 }
 
 #endif // MessageTag_h__

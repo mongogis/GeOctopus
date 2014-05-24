@@ -97,7 +97,7 @@ void hpgc::MasterRole::SendFirstBarrel()
 
 hpgc::TaskInfo * hpgc::MasterRole::ReceiveSlaveMsg()
 {
-	return ReceiveTaskInfo(MPI_ANY_SOURCE, MessageTag::MSG_TAG_TASK);
+	return MPI_ReceiveTaskInfo(MPI_ANY_SOURCE, MessageTag::MSG_TAG_TASK);
 }
 
 void hpgc::MasterRole::SendNoData(int process)
@@ -112,7 +112,7 @@ void hpgc::MasterRole::SendNoData(int process)
 
 void hpgc::MasterRole::SendData(DataInfo & data, int process)
 {
-	SendDataInfo(data, process, MessageTag::MSG_TAG_DATA);
+	MPI_SendDataInfo(data, process, MessageTag::MSG_TAG_DATA);
 }
 
 bool hpgc::MasterRole::IsAllSlaveOver()

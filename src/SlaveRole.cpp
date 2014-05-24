@@ -3,6 +3,7 @@
 #include <mpimessage.h>
 #include <mpioperator.sendmsg.h>
 #include "port.debug.h"
+#include "MessageTag.h"
 
 int hpgc::SlaveRole::Action() {
 	ReadyToGo();
@@ -45,15 +46,20 @@ hpgc::SlaveRole::SlaveRole(IV2VAlgorithm * task, MetaData * dst) {
 
 void hpgc::SlaveRole::ReadyToGo()
 {
-
+	for (auto i = 1; i < m_mpi.GetOurSize(); ++i)
+	{
+		TaskInfo info;
+		info.IsOk = MessageTag::MSG_TAG_TASK_OK;
+		SendTaskInfo(info);
+	}
 }
 
 hpgc::DataInfo * hpgc::SlaveRole::ReceiveMasterMsg()
 {
-	return NULL;
+	return MPI_ReceiveDataInfo(m_mpi.GetMaster(),MessageTag::MSG_TAG_DATA);
 }
 
 void hpgc::SlaveRole::SendTaskInfo(TaskInfo info)
 {
-
+	MPI_SendTaskInfo(info, m_mpi.GetMaster(),MessageTag::MSG_TAG_TASK);
 }
