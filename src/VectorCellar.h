@@ -4,7 +4,7 @@
 
 #include "VectorBarrel.h"
 
-#include <list>
+#include <vector>
 
 namespace hpgc {
 
@@ -12,7 +12,7 @@ namespace hpgc {
     public:
         virtual void AddBarrel(VectorBarral * barrel) ;
 
-        virtual VectorBarral * PopBarrel() ;
+        virtual VectorBarral * GetByIndex(int index) ;
 
         virtual bool IsEmpty() ;
 
@@ -21,7 +21,7 @@ namespace hpgc {
         ~VectorCellar();
 
     private:
-        std::list<VectorBarral * > m_barrels;
+        std::vector<VectorBarral * > m_barrels;
     };
 }
 

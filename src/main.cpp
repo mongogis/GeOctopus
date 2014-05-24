@@ -24,7 +24,6 @@ using namespace hpgc;
 
 int main(int argc, char ** argv) {
     MPIObject::CreateMPI(argc, argv);
-    RegisterVector();
     MPIObject mo;
     const char * pszSrcFile = NULL;
     const char * pszDstFile = NULL;

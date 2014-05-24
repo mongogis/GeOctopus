@@ -5,10 +5,9 @@ void hpgc::VectorCellar::AddBarrel(VectorBarral * barrel) {
     this->m_barrels.push_back(barrel);
 }
 
-hpgc::VectorBarral * hpgc::VectorCellar::PopBarrel() {
-    auto it = m_barrels.back();
-    m_barrels.pop_back();
-    return it;
+hpgc::VectorBarral * hpgc::VectorCellar::GetByIndex(int index)
+{
+	return m_barrels[index];
 }
 
 bool hpgc::VectorCellar::IsEmpty() {

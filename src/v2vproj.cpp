@@ -2,9 +2,14 @@
 #include "geoalgorithm.format.h"
 #include "ScopeGuard.h"
 #include <algorithm>
-
+#include <mpiobject.h>
 
 namespace hpgc {
+
+    V2vProj::V2vProj(const char * dst, const char * srs) : m_dst(dst), m_srs(srs) {
+        m_ogrSr = (OGRSpatialReference *)OSRNewSpatialReference(NULL);
+        m_ogrSr->SetFromUserInput(m_srs);
+    }
 
     bool V2vProj::Compute(VectorBarral * barrel) {
         OGRDataSource * poSourceDs = VectorOpen(barrel->GetSrcDataSource().c_str(),
@@ -21,8 +26,8 @@ namespace hpgc {
         OGRCoordinateTransformation * poCT = poCT = OGRCreateCoordinateTransformation(
                 poSourceSRS, m_ogrSr);
         OGRFeatureDefn * poDstFeatureDefn = poDstLayer->GetLayerDefn();
-        std::for_each(begin(barrel->GetFeatures()),
-        end(barrel->GetFeatures()), [&](int fid) {
+        std::for_each(begin(barrel->GetFeatures()), end(barrel->GetFeatures())
+        , [&](int fid) {
             OGRFeature * poDstFeature = OGRFeature::CreateFeature(poDstFeatureDefn);
             ON_SCOPE_EXIT([&]() {OGRFeature::DestroyFeature(poDstFeature); });
             poDstFeature->SetFrom(poSrcLayer->GetFeature(fid));
@@ -33,11 +38,6 @@ namespace hpgc {
             poDstLayer->CreateFeature(poDstFeature);
         });
         return true;
-    }
-
-    V2vProj::V2vProj(const char * dst, const char * srs) : m_dst(dst), m_srs(srs) {
-        m_ogrSr = (OGRSpatialReference *)OSRNewSpatialReference(NULL);
-        m_ogrSr->SetFromUserInput(m_srs);
     }
 
 }
