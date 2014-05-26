@@ -15,5 +15,5 @@ enum DataType{
 message DataInfo{
     required DataType Type = 1; 
     required int32 DataIndex = 2;
-    required VectorBarrel barrel = 3
+    required VectorBarrel barrel = 3;
 }
