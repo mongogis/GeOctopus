@@ -15,7 +15,7 @@ typedef struct _Proinfo {
 _Proinfo::_Proinfo() {
     MPI_Get_address(&m_Temp.PID, m_Displs);
     MPI_Get_address(&m_Temp.dfStart, m_Displs + 1);
-    m_Displs[2] = sizeof(SaveTypeProInfo);
+    m_Displs[2] = sizeof(ProcInfo);
     m_Displs[1] = m_Displs[1] - m_Displs[0];
     m_Displs[0] = 0;
     m_BlockLens[0] = 3;
