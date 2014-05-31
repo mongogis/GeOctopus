@@ -17,4 +17,4 @@ penv['LIBPATH'].append(penv["ENV"]["MPI_LIB"])
 penv['CPPPATH'].append(penv["ENV"]["GDAL_INCLUDE"])
 penv['CPPPATH'].append(penv["ENV"]["MPI_INCLUDE"])
 
-penv.Program('hpgc',Glob('*.cpp'),LIBS=['geoformat','mpiobject','gdal','mpi'])
+penv.Program('hpgc',Glob('*.cpp'),LIBS=['geoformat','mpiobject','gdal','mpi','mpi_cxx'])
