@@ -7,23 +7,19 @@
 
 void hpgc::MPI_SendTaskInfo(TaskInfo & info, int process, int tag)
 {
-	SendMsg();
 }
 
 void hpgc::MPI_SendDataInfo(DataInfo & info, int process, int tag)
 {
-	SendMsg();
 }
 
 hpgc::TaskInfo * hpgc::MPI_ReceiveTaskInfo(int process, int tag)
 {
-	RecvMsg();
 	return new hpgc::TaskInfo();
 }
 
 hpgc::DataInfo * hpgc::MPI_ReceiveDataInfo(int process, int tag)
 {
-	RecvMsg();
 	return new hpgc::DataInfo();
 }
 
