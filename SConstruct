@@ -1,7 +1,6 @@
 import os
 from project import Project
 
-# common_env = Environment(ENV=os.environ,CPPPATH=[],LIBPATH=[],tools=['mingw'])
 common_env = Environment(ENV=os.environ,CPPPATH=[],LIBPATH=[],CXXFLAGS="-std=c++11")
 common_env.Append(CPPDEFINES={"VERSON":1})
 
