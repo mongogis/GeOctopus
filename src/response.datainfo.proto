@@ -1,3 +1,5 @@
+package hpgc;
+
 message VectorBarrel{
     required string SrcDataSource = 1;
     required string SrcLayer = 2;

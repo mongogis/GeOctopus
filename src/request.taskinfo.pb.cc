@@ -16,6 +16,8 @@
 #include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 
+namespace hpgc {
+
 namespace {
 
 const ::google::protobuf::Descriptor* TaskInfo_descriptor_ = NULL;
@@ -81,10 +83,10 @@ void protobuf_AddDesc_request_2etaskinfo_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\026request.taskinfo.proto\"Z\n\010TaskInfo\022\027\n\004"
-    "Type\030\001 \002(\0162\t.TaskType\022\021\n\tDataIndex\030\002 \002(\005"
-    "\022\021\n\tStartTime\030\003 \002(\001\022\017\n\007EndTime\030\004 \002(\001*\035\n\010"
-    "TaskType\022\006\n\002OK\020\000\022\t\n\005WRONG\020\001", 147);
+    "\n\026request.taskinfo.proto\022\004hpgc\"_\n\010TaskIn"
+    "fo\022\034\n\004Type\030\001 \002(\0162\016.hpgc.TaskType\022\021\n\tData"
+    "Index\030\002 \002(\005\022\021\n\tStartTime\030\003 \002(\001\022\017\n\007EndTim"
+    "e\030\004 \002(\001*\035\n\010TaskType\022\006\n\002OK\020\000\022\t\n\005WRONG\020\001", 158);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "request.taskinfo.proto", &protobuf_RegisterTypes);
   TaskInfo::default_instance_ = new TaskInfo();
@@ -192,7 +194,7 @@ bool TaskInfo::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required .TaskType Type = 1;
+      // required .hpgc.TaskType Type = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -200,8 +202,8 @@ bool TaskInfo::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
                  input, &value)));
-          if (::TaskType_IsValid(value)) {
-            set_type(static_cast< ::TaskType >(value));
+          if (::hpgc::TaskType_IsValid(value)) {
+            set_type(static_cast< ::hpgc::TaskType >(value));
           } else {
             mutable_unknown_fields()->AddVarint(1, value);
           }
@@ -278,7 +280,7 @@ bool TaskInfo::MergePartialFromCodedStream(
 
 void TaskInfo::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // required .TaskType Type = 1;
+  // required .hpgc.TaskType Type = 1;
   if (has_type()) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
       1, this->type(), output);
@@ -307,7 +309,7 @@ void TaskInfo::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* TaskInfo::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // required .TaskType Type = 1;
+  // required .hpgc.TaskType Type = 1;
   if (has_type()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
       1, this->type(), target);
@@ -339,7 +341,7 @@ int TaskInfo::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required .TaskType Type = 1;
+    // required .hpgc.TaskType Type = 1;
     if (has_type()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->type());
@@ -445,5 +447,7 @@ void TaskInfo::Swap(TaskInfo* other) {
 
 
 // @@protoc_insertion_point(namespace_scope)
+
+}  // namespace hpgc
 
 // @@protoc_insertion_point(global_scope)

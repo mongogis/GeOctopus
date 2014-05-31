@@ -1,3 +1,5 @@
+package hpgc;
+
 enum TaskType{
     OK = 0;
     WRONG= 1;

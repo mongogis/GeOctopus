@@ -27,6 +27,8 @@
 #include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
 
+namespace hpgc {
+
 // Internal implementation detail -- do not call these.
 void  protobuf_AddDesc_response_2edatainfo_2eproto();
 void protobuf_AssignDesc_response_2edatainfo_2eproto();
@@ -170,7 +172,7 @@ class VectorBarrel : public ::google::protobuf::Message {
   inline ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
       mutable_features();
 
-  // @@protoc_insertion_point(class_scope:VectorBarrel)
+  // @@protoc_insertion_point(class_scope:hpgc.VectorBarrel)
  private:
   inline void set_has_srcdatasource();
   inline void clear_has_srcdatasource();
@@ -255,12 +257,12 @@ class DataInfo : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required .DataType Type = 1;
+  // required .hpgc.DataType Type = 1;
   inline bool has_type() const;
   inline void clear_type();
   static const int kTypeFieldNumber = 1;
-  inline ::DataType type() const;
-  inline void set_type(::DataType value);
+  inline ::hpgc::DataType type() const;
+  inline void set_type(::hpgc::DataType value);
 
   // required int32 DataIndex = 2;
   inline bool has_dataindex() const;
@@ -269,16 +271,16 @@ class DataInfo : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 dataindex() const;
   inline void set_dataindex(::google::protobuf::int32 value);
 
-  // required .VectorBarrel barrel = 3;
+  // required .hpgc.VectorBarrel barrel = 3;
   inline bool has_barrel() const;
   inline void clear_barrel();
   static const int kBarrelFieldNumber = 3;
-  inline const ::VectorBarrel& barrel() const;
-  inline ::VectorBarrel* mutable_barrel();
-  inline ::VectorBarrel* release_barrel();
-  inline void set_allocated_barrel(::VectorBarrel* barrel);
+  inline const ::hpgc::VectorBarrel& barrel() const;
+  inline ::hpgc::VectorBarrel* mutable_barrel();
+  inline ::hpgc::VectorBarrel* release_barrel();
+  inline void set_allocated_barrel(::hpgc::VectorBarrel* barrel);
 
-  // @@protoc_insertion_point(class_scope:DataInfo)
+  // @@protoc_insertion_point(class_scope:hpgc.DataInfo)
  private:
   inline void set_has_type();
   inline void clear_has_type();
@@ -291,7 +293,7 @@ class DataInfo : public ::google::protobuf::Message {
 
   int type_;
   ::google::protobuf::int32 dataindex_;
-  ::VectorBarrel* barrel_;
+  ::hpgc::VectorBarrel* barrel_;
 
   mutable int _cached_size_;
   ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
@@ -619,7 +621,7 @@ VectorBarrel::mutable_features() {
 
 // DataInfo
 
-// required .DataType Type = 1;
+// required .hpgc.DataType Type = 1;
 inline bool DataInfo::has_type() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -633,11 +635,11 @@ inline void DataInfo::clear_type() {
   type_ = 0;
   clear_has_type();
 }
-inline ::DataType DataInfo::type() const {
-  return static_cast< ::DataType >(type_);
+inline ::hpgc::DataType DataInfo::type() const {
+  return static_cast< ::hpgc::DataType >(type_);
 }
-inline void DataInfo::set_type(::DataType value) {
-  assert(::DataType_IsValid(value));
+inline void DataInfo::set_type(::hpgc::DataType value) {
+  assert(::hpgc::DataType_IsValid(value));
   set_has_type();
   type_ = value;
 }
@@ -664,7 +666,7 @@ inline void DataInfo::set_dataindex(::google::protobuf::int32 value) {
   dataindex_ = value;
 }
 
-// required .VectorBarrel barrel = 3;
+// required .hpgc.VectorBarrel barrel = 3;
 inline bool DataInfo::has_barrel() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
@@ -675,24 +677,24 @@ inline void DataInfo::clear_has_barrel() {
   _has_bits_[0] &= ~0x00000004u;
 }
 inline void DataInfo::clear_barrel() {
-  if (barrel_ != NULL) barrel_->::VectorBarrel::Clear();
+  if (barrel_ != NULL) barrel_->::hpgc::VectorBarrel::Clear();
   clear_has_barrel();
 }
-inline const ::VectorBarrel& DataInfo::barrel() const {
+inline const ::hpgc::VectorBarrel& DataInfo::barrel() const {
   return barrel_ != NULL ? *barrel_ : *default_instance_->barrel_;
 }
-inline ::VectorBarrel* DataInfo::mutable_barrel() {
+inline ::hpgc::VectorBarrel* DataInfo::mutable_barrel() {
   set_has_barrel();
-  if (barrel_ == NULL) barrel_ = new ::VectorBarrel;
+  if (barrel_ == NULL) barrel_ = new ::hpgc::VectorBarrel;
   return barrel_;
 }
-inline ::VectorBarrel* DataInfo::release_barrel() {
+inline ::hpgc::VectorBarrel* DataInfo::release_barrel() {
   clear_has_barrel();
-  ::VectorBarrel* temp = barrel_;
+  ::hpgc::VectorBarrel* temp = barrel_;
   barrel_ = NULL;
   return temp;
 }
-inline void DataInfo::set_allocated_barrel(::VectorBarrel* barrel) {
+inline void DataInfo::set_allocated_barrel(::hpgc::VectorBarrel* barrel) {
   delete barrel_;
   barrel_ = barrel;
   if (barrel) {
@@ -705,13 +707,15 @@ inline void DataInfo::set_allocated_barrel(::VectorBarrel* barrel) {
 
 // @@protoc_insertion_point(namespace_scope)
 
+}  // namespace hpgc
+
 #ifndef SWIG
 namespace google {
 namespace protobuf {
 
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::DataType>() {
-  return ::DataType_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::hpgc::DataType>() {
+  return ::hpgc::DataType_descriptor();
 }
 
 }  // namespace google

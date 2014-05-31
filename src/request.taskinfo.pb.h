@@ -27,6 +27,8 @@
 #include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
 
+namespace hpgc {
+
 // Internal implementation detail -- do not call these.
 void  protobuf_AddDesc_request_2etaskinfo_2eproto();
 void protobuf_AssignDesc_request_2etaskinfo_2eproto();
@@ -109,12 +111,12 @@ class TaskInfo : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required .TaskType Type = 1;
+  // required .hpgc.TaskType Type = 1;
   inline bool has_type() const;
   inline void clear_type();
   static const int kTypeFieldNumber = 1;
-  inline ::TaskType type() const;
-  inline void set_type(::TaskType value);
+  inline ::hpgc::TaskType type() const;
+  inline void set_type(::hpgc::TaskType value);
 
   // required int32 DataIndex = 2;
   inline bool has_dataindex() const;
@@ -137,7 +139,7 @@ class TaskInfo : public ::google::protobuf::Message {
   inline double endtime() const;
   inline void set_endtime(double value);
 
-  // @@protoc_insertion_point(class_scope:TaskInfo)
+  // @@protoc_insertion_point(class_scope:hpgc.TaskInfo)
  private:
   inline void set_has_type();
   inline void clear_has_type();
@@ -172,7 +174,7 @@ class TaskInfo : public ::google::protobuf::Message {
 
 // TaskInfo
 
-// required .TaskType Type = 1;
+// required .hpgc.TaskType Type = 1;
 inline bool TaskInfo::has_type() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -186,11 +188,11 @@ inline void TaskInfo::clear_type() {
   type_ = 0;
   clear_has_type();
 }
-inline ::TaskType TaskInfo::type() const {
-  return static_cast< ::TaskType >(type_);
+inline ::hpgc::TaskType TaskInfo::type() const {
+  return static_cast< ::hpgc::TaskType >(type_);
 }
-inline void TaskInfo::set_type(::TaskType value) {
-  assert(::TaskType_IsValid(value));
+inline void TaskInfo::set_type(::hpgc::TaskType value) {
+  assert(::hpgc::TaskType_IsValid(value));
   set_has_type();
   type_ = value;
 }
@@ -264,13 +266,15 @@ inline void TaskInfo::set_endtime(double value) {
 
 // @@protoc_insertion_point(namespace_scope)
 
+}  // namespace hpgc
+
 #ifndef SWIG
 namespace google {
 namespace protobuf {
 
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::TaskType>() {
-  return ::TaskType_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::hpgc::TaskType>() {
+  return ::hpgc::TaskType_descriptor();
 }
 
 }  // namespace google

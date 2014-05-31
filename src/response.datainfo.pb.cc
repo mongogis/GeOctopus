@@ -16,6 +16,8 @@
 #include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 
+namespace hpgc {
+
 namespace {
 
 const ::google::protobuf::Descriptor* VectorBarrel_descriptor_ = NULL;
@@ -106,13 +108,13 @@ void protobuf_AddDesc_response_2edatainfo_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\027response.datainfo.proto\"r\n\014VectorBarre"
-    "l\022\025\n\rSrcDataSource\030\001 \002(\t\022\020\n\010SrcLayer\030\002 \002"
-    "(\t\022\025\n\rDstDataSource\030\003 \002(\t\022\020\n\010DstLayer\030\004 "
-    "\002(\t\022\020\n\010features\030\005 \003(\005\"U\n\010DataInfo\022\027\n\004Typ"
-    "e\030\001 \002(\0162\t.DataType\022\021\n\tDataIndex\030\002 \002(\005\022\035\n"
-    "\006barrel\030\003 \002(\0132\r.VectorBarrel*\035\n\010DataType"
-    "\022\006\n\002OK\020\000\022\t\n\005WRONG\020\001", 259);
+    "\n\027response.datainfo.proto\022\004hpgc\"r\n\014Vecto"
+    "rBarrel\022\025\n\rSrcDataSource\030\001 \002(\t\022\020\n\010SrcLay"
+    "er\030\002 \002(\t\022\025\n\rDstDataSource\030\003 \002(\t\022\020\n\010DstLa"
+    "yer\030\004 \002(\t\022\020\n\010features\030\005 \003(\005\"_\n\010DataInfo\022"
+    "\034\n\004Type\030\001 \002(\0162\016.hpgc.DataType\022\021\n\tDataInd"
+    "ex\030\002 \002(\005\022\"\n\006barrel\030\003 \002(\0132\022.hpgc.VectorBa"
+    "rrel*\035\n\010DataType\022\006\n\002OK\020\000\022\t\n\005WRONG\020\001", 275);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "response.datainfo.proto", &protobuf_RegisterTypes);
   VectorBarrel::default_instance_ = new VectorBarrel();
@@ -602,7 +604,7 @@ DataInfo::DataInfo()
 }
 
 void DataInfo::InitAsDefaultInstance() {
-  barrel_ = const_cast< ::VectorBarrel*>(&::VectorBarrel::default_instance());
+  barrel_ = const_cast< ::hpgc::VectorBarrel*>(&::hpgc::VectorBarrel::default_instance());
 }
 
 DataInfo::DataInfo(const DataInfo& from)
@@ -655,7 +657,7 @@ void DataInfo::Clear() {
     type_ = 0;
     dataindex_ = 0;
     if (has_barrel()) {
-      if (barrel_ != NULL) barrel_->::VectorBarrel::Clear();
+      if (barrel_ != NULL) barrel_->::hpgc::VectorBarrel::Clear();
     }
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -668,7 +670,7 @@ bool DataInfo::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required .DataType Type = 1;
+      // required .hpgc.DataType Type = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -676,8 +678,8 @@ bool DataInfo::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
                  input, &value)));
-          if (::DataType_IsValid(value)) {
-            set_type(static_cast< ::DataType >(value));
+          if (::hpgc::DataType_IsValid(value)) {
+            set_type(static_cast< ::hpgc::DataType >(value));
           } else {
             mutable_unknown_fields()->AddVarint(1, value);
           }
@@ -704,7 +706,7 @@ bool DataInfo::MergePartialFromCodedStream(
         break;
       }
 
-      // required .VectorBarrel barrel = 3;
+      // required .hpgc.VectorBarrel barrel = 3;
       case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -736,7 +738,7 @@ bool DataInfo::MergePartialFromCodedStream(
 
 void DataInfo::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // required .DataType Type = 1;
+  // required .hpgc.DataType Type = 1;
   if (has_type()) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
       1, this->type(), output);
@@ -747,7 +749,7 @@ void DataInfo::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->dataindex(), output);
   }
 
-  // required .VectorBarrel barrel = 3;
+  // required .hpgc.VectorBarrel barrel = 3;
   if (has_barrel()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       3, this->barrel(), output);
@@ -761,7 +763,7 @@ void DataInfo::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* DataInfo::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // required .DataType Type = 1;
+  // required .hpgc.DataType Type = 1;
   if (has_type()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
       1, this->type(), target);
@@ -772,7 +774,7 @@ void DataInfo::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->dataindex(), target);
   }
 
-  // required .VectorBarrel barrel = 3;
+  // required .hpgc.VectorBarrel barrel = 3;
   if (has_barrel()) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
@@ -790,7 +792,7 @@ int DataInfo::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required .DataType Type = 1;
+    // required .hpgc.DataType Type = 1;
     if (has_type()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->type());
@@ -803,7 +805,7 @@ int DataInfo::ByteSize() const {
           this->dataindex());
     }
 
-    // required .VectorBarrel barrel = 3;
+    // required .hpgc.VectorBarrel barrel = 3;
     if (has_barrel()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
@@ -844,7 +846,7 @@ void DataInfo::MergeFrom(const DataInfo& from) {
       set_dataindex(from.dataindex());
     }
     if (from.has_barrel()) {
-      mutable_barrel()->::VectorBarrel::MergeFrom(from.barrel());
+      mutable_barrel()->::hpgc::VectorBarrel::MergeFrom(from.barrel());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -892,5 +894,7 @@ void DataInfo::Swap(DataInfo* other) {
 
 
 // @@protoc_insertion_point(namespace_scope)
+
+}  // namespace hpgc
 
 // @@protoc_insertion_point(global_scope)
