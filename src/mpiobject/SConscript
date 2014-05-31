@@ -3,5 +3,5 @@ Import('env')
 env.Append(CPPPATH=['.'])
 
 penv = env.Clone()
-penv.Append(LIBS=['mpi'],LIBPATH=env["ENV"]["MPILIB"],CPPPATH=env['ENV']['MPIINC'])
+penv.Append(LIBS=['mpi'],LIBPATH=env["ENV"]["MPI_LIB"],CPPPATH=env['ENV']['MPI_INCLUDE'])
 penv.Library('mpiobject',Glob('*.cpp'))
