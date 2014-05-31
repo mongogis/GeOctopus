@@ -9,9 +9,9 @@ for subdir in modules:
 penv['CPPPATH'].append('./geoformat')
 penv['CPPPATH'].append('./mpiobject')
 
-penv['LIBPATH'].append(penv['ENV']['GDALLIB'])
-penv['LIBPATH'].append(penv["ENV"]["MPILIB"])
+penv['LIBPATH'].append(penv['ENV']['GDAL_LIB'])
+penv['LIBPATH'].append(penv["ENV"]["MPI_LIB"])
 
-penv['CPPPATH'].append(penv['ENV']['GDALINC'])
-penv['CPPPATH'].append(penv["ENV"]["MPIINC"])
-penv.Program('hpgc',Glob('*.cpp'),LIBS=['geoformat','mpiobject','gdal_i','mpi'])
+penv['CPPPATH'].append(penv['ENV']['GDAL_INCLUDE'])
+penv['CPPPATH'].append(penv["ENV"]["MPI_INCLUDE"])
+penv.Program('hpgc',Glob('*.cpp'),LIBS=['geoformat','mpiobject','gdal','mpi'])
