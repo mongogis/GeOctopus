@@ -4,49 +4,55 @@
 #include "VectorBarrel.h"
 #include <mpiobject.h>
 
-// 定义最大缓冲区为2M
-#define HPGC_MPI_MAX_BARREL_BUFFER_SIZE 1000000
-#define HPGC_MPI_MAX_DATA_SOURCE_NAME_LENGTH 20
-#define HPGC_MPI_MAX_LAYER_NAME_LENGTH 20
-#define HPGC_MPI_MAX_FEATURE_COUNT 100000
+#include <google/protobuf/message.h>
+#include <functional>
 
 namespace hpgc{
-	class MessageTag
+
+	typedef google::protobuf::Message Message;
+
+	struct RPCInfo
 	{
-	public:
-		static const int MSG_TAG_TASK = 1;
-		static const int MSG_TAG_TASK_OK = 1;
-		static const int MSG_TAG_TASK_WRONG = 0;
-		static const int MSG_TAG_DATA = 2;
-		static const int MSG_TAG_DATA_OK = 1;
-		static const int MSG_TAG_DATA_WRONG = 0;
+		int target;
+		int source;
+		int tag;
 	};
 
-	struct TaskInfo {
-		int IsOk;
-		int DataIndex;
-		double StartTime;
-		double EndTime;
-
-		TaskInfo();
+	struct Header {
+		Header() : is_reply(false) {}
+		bool is_reply;
 	};
 
-	struct DataInfo{
-		int IsOk;
-		int DataIndex;
-		VectorBarral * Barrel;
+	struct RPCRequest
+	{
+		int target;
+		int rpc_type;
+		int failures;
 
-		DataInfo();
+		std::string payload;
+		MPI::Request mpi_req;
+		MPI::Status status;
+		double start_time;
+
+		RPCRequest(int target, int method, const Message & msg, Header h);
+		~RPCRequest();
+
+		bool Finished();
+		double Elapsed();
 	};
 
-	MPI_Datatype MPI_Commit_Type_TaskInfo();
-	void MPI_Free_Type_TaskInfo();
-	void MPI_SendTaskInfo(TaskInfo & info, int process,int tag);
-	TaskInfo * MPI_ReceiveTaskInfo(int process,int tag);
+	typedef std::function<void(const RPCInfo& rpc)> Callback;
 
-	void MPI_Commit_Type_DataInfo();
-	void MPI_SendDataInfo(DataInfo & info, int process, int tag);
-	DataInfo * MPI_ReceiveDataInfo(int process, int tag);
+	struct CallbackInfo
+	{
+		Message * request;
+		Message * response;
+
+		Callback call;
+
+		bool spawn_thread;
+	};
+
 }
 
 #endif // MessageTag_h__
