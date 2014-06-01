@@ -1,3 +1,4 @@
 prj
 /.sconsign.dblite
 build
+*.pyc
