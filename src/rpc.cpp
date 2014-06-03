@@ -69,10 +69,11 @@ namespace hpgc {
 		MPI::Init_thread(MPI_THREAD_SINGLE);
 
 		m_world= &MPI::COMM_WORLD;
+		m_running = true;
 		m_id = m_world->Get_rank();
 
 		for (int i = 0; i < kMaxMethods; ++i) {
-			m_callbacks[i] = NULL;
+			m_callbacks[i] = nullptr;
 		}
 	}
 
@@ -96,7 +97,55 @@ namespace hpgc {
 		MPI_Finalize();
 	}
 
+	void RPCNetwork::Run()
+	{
+		while (m_running)
+		{
+			MPI::Status status;
+
+			if (m_world->Iprobe(hpgc::ANY_SOURCE, hpgc::ANY_TAG, status)){
+				int tag = status.Get_tag();
+				int source = status.Get_source();
+				int bytes = status.Get_count(MPI::BYTE);
+
+				std::string data;
+				data.resize(bytes);
+
+				m_world->Recv(&data[0], bytes, MPI::BYTE, source, tag, status);
+
+				Header * h = (Header *)&data[0];
+
+				if (h->is_reply)
+				{
+				}
+				else
+				{
+					if (m_callbacks[tag] != nullptr)
+					{
+						CallbackInfo * ci = m_callbacks[tag];
+						ci->request->ParseFromArray(&data[0] + sizeof(Header), data.size() - sizeof(Header));
+
+						RPCInfo rpc = {source,Id(),tag};
+						ci->call(rpc);
+						Header reply_header;
+						reply_header.is_reply = true;
+						Send(new RPCRequest(source, tag, *ci->response, reply_header));
+					}
+					else
+					{
+
+					}
+				}
+			}
+		}
+	}
+
+	void RPCNetwork::Send(RPCRequest *req)
+	{
+		m_world->Send(req->payload.data(),req->payload.size(),MPI::BYTE,req->target,req->rpc_type);
+	}
+
 	
 
-}
+}// hpgc_name_space
 

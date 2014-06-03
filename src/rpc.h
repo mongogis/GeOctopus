@@ -6,10 +6,15 @@
 
 #include <google/protobuf/message.h>
 #include <functional>
+#include <list>
+#include <vector>
 
 namespace hpgc{
 
 	typedef google::protobuf::Message Message;
+
+	int ANY_SOURCE = MPI::ANY_SOURCE;
+	int ANY_TAG = MPI::ANY_TAG;
 
 	struct RPCInfo
 	{
@@ -53,14 +58,13 @@ namespace hpgc{
 		bool spawn_thread;
 	};
 
+	extern int ANY_SOURCE;
+	extern int ANY_TAG;
+
 	class RPCNetwork{
 	public:
 
-		void Read(int desired_src, int type, Message* data, int *source = NULL);
-		bool TryRead(int desired_src, int type, Message* data, int *source = NULL);
-
 		void Send(RPCRequest *req);
-		void Send(int dst, int method, const Message &msg);
 
 		static RPCNetwork * Get();
 		static void Init();
@@ -80,12 +84,15 @@ namespace hpgc{
 		static const int kMaxMethods = 64;
 
 		CallbackInfo* m_callbacks[kMaxMethods];
+		std::vector<RPCRequest*> m_pending_sends;
+		std::list<RPCRequest * > m_active_sends;
 
 		MPI::Comm * m_world;
 		int m_id;
 		bool m_running;
 
 		void RegisterCallback(int req_type,Message * req,Message * resp,Callback cb);
+		void CollectActive();
 
 	};
 
