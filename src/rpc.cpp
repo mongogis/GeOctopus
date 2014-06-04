@@ -1,5 +1,6 @@
 #include "rpc.h"
 #include "port.debug.h"
+#include "timer.h"
 
 #include <port.designpattern.h>
 #include <mpioperator.recvmsg.h>
@@ -25,7 +26,7 @@ namespace hpgc {
 
 	double RPCRequest::Elapsed()
 	{
-		return 0.1;
+		return Now() - start_time;
 	}
 
 	RPCRequest::~RPCRequest() {}
@@ -71,6 +72,7 @@ namespace hpgc {
 		m_world= &MPI::COMM_WORLD;
 		m_running = true;
 		m_id = m_world->Get_rank();
+		m_thread = new std::thread(&RPCNetwork::Run, this);
 
 		for (int i = 0; i < kMaxMethods; ++i) {
 			m_callbacks[i] = nullptr;
@@ -117,6 +119,7 @@ namespace hpgc {
 
 				if (h->is_reply)
 				{
+					replies[tag][source].push_back(data);
 				}
 				else
 				{
@@ -133,16 +136,21 @@ namespace hpgc {
 					}
 					else
 					{
-
+						requests[tag][source].push_back(data);
 					}
 				}
+			}
+			else{
+				Sleep(2);
 			}
 		}
 	}
 
 	void RPCNetwork::Send(RPCRequest *req)
 	{
-		m_world->Send(req->payload.data(),req->payload.size(),MPI::BYTE,req->target,req->rpc_type);
+		req->start_time = Now();
+		req->mpi_req = m_world->Issend(req->payload.data(), req->payload.size(), MPI::BYTE, req->target, req->rpc_type);
+		m_active_sends.push_back(req);
 	}
 
 	

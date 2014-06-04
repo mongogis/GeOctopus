@@ -21,16 +21,11 @@ message TaskMessage{
     required double EndTime = 4;
 }
 
-message Data{
-    required string SrcDataSource = 1;
-    required string SrcLayer = 2;
-    required string DstDataSource = 3;
-    required string DstLayer = 4;
-    repeated int32 features = 5;
-
-}
-
 message DataMessage{
     required int32 DataIndex = 1;
-    required Data data = 2;
+    required string SrcDataSource = 2;
+    required string SrcLayer = 3;
+    required string DstDataSource = 4;
+    required string DstLayer = 5;
+    repeated int32 features = 6;
 }

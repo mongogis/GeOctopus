@@ -8,6 +8,9 @@
 #include <functional>
 #include <list>
 #include <vector>
+#include <deque>
+#include <string>
+#include <thread> 
 
 namespace hpgc{
 
@@ -87,9 +90,15 @@ namespace hpgc{
 		std::vector<RPCRequest*> m_pending_sends;
 		std::list<RPCRequest * > m_active_sends;
 
+		typedef std::deque<std::string> Queue;
+
+		Queue replies[kMaxMethods][kMaxHosts];
+		Queue requests[kMaxMethods][kMaxHosts];
+
 		MPI::Comm * m_world;
 		int m_id;
 		bool m_running;
+		std::thread * m_thread;
 
 		void RegisterCallback(int req_type,Message * req,Message * resp,Callback cb);
 		void CollectActive();
