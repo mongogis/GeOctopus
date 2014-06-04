@@ -1,0 +1,36 @@
+package hpgc;
+
+enum MessageType{
+    READY_TO_GO = 1;
+    TASK_RUNNING = 2;
+    GAME_OVER = 3;
+}
+
+enum TaskType{
+    TASK_OK = 1;
+    TASK_WRONG= 2;
+}
+
+message EmptyMessage{
+}
+
+message TaskMessage{
+    required TaskType Type = 1;
+    required int32 DataIndex = 2;
+    required double StartTime = 3;
+    required double EndTime = 4;
+}
+
+message Data{
+    required string SrcDataSource = 1;
+    required string SrcLayer = 2;
+    required string DstDataSource = 3;
+    required string DstLayer = 4;
+    repeated int32 features = 5;
+
+}
+
+message DataMessage{
+    required int32 DataIndex = 1;
+    required Data data = 2;
+}
