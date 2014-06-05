@@ -15,18 +15,18 @@ namespace hpgc {
 
 
     private:
-		void ReadyToGo();
-		void SendFirstBarrel();
-		TaskInfo * ReceiveSlaveMsg();
-		void SendNoData(int process);
-		void SendData(DataInfo & data, int process);
-		bool IsAllSlaveOver();
+        void ReadyToGo();
+        void SendFirstBarrel();
+        TaskInfo * ReceiveSlaveMsg();
+        void SendNoData(int process);
+        void SendData(DataInfo & data, int process);
+        bool IsAllSlaveOver();
 
         VectorCellar * m_cellar;
-		std::queue<int> m_cellarIndex;
-		std::queue<int> m_activeSlaves;
-		std::queue<int> m_sleepSlaves;
-		MPIObject m_mpi;
+        std::queue<int> m_cellarIndex;
+        std::queue<int> m_activeSlaves;
+        std::queue<int> m_sleepSlaves;
+        MPIObject m_mpi;
     };
 }
 #endif // MasterRole_h__

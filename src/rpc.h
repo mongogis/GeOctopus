@@ -10,107 +10,108 @@
 #include <vector>
 #include <deque>
 #include <string>
-#include <thread> 
+#include <thread>
 
-namespace hpgc{
+namespace hpgc {
 
-	typedef google::protobuf::Message Message;
+    typedef google::protobuf::Message Message;
 
-	int ANY_SOURCE = MPI::ANY_SOURCE;
-	int ANY_TAG = MPI::ANY_TAG;
+    int ANY_SOURCE = MPI::ANY_SOURCE;
+    int ANY_TAG = MPI::ANY_TAG;
 
-	struct RPCInfo
-	{
-		int target;
-		int source;
-		int tag;
-	};
+    struct RPCInfo {
+        int target;
+        int source;
+        int tag;
+    };
 
-	struct Header {
-		Header() : is_reply(false) {}
-		bool is_reply;
-	};
+    struct Header {
+        Header() : is_reply(false) {}
+        bool is_reply;
+    };
 
-	struct RPCRequest
-	{
-		int target;
-		int rpc_type;
-		int failures;
+    struct RPCRequest {
+        int target;
+        int rpc_type;
+        int failures;
 
-		std::string payload;
-		MPI::Request mpi_req;
-		MPI::Status status;
-		double start_time;
+        std::string payload;
+        MPI::Request mpi_req;
+        MPI::Status status;
+        double start_time;
 
-		RPCRequest(int target, int method, const Message & msg, Header h);
-		~RPCRequest();
+        RPCRequest(int target, int method, const Message & msg, Header h);
+        ~RPCRequest();
 
-		bool Finished();
-		double Elapsed();
-	};
+        bool Finished();
+        double Elapsed();
+    };
 
-	typedef std::function<void(const RPCInfo& rpc)> Callback;
+    typedef std::function<void(const RPCInfo & rpc)> Callback;
 
-	struct CallbackInfo
-	{
-		Message * request;
-		Message * response;
+    struct CallbackInfo {
+        Message * request;
+        Message * response;
 
-		Callback call;
+        Callback call;
 
-		bool spawn_thread;
-	};
+        bool spawn_thread;
+    };
 
-	extern int ANY_SOURCE;
-	extern int ANY_TAG;
+    extern int ANY_SOURCE;
+    extern int ANY_TAG;
 
-	class RPCNetwork{
-	public:
+    class RPCNetwork {
+    public:
 
-		void Send(RPCRequest *req);
+        void Send(RPCRequest * req);
 
-		static RPCNetwork * Get();
-		static void Init();
+        void Read(int desired_src, int type, Message * data, int * source = NULL);
 
-		void Shutdown();
+        static RPCNetwork * Get();
+        static void Init();
 
-		int Id();
-		int Size();
+        void Shutdown();
 
-		void Run();
+        int Id();
+        int Size();
 
-		RPCNetwork();
-		~RPCNetwork();
-	
-	private:
-		static const int kMaxHosts = 512;
-		static const int kMaxMethods = 64;
+        void Run();
 
-		CallbackInfo* m_callbacks[kMaxMethods];
-		std::vector<RPCRequest*> m_pending_sends;
-		std::list<RPCRequest * > m_active_sends;
+        RPCNetwork();
+        ~RPCNetwork();
 
-		typedef std::deque<std::string> Queue;
+    private:
+        static const int kMaxHosts = 512;
+        static const int kMaxMethods = 64;
 
-		Queue replies[kMaxMethods][kMaxHosts];
-		Queue requests[kMaxMethods][kMaxHosts];
+        CallbackInfo * m_callbacks[kMaxMethods];
+        std::vector<RPCRequest *> m_pending_sends;
+        std::list<RPCRequest * > m_active_sends;
 
-		MPI::Comm * m_world;
-		int m_id;
-		bool m_running;
-		std::thread * m_thread;
+        typedef std::deque<std::string> Queue;
 
-		void RegisterCallback(int req_type,Message * req,Message * resp,Callback cb);
-		void CollectActive();
+        Queue replies[kMaxMethods][kMaxHosts];
+        Queue requests[kMaxMethods][kMaxHosts];
 
-	};
+        MPI::Comm * m_world;
+        int m_id;
+        bool m_running;
+        std::thread * m_thread;
 
-	using namespace std::placeholders;
+        void RegisterCallback(int req_type, Message * req, Message * resp, Callback cb);
+        void CollectActive();
 
-	template <class Request, class Response, class Function, class Klass>
-	void RegisterCallback(int req_type, Request *req, Response *resp, Function function, Klass klass) {
-		RPCNetwork::Get()->RegisterCallback(req_type, req, resp, std::bind(function, klass, std::cref(*req), resp, _1));
-	}
+    };
+
+    using namespace std::placeholders;
+
+    template <class Request, class Response, class Function, class Klass>
+    void RegisterCallback(int req_type, Request * req, Response * resp,
+                          Function function, Klass klass) {
+        RPCNetwork::Get()->RegisterCallback(req_type, req, resp, std::bind(function,
+                                            klass, std::cref(*req), resp, _1));
+    }
 
 }
 
