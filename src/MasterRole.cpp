@@ -1,98 +1,159 @@
 #include "MasterRole.h"
-#include <mpiobject.h>
-#include <mpimessage.h>
-#include <mpioperator.recvmsg.h>
 #include "port.debug.h"
-#include <geoalgorithm.format.h>
 #include "ScopeGuard.h"
+#include "rpc.message.pb.h"
+#include "common.h"
+#include <geoalgorithm.format.h>
 
-int hpgc::MasterRole::Action() {
-    ReadyToGo();
-    SendFirstBarrel();
-    bool IsGameOver = false;
-    while (!IsGameOver) {
-        TaskInfo * info = ReceiveSlaveMsg();
-        ON_SCOPE_EXIT([&info]() {delete info; });
-        auto status = GetStatus();
-        switch (info->IsOk) {
-        case MessageTag::MSG_TAG_TASK_OK : {
-            if (m_cellarIndex.empty()) {
-                SendNoData(status.MPI_SOURCE);
-                m_sleepSlaves.push(status.MPI_SOURCE);
-                if (IsAllSlaveOver()) {
-                    IsGameOver = true;
-                }
-            }
-            else {
-                auto process = m_activeSlaves.front();
-                auto dataIndex = m_cellarIndex.front();
-                DataInfo data;
-                data.IsOk = MessageTag::MSG_TAG_DATA_OK;
-                data.DataIndex = dataIndex;
-                data.Barrel = m_cellar->GetByIndex(dataIndex);
-                SendData(data, process);
-                m_cellarIndex.pop();
-                m_activeSlaves.pop();
-            }
-            break;
-        }
-        case MessageTag::MSG_TAG_TASK_WRONG: {
-            m_cellarIndex.push(info->DataIndex);
-            break;
-        }
-        default:
-            BUG("ok");
-        }
-    }
-    return 1;
-}
+namespace hpgc{
+
+	struct Taskid
+	{
+		int id;
+		Taskid(int i) :
+			id(i){
+		}
+	};
+
+	struct TaskState
+	{
+		enum Status {
+			PENDING = 0, ACTIVE = 1, FINISHED = 2
+		};
+
+		TaskState(Taskid id, VectorBarral * data) :
+			id(id), status(PENDING), data(data),slave(-1){
+		}
+
+		Taskid id;
+		Status status;
+		int slave;
+		VectorBarral * data;
+	};
+
+	static std::map<Taskid, TaskState *> m_task ;
+
+	TaskState * GetPendingTask(){
+		auto result = std::find_if(m_task.begin(), m_task.end(),
+			[&](std::pair<Taskid, TaskState *> & pair){
+			if (pair.second->status == TaskState::PENDING)
+			{
+				return true;
+			}
+			return false;
+		}
+		);
+
+		if (result != m_task.end())
+		{
+			return (*result).second;
+		}
+		else
+		{
+			return nullptr;
+		}
+		
+	}
+
+	bool CheckAllFinished(){
+		auto result = std::find_if(m_task.begin(), m_task.end(),
+			[&](std::pair<Taskid, TaskState *> & pair){
+				if (pair.second->status == TaskState::PENDING ||
+					pair.second->status == TaskState::ACTIVE)
+				{
+					return true;
+				}
+				return false;
+			}
+		);
+
+		if (result != m_task.end())
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+		
+	}
+
+	int MasterRole::Action()
+	{
+		TaskState * task = nullptr;
+		DataMessage * drequest = nullptr;
+		while (m_masterRuning)
+		{
+			if (CheckAllFinished())
+			{
+				m_masterRuning = false;
+			}
+
+			task = GetPendingTask();
+			
+			if (task != nullptr && !m_activeSlaves.empty())
+			{
+				int slave = m_activeSlaves.front();
+				m_activeSlaves.pop();
+
+				drequest = DataMessageFromBarral(task->data);
+
+				m_net->Send(slave, WORKER_RUN_TASK,*drequest);
+
+				task->slave = slave;
+				task->status = TaskState::ACTIVE;
+			}
+
+			std::for_each(m_task.begin(), m_task.end(), 
+				[&](std::pair<Taskid,TaskState *> & pair){
+					if (pair.second->status == TaskState::ACTIVE)
+					{
+						int source = -1;
+						TaskMessage tRequest;
+						if (m_net->TryRead(pair.second->slave, WORKER_TASK_DONE,&tRequest, &source))
+						{
+							Record * stat = RecordFromTaskMessage(&tRequest);
+							m_statistics.push_back(stat);
+
+							pair.second->status = TaskState::FINISHED;
+						}
+						
+					}
+					
+				}
+			);
+			
+		}
+
+		return 0;
+	}
+
+	MasterRole::MasterRole(VectorCellar * cellar)
+	{
+		for (int i = 0; i < cellar->size();++i)
+		{
+			m_task[Taskid(i)] = new TaskState(Taskid(i), cellar->GetByIndex(i));
+		}
+		
+
+		m_masterRuning = true;
+
+		for (int i = 0; i < m_net->size();++i)
+		{
+			RegisterWorkerRequest req;
+			int src = 0;
+			m_net->Read(hpgc::ANY_SOURCE, REGISTER_WORKER, &req ,&src);
+
+			m_activeSlaves.push(src);
+		}
+	}
+
+	MasterRole::~MasterRole()
+	{
+
+	}
 
 
-hpgc::MasterRole::MasterRole(VectorCellar * cellar) {
-    m_cellar = cellar;
-    for (auto i = 0; i < m_cellar->size(); ++i) {
-        m_cellarIndex.push(i);
-    }
-}
 
-void hpgc::MasterRole::ReadyToGo() {
-    for (auto i = 1; i < m_mpi.GetOurSize(); ++i) {
-        auto info = ReceiveSlaveMsg();
-        auto status = GetStatus();
-        m_activeSlaves.push(status.MPI_SOURCE);
-    }
-}
 
-void hpgc::MasterRole::SendFirstBarrel() {
-    while (!m_activeSlaves.empty()) {
-        auto process = m_activeSlaves.front();
-        auto dataIndex = m_cellarIndex.front();
-        DataInfo data;
-        data.IsOk = MessageTag::MSG_TAG_DATA_OK;
-        data.DataIndex = dataIndex;
-        data.Barrel = m_cellar->GetByIndex(dataIndex);
-        SendData(data, process);
-        m_cellarIndex.pop();
-        m_activeSlaves.pop();
-    }
-}
-
-hpgc::TaskInfo * hpgc::MasterRole::ReceiveSlaveMsg() {
-    return MPI_ReceiveTaskInfo(MPI_ANY_SOURCE, MessageTag::MSG_TAG_TASK);
-}
-
-void hpgc::MasterRole::SendNoData(int process) {
-    DataInfo info;
-    info.IsOk = MessageTag::MSG_TAG_DATA_WRONG;
-    info.DataIndex = -1;
-    info.Barrel = NULL;
-    SendData(info, process);
-}
-
-void hpgc::MasterRole::SendData(DataInfo & data, int process) {
-    MPI_SendDataInfo(data, process, MessageTag::MSG_TAG_DATA);
-}
-
-bool hpgc::MasterRole::IsAllSlaveOver() {
-    return m_sleepSlaves.size() == (m_mpi.GetOurSize() - 1);
 }

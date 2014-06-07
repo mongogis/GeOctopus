@@ -1,9 +1,13 @@
 package hpgc;
 
 enum MessageType{
-    READY_TO_GO = 1;
-    TASK_RUNNING = 2;
-    GAME_OVER = 3;
+    REGISTER_WORKER = 1;
+
+    WORKER_RUN_TASK = 2;
+    WORKER_TASK_DONE = 3;
+
+    WORKER_FINALIZE = 4;
+    WORKER_FINALIZE_DONE = 5;
 }
 
 enum TaskType{
@@ -12,6 +16,10 @@ enum TaskType{
 }
 
 message EmptyMessage{
+}
+
+message RegisterWorkerRequest{
+    required int32 id = 1;
 }
 
 message TaskMessage{

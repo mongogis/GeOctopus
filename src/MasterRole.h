@@ -3,30 +3,27 @@
 
 #include "IRole.h"
 #include "IVectorScheduler.h"
+#include "rpc.h"
+
 #include <queue>
-#include "MessageTag.h"
-#include <mpiobject.h>
+#include <map>
 
 namespace hpgc {
+
+	struct TaskState;
+	struct Taskid;
+
     class MasterRole: public IRole {
     public:
         virtual int Action();
         MasterRole(VectorCellar * cellar);
-
+		~MasterRole();
 
     private:
-        void ReadyToGo();
-        void SendFirstBarrel();
-        TaskInfo * ReceiveSlaveMsg();
-        void SendNoData(int process);
-        void SendData(DataInfo & data, int process);
-        bool IsAllSlaveOver();
-
-        VectorCellar * m_cellar;
-        std::queue<int> m_cellarIndex;
-        std::queue<int> m_activeSlaves;
-        std::queue<int> m_sleepSlaves;
-        MPIObject m_mpi;
+		bool m_masterRuning;
+		std::queue<int> m_activeSlaves;
+		std::vector<Record * > m_statistics;
+		RPCNetwork * m_net;
     };
 }
 #endif // MasterRole_h__

@@ -13,6 +13,7 @@
 #include <thread>
 #include <mutex>
 #include <unordered_set>
+#include <array>
 
 namespace hpgc {
 
@@ -63,7 +64,7 @@ namespace hpgc {
     extern int ANY_SOURCE;
     extern int ANY_TAG;
 
-	class RPCThread {
+	class RPCNetwork {
 	public:
 		bool active() const;
 		int64_t pending_bytes() const;
@@ -89,7 +90,7 @@ namespace hpgc {
 		int id() { return id_; }
 		int size() const;
 
-		static RPCThread *Get();
+		static RPCNetwork *Get();
 		static void Init();
 
 
@@ -121,7 +122,7 @@ namespace hpgc {
 
 		bool running;
 
-		CallbackInfo* callbacks_[kMaxMethods];
+		std::array<CallbackInfo *, kMaxMethods> callbacks_;
 
 		std::vector<RPCRequest*> pending_sends_;
 		std::unordered_set<RPCRequest*> active_sends_;
@@ -132,7 +133,7 @@ namespace hpgc {
 		MPI::Comm *world_;
 		mutable std::recursive_mutex send_lock;
 		mutable std::recursive_mutex q_lock[kMaxHosts];
-		mutable std::thread *t_;
+		mutable std::thread * t_;
 		int id_;
 
 		bool check_reply_queue(int src, int type, Message *data);
@@ -142,7 +143,7 @@ namespace hpgc {
 		void CollectActive();
 		void Run();
 
-		RPCThread();
+		RPCNetwork();
 	};
 
     using namespace std::placeholders;
@@ -150,7 +151,7 @@ namespace hpgc {
     template <class Request, class Response, class Function, class Klass>
     void RegisterCallback(int req_type, Request * req, Response * resp,
                           Function function, Klass klass) {
-		RPCThread::Get()->_RegisterCallback(req_type, req, resp, std::bind(function,
+		RPCNetwork::Get()->_RegisterCallback(req_type, req, resp, std::bind(function,
                                             klass, std::cref(*req), resp, _1));
     }
 

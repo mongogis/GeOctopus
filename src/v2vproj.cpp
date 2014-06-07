@@ -6,7 +6,22 @@
 
 namespace hpgc {
 
-    V2vProj::V2vProj(const char * dst, const char * srs) : m_dst(dst), m_srs(srs) {
+    V2vProj::V2vProj(int argc, char ** argv) {
+
+		for (int i = 1; i < argc;i++)
+		{
+			if (EQUAL(argv[i],"-t"))
+			{
+				m_dst = argv[++i];
+			}
+			else if (EQUAL(argv[i],"-t_srs"))
+			{
+				m_srs = argv[++i];
+			}
+			
+		}
+		
+
         m_ogrSr = (OGRSpatialReference *)OSRNewSpatialReference(NULL);
         m_ogrSr->SetFromUserInput(m_srs);
     }

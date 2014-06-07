@@ -30,395 +30,477 @@
 namespace hpgc {
 
 // Internal implementation detail -- do not call these.
-    void  protobuf_AddDesc_rpc_2emessage_2eproto();
-    void protobuf_AssignDesc_rpc_2emessage_2eproto();
-    void protobuf_ShutdownFile_rpc_2emessage_2eproto();
+void  protobuf_AddDesc_rpc_2emessage_2eproto();
+void protobuf_AssignDesc_rpc_2emessage_2eproto();
+void protobuf_ShutdownFile_rpc_2emessage_2eproto();
 
-    class EmptyMessage;
-    class TaskMessage;
-    class DataMessage;
+class EmptyMessage;
+class RegisterWorkerRequest;
+class TaskMessage;
+class DataMessage;
 
-    enum MessageType {
-        READY_TO_GO = 1,
-        TASK_RUNNING = 2,
-        GAME_OVER = 3
-    };
-    bool MessageType_IsValid(int value);
-    const MessageType MessageType_MIN = READY_TO_GO;
-    const MessageType MessageType_MAX = GAME_OVER;
-    const int MessageType_ARRAYSIZE = MessageType_MAX + 1;
+enum MessageType {
+  REGISTER_WORKER = 1,
+  WORKER_RUN_TASK = 2,
+  WORKER_TASK_DONE = 3,
+  WORKER_FINALIZE = 4,
+  WORKER_FINALIZE_DONE = 5
+};
+bool MessageType_IsValid(int value);
+const MessageType MessageType_MIN = REGISTER_WORKER;
+const MessageType MessageType_MAX = WORKER_FINALIZE_DONE;
+const int MessageType_ARRAYSIZE = MessageType_MAX + 1;
 
-    const ::google::protobuf::EnumDescriptor * MessageType_descriptor();
-    inline const ::std::string & MessageType_Name(MessageType value) {
-        return ::google::protobuf::internal::NameOfEnum(
-                   MessageType_descriptor(), value);
-    }
-    inline bool MessageType_Parse(
-        const ::std::string & name, MessageType * value) {
-        return ::google::protobuf::internal::ParseNamedEnum<MessageType>(
-                   MessageType_descriptor(), name, value);
-    }
-    enum TaskType {
-        TASK_OK = 1,
-        TASK_WRONG = 2
-    };
-    bool TaskType_IsValid(int value);
-    const TaskType TaskType_MIN = TASK_OK;
-    const TaskType TaskType_MAX = TASK_WRONG;
-    const int TaskType_ARRAYSIZE = TaskType_MAX + 1;
+const ::google::protobuf::EnumDescriptor* MessageType_descriptor();
+inline const ::std::string& MessageType_Name(MessageType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    MessageType_descriptor(), value);
+}
+inline bool MessageType_Parse(
+    const ::std::string& name, MessageType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<MessageType>(
+    MessageType_descriptor(), name, value);
+}
+enum TaskType {
+  TASK_OK = 1,
+  TASK_WRONG = 2
+};
+bool TaskType_IsValid(int value);
+const TaskType TaskType_MIN = TASK_OK;
+const TaskType TaskType_MAX = TASK_WRONG;
+const int TaskType_ARRAYSIZE = TaskType_MAX + 1;
 
-    const ::google::protobuf::EnumDescriptor * TaskType_descriptor();
-    inline const ::std::string & TaskType_Name(TaskType value) {
-        return ::google::protobuf::internal::NameOfEnum(
-                   TaskType_descriptor(), value);
-    }
-    inline bool TaskType_Parse(
-        const ::std::string & name, TaskType * value) {
-        return ::google::protobuf::internal::ParseNamedEnum<TaskType>(
-                   TaskType_descriptor(), name, value);
-    }
+const ::google::protobuf::EnumDescriptor* TaskType_descriptor();
+inline const ::std::string& TaskType_Name(TaskType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    TaskType_descriptor(), value);
+}
+inline bool TaskType_Parse(
+    const ::std::string& name, TaskType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<TaskType>(
+    TaskType_descriptor(), name, value);
+}
 // ===================================================================
 
-    class EmptyMessage : public ::google::protobuf::Message {
-    public:
-        EmptyMessage();
-        virtual ~EmptyMessage();
+class EmptyMessage : public ::google::protobuf::Message {
+ public:
+  EmptyMessage();
+  virtual ~EmptyMessage();
 
-        EmptyMessage(const EmptyMessage & from);
+  EmptyMessage(const EmptyMessage& from);
 
-        inline EmptyMessage & operator=(const EmptyMessage & from) {
-            CopyFrom(from);
-            return *this;
-        }
+  inline EmptyMessage& operator=(const EmptyMessage& from) {
+    CopyFrom(from);
+    return *this;
+  }
 
-        inline const ::google::protobuf::UnknownFieldSet & unknown_fields() const {
-            return _unknown_fields_;
-        }
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
 
-        inline ::google::protobuf::UnknownFieldSet * mutable_unknown_fields() {
-            return &_unknown_fields_;
-        }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
 
-        static const ::google::protobuf::Descriptor * descriptor();
-        static const EmptyMessage & default_instance();
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const EmptyMessage& default_instance();
 
-        void Swap(EmptyMessage * other);
+  void Swap(EmptyMessage* other);
 
-        // implements Message ----------------------------------------------
+  // implements Message ----------------------------------------------
 
-        EmptyMessage * New() const;
-        void CopyFrom(const ::google::protobuf::Message & from);
-        void MergeFrom(const ::google::protobuf::Message & from);
-        void CopyFrom(const EmptyMessage & from);
-        void MergeFrom(const EmptyMessage & from);
-        void Clear();
-        bool IsInitialized() const;
+  EmptyMessage* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const EmptyMessage& from);
+  void MergeFrom(const EmptyMessage& from);
+  void Clear();
+  bool IsInitialized() const;
 
-        int ByteSize() const;
-        bool MergePartialFromCodedStream(
-            ::google::protobuf::io::CodedInputStream * input);
-        void SerializeWithCachedSizes(
-            ::google::protobuf::io::CodedOutputStream * output) const;
-        ::google::protobuf::uint8 * SerializeWithCachedSizesToArray(
-            ::google::protobuf::uint8 * output) const;
-        int GetCachedSize() const { return _cached_size_; }
-    private:
-        void SharedCtor();
-        void SharedDtor();
-        void SetCachedSize(int size) const;
-    public:
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
 
-        ::google::protobuf::Metadata GetMetadata() const;
+  ::google::protobuf::Metadata GetMetadata() const;
 
-        // nested types ----------------------------------------------------
+  // nested types ----------------------------------------------------
 
-        // accessors -------------------------------------------------------
+  // accessors -------------------------------------------------------
 
-        // @@protoc_insertion_point(class_scope:hpgc.EmptyMessage)
-    private:
+  // @@protoc_insertion_point(class_scope:hpgc.EmptyMessage)
+ private:
 
-        ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
 
-        mutable int _cached_size_;
-        ::google::protobuf::uint32 _has_bits_[1];
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[1];
 
-        friend void  protobuf_AddDesc_rpc_2emessage_2eproto();
-        friend void protobuf_AssignDesc_rpc_2emessage_2eproto();
-        friend void protobuf_ShutdownFile_rpc_2emessage_2eproto();
+  friend void  protobuf_AddDesc_rpc_2emessage_2eproto();
+  friend void protobuf_AssignDesc_rpc_2emessage_2eproto();
+  friend void protobuf_ShutdownFile_rpc_2emessage_2eproto();
 
-        void InitAsDefaultInstance();
-        static EmptyMessage * default_instance_;
-    };
+  void InitAsDefaultInstance();
+  static EmptyMessage* default_instance_;
+};
 // -------------------------------------------------------------------
 
-    class TaskMessage : public ::google::protobuf::Message {
-    public:
-        TaskMessage();
-        virtual ~TaskMessage();
+class RegisterWorkerRequest : public ::google::protobuf::Message {
+ public:
+  RegisterWorkerRequest();
+  virtual ~RegisterWorkerRequest();
 
-        TaskMessage(const TaskMessage & from);
+  RegisterWorkerRequest(const RegisterWorkerRequest& from);
 
-        inline TaskMessage & operator=(const TaskMessage & from) {
-            CopyFrom(from);
-            return *this;
-        }
+  inline RegisterWorkerRequest& operator=(const RegisterWorkerRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
 
-        inline const ::google::protobuf::UnknownFieldSet & unknown_fields() const {
-            return _unknown_fields_;
-        }
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
 
-        inline ::google::protobuf::UnknownFieldSet * mutable_unknown_fields() {
-            return &_unknown_fields_;
-        }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
 
-        static const ::google::protobuf::Descriptor * descriptor();
-        static const TaskMessage & default_instance();
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const RegisterWorkerRequest& default_instance();
 
-        void Swap(TaskMessage * other);
+  void Swap(RegisterWorkerRequest* other);
 
-        // implements Message ----------------------------------------------
+  // implements Message ----------------------------------------------
 
-        TaskMessage * New() const;
-        void CopyFrom(const ::google::protobuf::Message & from);
-        void MergeFrom(const ::google::protobuf::Message & from);
-        void CopyFrom(const TaskMessage & from);
-        void MergeFrom(const TaskMessage & from);
-        void Clear();
-        bool IsInitialized() const;
+  RegisterWorkerRequest* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const RegisterWorkerRequest& from);
+  void MergeFrom(const RegisterWorkerRequest& from);
+  void Clear();
+  bool IsInitialized() const;
 
-        int ByteSize() const;
-        bool MergePartialFromCodedStream(
-            ::google::protobuf::io::CodedInputStream * input);
-        void SerializeWithCachedSizes(
-            ::google::protobuf::io::CodedOutputStream * output) const;
-        ::google::protobuf::uint8 * SerializeWithCachedSizesToArray(
-            ::google::protobuf::uint8 * output) const;
-        int GetCachedSize() const { return _cached_size_; }
-    private:
-        void SharedCtor();
-        void SharedDtor();
-        void SetCachedSize(int size) const;
-    public:
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
 
-        ::google::protobuf::Metadata GetMetadata() const;
+  ::google::protobuf::Metadata GetMetadata() const;
 
-        // nested types ----------------------------------------------------
+  // nested types ----------------------------------------------------
 
-        // accessors -------------------------------------------------------
+  // accessors -------------------------------------------------------
 
-        // required .hpgc.TaskType Type = 1;
-        inline bool has_type() const;
-        inline void clear_type();
-        static const int kTypeFieldNumber = 1;
-        inline ::hpgc::TaskType type() const;
-        inline void set_type(::hpgc::TaskType value);
+  // required int32 id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline ::google::protobuf::int32 id() const;
+  inline void set_id(::google::protobuf::int32 value);
 
-        // required int32 DataIndex = 2;
-        inline bool has_dataindex() const;
-        inline void clear_dataindex();
-        static const int kDataIndexFieldNumber = 2;
-        inline ::google::protobuf::int32 dataindex() const;
-        inline void set_dataindex(::google::protobuf::int32 value);
+  // @@protoc_insertion_point(class_scope:hpgc.RegisterWorkerRequest)
+ private:
+  inline void set_has_id();
+  inline void clear_has_id();
 
-        // required double StartTime = 3;
-        inline bool has_starttime() const;
-        inline void clear_starttime();
-        static const int kStartTimeFieldNumber = 3;
-        inline double starttime() const;
-        inline void set_starttime(double value);
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
-        // required double EndTime = 4;
-        inline bool has_endtime() const;
-        inline void clear_endtime();
-        static const int kEndTimeFieldNumber = 4;
-        inline double endtime() const;
-        inline void set_endtime(double value);
+  ::google::protobuf::int32 id_;
 
-        // @@protoc_insertion_point(class_scope:hpgc.TaskMessage)
-    private:
-        inline void set_has_type();
-        inline void clear_has_type();
-        inline void set_has_dataindex();
-        inline void clear_has_dataindex();
-        inline void set_has_starttime();
-        inline void clear_has_starttime();
-        inline void set_has_endtime();
-        inline void clear_has_endtime();
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
 
-        ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  friend void  protobuf_AddDesc_rpc_2emessage_2eproto();
+  friend void protobuf_AssignDesc_rpc_2emessage_2eproto();
+  friend void protobuf_ShutdownFile_rpc_2emessage_2eproto();
 
-        int type_;
-        ::google::protobuf::int32 dataindex_;
-        double starttime_;
-        double endtime_;
-
-        mutable int _cached_size_;
-        ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
-
-        friend void  protobuf_AddDesc_rpc_2emessage_2eproto();
-        friend void protobuf_AssignDesc_rpc_2emessage_2eproto();
-        friend void protobuf_ShutdownFile_rpc_2emessage_2eproto();
-
-        void InitAsDefaultInstance();
-        static TaskMessage * default_instance_;
-    };
+  void InitAsDefaultInstance();
+  static RegisterWorkerRequest* default_instance_;
+};
 // -------------------------------------------------------------------
 
-    class DataMessage : public ::google::protobuf::Message {
-    public:
-        DataMessage();
-        virtual ~DataMessage();
+class TaskMessage : public ::google::protobuf::Message {
+ public:
+  TaskMessage();
+  virtual ~TaskMessage();
 
-        DataMessage(const DataMessage & from);
+  TaskMessage(const TaskMessage& from);
 
-        inline DataMessage & operator=(const DataMessage & from) {
-            CopyFrom(from);
-            return *this;
-        }
+  inline TaskMessage& operator=(const TaskMessage& from) {
+    CopyFrom(from);
+    return *this;
+  }
 
-        inline const ::google::protobuf::UnknownFieldSet & unknown_fields() const {
-            return _unknown_fields_;
-        }
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
 
-        inline ::google::protobuf::UnknownFieldSet * mutable_unknown_fields() {
-            return &_unknown_fields_;
-        }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
 
-        static const ::google::protobuf::Descriptor * descriptor();
-        static const DataMessage & default_instance();
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const TaskMessage& default_instance();
 
-        void Swap(DataMessage * other);
+  void Swap(TaskMessage* other);
 
-        // implements Message ----------------------------------------------
+  // implements Message ----------------------------------------------
 
-        DataMessage * New() const;
-        void CopyFrom(const ::google::protobuf::Message & from);
-        void MergeFrom(const ::google::protobuf::Message & from);
-        void CopyFrom(const DataMessage & from);
-        void MergeFrom(const DataMessage & from);
-        void Clear();
-        bool IsInitialized() const;
+  TaskMessage* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const TaskMessage& from);
+  void MergeFrom(const TaskMessage& from);
+  void Clear();
+  bool IsInitialized() const;
 
-        int ByteSize() const;
-        bool MergePartialFromCodedStream(
-            ::google::protobuf::io::CodedInputStream * input);
-        void SerializeWithCachedSizes(
-            ::google::protobuf::io::CodedOutputStream * output) const;
-        ::google::protobuf::uint8 * SerializeWithCachedSizesToArray(
-            ::google::protobuf::uint8 * output) const;
-        int GetCachedSize() const { return _cached_size_; }
-    private:
-        void SharedCtor();
-        void SharedDtor();
-        void SetCachedSize(int size) const;
-    public:
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
 
-        ::google::protobuf::Metadata GetMetadata() const;
+  ::google::protobuf::Metadata GetMetadata() const;
 
-        // nested types ----------------------------------------------------
+  // nested types ----------------------------------------------------
 
-        // accessors -------------------------------------------------------
+  // accessors -------------------------------------------------------
 
-        // required int32 DataIndex = 1;
-        inline bool has_dataindex() const;
-        inline void clear_dataindex();
-        static const int kDataIndexFieldNumber = 1;
-        inline ::google::protobuf::int32 dataindex() const;
-        inline void set_dataindex(::google::protobuf::int32 value);
+  // required .hpgc.TaskType Type = 1;
+  inline bool has_type() const;
+  inline void clear_type();
+  static const int kTypeFieldNumber = 1;
+  inline ::hpgc::TaskType type() const;
+  inline void set_type(::hpgc::TaskType value);
 
-        // required string SrcDataSource = 2;
-        inline bool has_srcdatasource() const;
-        inline void clear_srcdatasource();
-        static const int kSrcDataSourceFieldNumber = 2;
-        inline const ::std::string & srcdatasource() const;
-        inline void set_srcdatasource(const ::std::string & value);
-        inline void set_srcdatasource(const char * value);
-        inline void set_srcdatasource(const char * value, size_t size);
-        inline ::std::string * mutable_srcdatasource();
-        inline ::std::string * release_srcdatasource();
-        inline void set_allocated_srcdatasource(::std::string * srcdatasource);
+  // required int32 DataIndex = 2;
+  inline bool has_dataindex() const;
+  inline void clear_dataindex();
+  static const int kDataIndexFieldNumber = 2;
+  inline ::google::protobuf::int32 dataindex() const;
+  inline void set_dataindex(::google::protobuf::int32 value);
 
-        // required string SrcLayer = 3;
-        inline bool has_srclayer() const;
-        inline void clear_srclayer();
-        static const int kSrcLayerFieldNumber = 3;
-        inline const ::std::string & srclayer() const;
-        inline void set_srclayer(const ::std::string & value);
-        inline void set_srclayer(const char * value);
-        inline void set_srclayer(const char * value, size_t size);
-        inline ::std::string * mutable_srclayer();
-        inline ::std::string * release_srclayer();
-        inline void set_allocated_srclayer(::std::string * srclayer);
+  // required double StartTime = 3;
+  inline bool has_starttime() const;
+  inline void clear_starttime();
+  static const int kStartTimeFieldNumber = 3;
+  inline double starttime() const;
+  inline void set_starttime(double value);
 
-        // required string DstDataSource = 4;
-        inline bool has_dstdatasource() const;
-        inline void clear_dstdatasource();
-        static const int kDstDataSourceFieldNumber = 4;
-        inline const ::std::string & dstdatasource() const;
-        inline void set_dstdatasource(const ::std::string & value);
-        inline void set_dstdatasource(const char * value);
-        inline void set_dstdatasource(const char * value, size_t size);
-        inline ::std::string * mutable_dstdatasource();
-        inline ::std::string * release_dstdatasource();
-        inline void set_allocated_dstdatasource(::std::string * dstdatasource);
+  // required double EndTime = 4;
+  inline bool has_endtime() const;
+  inline void clear_endtime();
+  static const int kEndTimeFieldNumber = 4;
+  inline double endtime() const;
+  inline void set_endtime(double value);
 
-        // required string DstLayer = 5;
-        inline bool has_dstlayer() const;
-        inline void clear_dstlayer();
-        static const int kDstLayerFieldNumber = 5;
-        inline const ::std::string & dstlayer() const;
-        inline void set_dstlayer(const ::std::string & value);
-        inline void set_dstlayer(const char * value);
-        inline void set_dstlayer(const char * value, size_t size);
-        inline ::std::string * mutable_dstlayer();
-        inline ::std::string * release_dstlayer();
-        inline void set_allocated_dstlayer(::std::string * dstlayer);
+  // @@protoc_insertion_point(class_scope:hpgc.TaskMessage)
+ private:
+  inline void set_has_type();
+  inline void clear_has_type();
+  inline void set_has_dataindex();
+  inline void clear_has_dataindex();
+  inline void set_has_starttime();
+  inline void clear_has_starttime();
+  inline void set_has_endtime();
+  inline void clear_has_endtime();
 
-        // repeated int32 features = 6;
-        inline int features_size() const;
-        inline void clear_features();
-        static const int kFeaturesFieldNumber = 6;
-        inline ::google::protobuf::int32 features(int index) const;
-        inline void set_features(int index, ::google::protobuf::int32 value);
-        inline void add_features(::google::protobuf::int32 value);
-        inline const ::google::protobuf::RepeatedField< ::google::protobuf::int32 > &
-        features() const;
-        inline ::google::protobuf::RepeatedField< ::google::protobuf::int32 > *
-        mutable_features();
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
-        // @@protoc_insertion_point(class_scope:hpgc.DataMessage)
-    private:
-        inline void set_has_dataindex();
-        inline void clear_has_dataindex();
-        inline void set_has_srcdatasource();
-        inline void clear_has_srcdatasource();
-        inline void set_has_srclayer();
-        inline void clear_has_srclayer();
-        inline void set_has_dstdatasource();
-        inline void clear_has_dstdatasource();
-        inline void set_has_dstlayer();
-        inline void clear_has_dstlayer();
+  int type_;
+  ::google::protobuf::int32 dataindex_;
+  double starttime_;
+  double endtime_;
 
-        ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
 
-        ::std::string * srcdatasource_;
-        ::std::string * srclayer_;
-        ::std::string * dstdatasource_;
-        ::std::string * dstlayer_;
-        ::google::protobuf::RepeatedField< ::google::protobuf::int32 > features_;
-        ::google::protobuf::int32 dataindex_;
+  friend void  protobuf_AddDesc_rpc_2emessage_2eproto();
+  friend void protobuf_AssignDesc_rpc_2emessage_2eproto();
+  friend void protobuf_ShutdownFile_rpc_2emessage_2eproto();
 
-        mutable int _cached_size_;
-        ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
+  void InitAsDefaultInstance();
+  static TaskMessage* default_instance_;
+};
+// -------------------------------------------------------------------
 
-        friend void  protobuf_AddDesc_rpc_2emessage_2eproto();
-        friend void protobuf_AssignDesc_rpc_2emessage_2eproto();
-        friend void protobuf_ShutdownFile_rpc_2emessage_2eproto();
+class DataMessage : public ::google::protobuf::Message {
+ public:
+  DataMessage();
+  virtual ~DataMessage();
 
-        void InitAsDefaultInstance();
-        static DataMessage * default_instance_;
-    };
+  DataMessage(const DataMessage& from);
+
+  inline DataMessage& operator=(const DataMessage& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const DataMessage& default_instance();
+
+  void Swap(DataMessage* other);
+
+  // implements Message ----------------------------------------------
+
+  DataMessage* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const DataMessage& from);
+  void MergeFrom(const DataMessage& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // required int32 DataIndex = 1;
+  inline bool has_dataindex() const;
+  inline void clear_dataindex();
+  static const int kDataIndexFieldNumber = 1;
+  inline ::google::protobuf::int32 dataindex() const;
+  inline void set_dataindex(::google::protobuf::int32 value);
+
+  // required string SrcDataSource = 2;
+  inline bool has_srcdatasource() const;
+  inline void clear_srcdatasource();
+  static const int kSrcDataSourceFieldNumber = 2;
+  inline const ::std::string& srcdatasource() const;
+  inline void set_srcdatasource(const ::std::string& value);
+  inline void set_srcdatasource(const char* value);
+  inline void set_srcdatasource(const char* value, size_t size);
+  inline ::std::string* mutable_srcdatasource();
+  inline ::std::string* release_srcdatasource();
+  inline void set_allocated_srcdatasource(::std::string* srcdatasource);
+
+  // required string SrcLayer = 3;
+  inline bool has_srclayer() const;
+  inline void clear_srclayer();
+  static const int kSrcLayerFieldNumber = 3;
+  inline const ::std::string& srclayer() const;
+  inline void set_srclayer(const ::std::string& value);
+  inline void set_srclayer(const char* value);
+  inline void set_srclayer(const char* value, size_t size);
+  inline ::std::string* mutable_srclayer();
+  inline ::std::string* release_srclayer();
+  inline void set_allocated_srclayer(::std::string* srclayer);
+
+  // required string DstDataSource = 4;
+  inline bool has_dstdatasource() const;
+  inline void clear_dstdatasource();
+  static const int kDstDataSourceFieldNumber = 4;
+  inline const ::std::string& dstdatasource() const;
+  inline void set_dstdatasource(const ::std::string& value);
+  inline void set_dstdatasource(const char* value);
+  inline void set_dstdatasource(const char* value, size_t size);
+  inline ::std::string* mutable_dstdatasource();
+  inline ::std::string* release_dstdatasource();
+  inline void set_allocated_dstdatasource(::std::string* dstdatasource);
+
+  // required string DstLayer = 5;
+  inline bool has_dstlayer() const;
+  inline void clear_dstlayer();
+  static const int kDstLayerFieldNumber = 5;
+  inline const ::std::string& dstlayer() const;
+  inline void set_dstlayer(const ::std::string& value);
+  inline void set_dstlayer(const char* value);
+  inline void set_dstlayer(const char* value, size_t size);
+  inline ::std::string* mutable_dstlayer();
+  inline ::std::string* release_dstlayer();
+  inline void set_allocated_dstlayer(::std::string* dstlayer);
+
+  // repeated int32 features = 6;
+  inline int features_size() const;
+  inline void clear_features();
+  static const int kFeaturesFieldNumber = 6;
+  inline ::google::protobuf::int32 features(int index) const;
+  inline void set_features(int index, ::google::protobuf::int32 value);
+  inline void add_features(::google::protobuf::int32 value);
+  inline const ::google::protobuf::RepeatedField< ::google::protobuf::int32 >&
+      features() const;
+  inline ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
+      mutable_features();
+
+  // @@protoc_insertion_point(class_scope:hpgc.DataMessage)
+ private:
+  inline void set_has_dataindex();
+  inline void clear_has_dataindex();
+  inline void set_has_srcdatasource();
+  inline void clear_has_srcdatasource();
+  inline void set_has_srclayer();
+  inline void clear_has_srclayer();
+  inline void set_has_dstdatasource();
+  inline void clear_has_dstdatasource();
+  inline void set_has_dstlayer();
+  inline void clear_has_dstlayer();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::std::string* srcdatasource_;
+  ::std::string* srclayer_;
+  ::std::string* dstdatasource_;
+  ::std::string* dstlayer_;
+  ::google::protobuf::RepeatedField< ::google::protobuf::int32 > features_;
+  ::google::protobuf::int32 dataindex_;
+
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
+
+  friend void  protobuf_AddDesc_rpc_2emessage_2eproto();
+  friend void protobuf_AssignDesc_rpc_2emessage_2eproto();
+  friend void protobuf_ShutdownFile_rpc_2emessage_2eproto();
+
+  void InitAsDefaultInstance();
+  static DataMessage* default_instance_;
+};
 // ===================================================================
 
 
@@ -428,446 +510,453 @@ namespace hpgc {
 
 // -------------------------------------------------------------------
 
+// RegisterWorkerRequest
+
+// required int32 id = 1;
+inline bool RegisterWorkerRequest::has_id() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void RegisterWorkerRequest::set_has_id() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void RegisterWorkerRequest::clear_has_id() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void RegisterWorkerRequest::clear_id() {
+  id_ = 0;
+  clear_has_id();
+}
+inline ::google::protobuf::int32 RegisterWorkerRequest::id() const {
+  return id_;
+}
+inline void RegisterWorkerRequest::set_id(::google::protobuf::int32 value) {
+  set_has_id();
+  id_ = value;
+}
+
+// -------------------------------------------------------------------
+
 // TaskMessage
 
 // required .hpgc.TaskType Type = 1;
-    inline bool TaskMessage::has_type() const {
-        return (_has_bits_[0] & 0x00000001u) != 0;
-    }
-    inline void TaskMessage::set_has_type() {
-        _has_bits_[0] |= 0x00000001u;
-    }
-    inline void TaskMessage::clear_has_type() {
-        _has_bits_[0] &= ~0x00000001u;
-    }
-    inline void TaskMessage::clear_type() {
-        type_ = 1;
-        clear_has_type();
-    }
-    inline ::hpgc::TaskType TaskMessage::type() const {
-        return static_cast< ::hpgc::TaskType >(type_);
-    }
-    inline void TaskMessage::set_type(::hpgc::TaskType value) {
-        assert(::hpgc::TaskType_IsValid(value));
-        set_has_type();
-        type_ = value;
-    }
+inline bool TaskMessage::has_type() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void TaskMessage::set_has_type() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void TaskMessage::clear_has_type() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void TaskMessage::clear_type() {
+  type_ = 1;
+  clear_has_type();
+}
+inline ::hpgc::TaskType TaskMessage::type() const {
+  return static_cast< ::hpgc::TaskType >(type_);
+}
+inline void TaskMessage::set_type(::hpgc::TaskType value) {
+  assert(::hpgc::TaskType_IsValid(value));
+  set_has_type();
+  type_ = value;
+}
 
 // required int32 DataIndex = 2;
-    inline bool TaskMessage::has_dataindex() const {
-        return (_has_bits_[0] & 0x00000002u) != 0;
-    }
-    inline void TaskMessage::set_has_dataindex() {
-        _has_bits_[0] |= 0x00000002u;
-    }
-    inline void TaskMessage::clear_has_dataindex() {
-        _has_bits_[0] &= ~0x00000002u;
-    }
-    inline void TaskMessage::clear_dataindex() {
-        dataindex_ = 0;
-        clear_has_dataindex();
-    }
-    inline ::google::protobuf::int32 TaskMessage::dataindex() const {
-        return dataindex_;
-    }
-    inline void TaskMessage::set_dataindex(::google::protobuf::int32 value) {
-        set_has_dataindex();
-        dataindex_ = value;
-    }
+inline bool TaskMessage::has_dataindex() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void TaskMessage::set_has_dataindex() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void TaskMessage::clear_has_dataindex() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void TaskMessage::clear_dataindex() {
+  dataindex_ = 0;
+  clear_has_dataindex();
+}
+inline ::google::protobuf::int32 TaskMessage::dataindex() const {
+  return dataindex_;
+}
+inline void TaskMessage::set_dataindex(::google::protobuf::int32 value) {
+  set_has_dataindex();
+  dataindex_ = value;
+}
 
 // required double StartTime = 3;
-    inline bool TaskMessage::has_starttime() const {
-        return (_has_bits_[0] & 0x00000004u) != 0;
-    }
-    inline void TaskMessage::set_has_starttime() {
-        _has_bits_[0] |= 0x00000004u;
-    }
-    inline void TaskMessage::clear_has_starttime() {
-        _has_bits_[0] &= ~0x00000004u;
-    }
-    inline void TaskMessage::clear_starttime() {
-        starttime_ = 0;
-        clear_has_starttime();
-    }
-    inline double TaskMessage::starttime() const {
-        return starttime_;
-    }
-    inline void TaskMessage::set_starttime(double value) {
-        set_has_starttime();
-        starttime_ = value;
-    }
+inline bool TaskMessage::has_starttime() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void TaskMessage::set_has_starttime() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void TaskMessage::clear_has_starttime() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void TaskMessage::clear_starttime() {
+  starttime_ = 0;
+  clear_has_starttime();
+}
+inline double TaskMessage::starttime() const {
+  return starttime_;
+}
+inline void TaskMessage::set_starttime(double value) {
+  set_has_starttime();
+  starttime_ = value;
+}
 
 // required double EndTime = 4;
-    inline bool TaskMessage::has_endtime() const {
-        return (_has_bits_[0] & 0x00000008u) != 0;
-    }
-    inline void TaskMessage::set_has_endtime() {
-        _has_bits_[0] |= 0x00000008u;
-    }
-    inline void TaskMessage::clear_has_endtime() {
-        _has_bits_[0] &= ~0x00000008u;
-    }
-    inline void TaskMessage::clear_endtime() {
-        endtime_ = 0;
-        clear_has_endtime();
-    }
-    inline double TaskMessage::endtime() const {
-        return endtime_;
-    }
-    inline void TaskMessage::set_endtime(double value) {
-        set_has_endtime();
-        endtime_ = value;
-    }
+inline bool TaskMessage::has_endtime() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void TaskMessage::set_has_endtime() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void TaskMessage::clear_has_endtime() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void TaskMessage::clear_endtime() {
+  endtime_ = 0;
+  clear_has_endtime();
+}
+inline double TaskMessage::endtime() const {
+  return endtime_;
+}
+inline void TaskMessage::set_endtime(double value) {
+  set_has_endtime();
+  endtime_ = value;
+}
 
 // -------------------------------------------------------------------
 
 // DataMessage
 
 // required int32 DataIndex = 1;
-    inline bool DataMessage::has_dataindex() const {
-        return (_has_bits_[0] & 0x00000001u) != 0;
-    }
-    inline void DataMessage::set_has_dataindex() {
-        _has_bits_[0] |= 0x00000001u;
-    }
-    inline void DataMessage::clear_has_dataindex() {
-        _has_bits_[0] &= ~0x00000001u;
-    }
-    inline void DataMessage::clear_dataindex() {
-        dataindex_ = 0;
-        clear_has_dataindex();
-    }
-    inline ::google::protobuf::int32 DataMessage::dataindex() const {
-        return dataindex_;
-    }
-    inline void DataMessage::set_dataindex(::google::protobuf::int32 value) {
-        set_has_dataindex();
-        dataindex_ = value;
-    }
+inline bool DataMessage::has_dataindex() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void DataMessage::set_has_dataindex() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void DataMessage::clear_has_dataindex() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void DataMessage::clear_dataindex() {
+  dataindex_ = 0;
+  clear_has_dataindex();
+}
+inline ::google::protobuf::int32 DataMessage::dataindex() const {
+  return dataindex_;
+}
+inline void DataMessage::set_dataindex(::google::protobuf::int32 value) {
+  set_has_dataindex();
+  dataindex_ = value;
+}
 
 // required string SrcDataSource = 2;
-    inline bool DataMessage::has_srcdatasource() const {
-        return (_has_bits_[0] & 0x00000002u) != 0;
-    }
-    inline void DataMessage::set_has_srcdatasource() {
-        _has_bits_[0] |= 0x00000002u;
-    }
-    inline void DataMessage::clear_has_srcdatasource() {
-        _has_bits_[0] &= ~0x00000002u;
-    }
-    inline void DataMessage::clear_srcdatasource() {
-        if (srcdatasource_ != &::google::protobuf::internal::kEmptyString) {
-            srcdatasource_->clear();
-        }
-        clear_has_srcdatasource();
-    }
-    inline const ::std::string & DataMessage::srcdatasource() const {
-        return *srcdatasource_;
-    }
-    inline void DataMessage::set_srcdatasource(const ::std::string & value) {
-        set_has_srcdatasource();
-        if (srcdatasource_ == &::google::protobuf::internal::kEmptyString) {
-            srcdatasource_ = new ::std::string;
-        }
-        srcdatasource_->assign(value);
-    }
-    inline void DataMessage::set_srcdatasource(const char * value) {
-        set_has_srcdatasource();
-        if (srcdatasource_ == &::google::protobuf::internal::kEmptyString) {
-            srcdatasource_ = new ::std::string;
-        }
-        srcdatasource_->assign(value);
-    }
-    inline void DataMessage::set_srcdatasource(const char * value, size_t size) {
-        set_has_srcdatasource();
-        if (srcdatasource_ == &::google::protobuf::internal::kEmptyString) {
-            srcdatasource_ = new ::std::string;
-        }
-        srcdatasource_->assign(reinterpret_cast<const char *>(value), size);
-    }
-    inline ::std::string * DataMessage::mutable_srcdatasource() {
-        set_has_srcdatasource();
-        if (srcdatasource_ == &::google::protobuf::internal::kEmptyString) {
-            srcdatasource_ = new ::std::string;
-        }
-        return srcdatasource_;
-    }
-    inline ::std::string * DataMessage::release_srcdatasource() {
-        clear_has_srcdatasource();
-        if (srcdatasource_ == &::google::protobuf::internal::kEmptyString) {
-            return NULL;
-        }
-        else {
-            ::std::string * temp = srcdatasource_;
-            srcdatasource_ = const_cast< ::std::string *>
-                             (&::google::protobuf::internal::kEmptyString);
-            return temp;
-        }
-    }
-    inline void DataMessage::set_allocated_srcdatasource(::std::string *
-            srcdatasource) {
-        if (srcdatasource_ != &::google::protobuf::internal::kEmptyString) {
-            delete srcdatasource_;
-        }
-        if (srcdatasource) {
-            set_has_srcdatasource();
-            srcdatasource_ = srcdatasource;
-        }
-        else {
-            clear_has_srcdatasource();
-            srcdatasource_ = const_cast< ::std::string *>
-                             (&::google::protobuf::internal::kEmptyString);
-        }
-    }
+inline bool DataMessage::has_srcdatasource() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void DataMessage::set_has_srcdatasource() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void DataMessage::clear_has_srcdatasource() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void DataMessage::clear_srcdatasource() {
+  if (srcdatasource_ != &::google::protobuf::internal::kEmptyString) {
+    srcdatasource_->clear();
+  }
+  clear_has_srcdatasource();
+}
+inline const ::std::string& DataMessage::srcdatasource() const {
+  return *srcdatasource_;
+}
+inline void DataMessage::set_srcdatasource(const ::std::string& value) {
+  set_has_srcdatasource();
+  if (srcdatasource_ == &::google::protobuf::internal::kEmptyString) {
+    srcdatasource_ = new ::std::string;
+  }
+  srcdatasource_->assign(value);
+}
+inline void DataMessage::set_srcdatasource(const char* value) {
+  set_has_srcdatasource();
+  if (srcdatasource_ == &::google::protobuf::internal::kEmptyString) {
+    srcdatasource_ = new ::std::string;
+  }
+  srcdatasource_->assign(value);
+}
+inline void DataMessage::set_srcdatasource(const char* value, size_t size) {
+  set_has_srcdatasource();
+  if (srcdatasource_ == &::google::protobuf::internal::kEmptyString) {
+    srcdatasource_ = new ::std::string;
+  }
+  srcdatasource_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* DataMessage::mutable_srcdatasource() {
+  set_has_srcdatasource();
+  if (srcdatasource_ == &::google::protobuf::internal::kEmptyString) {
+    srcdatasource_ = new ::std::string;
+  }
+  return srcdatasource_;
+}
+inline ::std::string* DataMessage::release_srcdatasource() {
+  clear_has_srcdatasource();
+  if (srcdatasource_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = srcdatasource_;
+    srcdatasource_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void DataMessage::set_allocated_srcdatasource(::std::string* srcdatasource) {
+  if (srcdatasource_ != &::google::protobuf::internal::kEmptyString) {
+    delete srcdatasource_;
+  }
+  if (srcdatasource) {
+    set_has_srcdatasource();
+    srcdatasource_ = srcdatasource;
+  } else {
+    clear_has_srcdatasource();
+    srcdatasource_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
 
 // required string SrcLayer = 3;
-    inline bool DataMessage::has_srclayer() const {
-        return (_has_bits_[0] & 0x00000004u) != 0;
-    }
-    inline void DataMessage::set_has_srclayer() {
-        _has_bits_[0] |= 0x00000004u;
-    }
-    inline void DataMessage::clear_has_srclayer() {
-        _has_bits_[0] &= ~0x00000004u;
-    }
-    inline void DataMessage::clear_srclayer() {
-        if (srclayer_ != &::google::protobuf::internal::kEmptyString) {
-            srclayer_->clear();
-        }
-        clear_has_srclayer();
-    }
-    inline const ::std::string & DataMessage::srclayer() const {
-        return *srclayer_;
-    }
-    inline void DataMessage::set_srclayer(const ::std::string & value) {
-        set_has_srclayer();
-        if (srclayer_ == &::google::protobuf::internal::kEmptyString) {
-            srclayer_ = new ::std::string;
-        }
-        srclayer_->assign(value);
-    }
-    inline void DataMessage::set_srclayer(const char * value) {
-        set_has_srclayer();
-        if (srclayer_ == &::google::protobuf::internal::kEmptyString) {
-            srclayer_ = new ::std::string;
-        }
-        srclayer_->assign(value);
-    }
-    inline void DataMessage::set_srclayer(const char * value, size_t size) {
-        set_has_srclayer();
-        if (srclayer_ == &::google::protobuf::internal::kEmptyString) {
-            srclayer_ = new ::std::string;
-        }
-        srclayer_->assign(reinterpret_cast<const char *>(value), size);
-    }
-    inline ::std::string * DataMessage::mutable_srclayer() {
-        set_has_srclayer();
-        if (srclayer_ == &::google::protobuf::internal::kEmptyString) {
-            srclayer_ = new ::std::string;
-        }
-        return srclayer_;
-    }
-    inline ::std::string * DataMessage::release_srclayer() {
-        clear_has_srclayer();
-        if (srclayer_ == &::google::protobuf::internal::kEmptyString) {
-            return NULL;
-        }
-        else {
-            ::std::string * temp = srclayer_;
-            srclayer_ = const_cast< ::std::string *>
-                        (&::google::protobuf::internal::kEmptyString);
-            return temp;
-        }
-    }
-    inline void DataMessage::set_allocated_srclayer(::std::string * srclayer) {
-        if (srclayer_ != &::google::protobuf::internal::kEmptyString) {
-            delete srclayer_;
-        }
-        if (srclayer) {
-            set_has_srclayer();
-            srclayer_ = srclayer;
-        }
-        else {
-            clear_has_srclayer();
-            srclayer_ = const_cast< ::std::string *>
-                        (&::google::protobuf::internal::kEmptyString);
-        }
-    }
+inline bool DataMessage::has_srclayer() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void DataMessage::set_has_srclayer() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void DataMessage::clear_has_srclayer() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void DataMessage::clear_srclayer() {
+  if (srclayer_ != &::google::protobuf::internal::kEmptyString) {
+    srclayer_->clear();
+  }
+  clear_has_srclayer();
+}
+inline const ::std::string& DataMessage::srclayer() const {
+  return *srclayer_;
+}
+inline void DataMessage::set_srclayer(const ::std::string& value) {
+  set_has_srclayer();
+  if (srclayer_ == &::google::protobuf::internal::kEmptyString) {
+    srclayer_ = new ::std::string;
+  }
+  srclayer_->assign(value);
+}
+inline void DataMessage::set_srclayer(const char* value) {
+  set_has_srclayer();
+  if (srclayer_ == &::google::protobuf::internal::kEmptyString) {
+    srclayer_ = new ::std::string;
+  }
+  srclayer_->assign(value);
+}
+inline void DataMessage::set_srclayer(const char* value, size_t size) {
+  set_has_srclayer();
+  if (srclayer_ == &::google::protobuf::internal::kEmptyString) {
+    srclayer_ = new ::std::string;
+  }
+  srclayer_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* DataMessage::mutable_srclayer() {
+  set_has_srclayer();
+  if (srclayer_ == &::google::protobuf::internal::kEmptyString) {
+    srclayer_ = new ::std::string;
+  }
+  return srclayer_;
+}
+inline ::std::string* DataMessage::release_srclayer() {
+  clear_has_srclayer();
+  if (srclayer_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = srclayer_;
+    srclayer_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void DataMessage::set_allocated_srclayer(::std::string* srclayer) {
+  if (srclayer_ != &::google::protobuf::internal::kEmptyString) {
+    delete srclayer_;
+  }
+  if (srclayer) {
+    set_has_srclayer();
+    srclayer_ = srclayer;
+  } else {
+    clear_has_srclayer();
+    srclayer_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
 
 // required string DstDataSource = 4;
-    inline bool DataMessage::has_dstdatasource() const {
-        return (_has_bits_[0] & 0x00000008u) != 0;
-    }
-    inline void DataMessage::set_has_dstdatasource() {
-        _has_bits_[0] |= 0x00000008u;
-    }
-    inline void DataMessage::clear_has_dstdatasource() {
-        _has_bits_[0] &= ~0x00000008u;
-    }
-    inline void DataMessage::clear_dstdatasource() {
-        if (dstdatasource_ != &::google::protobuf::internal::kEmptyString) {
-            dstdatasource_->clear();
-        }
-        clear_has_dstdatasource();
-    }
-    inline const ::std::string & DataMessage::dstdatasource() const {
-        return *dstdatasource_;
-    }
-    inline void DataMessage::set_dstdatasource(const ::std::string & value) {
-        set_has_dstdatasource();
-        if (dstdatasource_ == &::google::protobuf::internal::kEmptyString) {
-            dstdatasource_ = new ::std::string;
-        }
-        dstdatasource_->assign(value);
-    }
-    inline void DataMessage::set_dstdatasource(const char * value) {
-        set_has_dstdatasource();
-        if (dstdatasource_ == &::google::protobuf::internal::kEmptyString) {
-            dstdatasource_ = new ::std::string;
-        }
-        dstdatasource_->assign(value);
-    }
-    inline void DataMessage::set_dstdatasource(const char * value, size_t size) {
-        set_has_dstdatasource();
-        if (dstdatasource_ == &::google::protobuf::internal::kEmptyString) {
-            dstdatasource_ = new ::std::string;
-        }
-        dstdatasource_->assign(reinterpret_cast<const char *>(value), size);
-    }
-    inline ::std::string * DataMessage::mutable_dstdatasource() {
-        set_has_dstdatasource();
-        if (dstdatasource_ == &::google::protobuf::internal::kEmptyString) {
-            dstdatasource_ = new ::std::string;
-        }
-        return dstdatasource_;
-    }
-    inline ::std::string * DataMessage::release_dstdatasource() {
-        clear_has_dstdatasource();
-        if (dstdatasource_ == &::google::protobuf::internal::kEmptyString) {
-            return NULL;
-        }
-        else {
-            ::std::string * temp = dstdatasource_;
-            dstdatasource_ = const_cast< ::std::string *>
-                             (&::google::protobuf::internal::kEmptyString);
-            return temp;
-        }
-    }
-    inline void DataMessage::set_allocated_dstdatasource(::std::string *
-            dstdatasource) {
-        if (dstdatasource_ != &::google::protobuf::internal::kEmptyString) {
-            delete dstdatasource_;
-        }
-        if (dstdatasource) {
-            set_has_dstdatasource();
-            dstdatasource_ = dstdatasource;
-        }
-        else {
-            clear_has_dstdatasource();
-            dstdatasource_ = const_cast< ::std::string *>
-                             (&::google::protobuf::internal::kEmptyString);
-        }
-    }
+inline bool DataMessage::has_dstdatasource() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void DataMessage::set_has_dstdatasource() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void DataMessage::clear_has_dstdatasource() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void DataMessage::clear_dstdatasource() {
+  if (dstdatasource_ != &::google::protobuf::internal::kEmptyString) {
+    dstdatasource_->clear();
+  }
+  clear_has_dstdatasource();
+}
+inline const ::std::string& DataMessage::dstdatasource() const {
+  return *dstdatasource_;
+}
+inline void DataMessage::set_dstdatasource(const ::std::string& value) {
+  set_has_dstdatasource();
+  if (dstdatasource_ == &::google::protobuf::internal::kEmptyString) {
+    dstdatasource_ = new ::std::string;
+  }
+  dstdatasource_->assign(value);
+}
+inline void DataMessage::set_dstdatasource(const char* value) {
+  set_has_dstdatasource();
+  if (dstdatasource_ == &::google::protobuf::internal::kEmptyString) {
+    dstdatasource_ = new ::std::string;
+  }
+  dstdatasource_->assign(value);
+}
+inline void DataMessage::set_dstdatasource(const char* value, size_t size) {
+  set_has_dstdatasource();
+  if (dstdatasource_ == &::google::protobuf::internal::kEmptyString) {
+    dstdatasource_ = new ::std::string;
+  }
+  dstdatasource_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* DataMessage::mutable_dstdatasource() {
+  set_has_dstdatasource();
+  if (dstdatasource_ == &::google::protobuf::internal::kEmptyString) {
+    dstdatasource_ = new ::std::string;
+  }
+  return dstdatasource_;
+}
+inline ::std::string* DataMessage::release_dstdatasource() {
+  clear_has_dstdatasource();
+  if (dstdatasource_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = dstdatasource_;
+    dstdatasource_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void DataMessage::set_allocated_dstdatasource(::std::string* dstdatasource) {
+  if (dstdatasource_ != &::google::protobuf::internal::kEmptyString) {
+    delete dstdatasource_;
+  }
+  if (dstdatasource) {
+    set_has_dstdatasource();
+    dstdatasource_ = dstdatasource;
+  } else {
+    clear_has_dstdatasource();
+    dstdatasource_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
 
 // required string DstLayer = 5;
-    inline bool DataMessage::has_dstlayer() const {
-        return (_has_bits_[0] & 0x00000010u) != 0;
-    }
-    inline void DataMessage::set_has_dstlayer() {
-        _has_bits_[0] |= 0x00000010u;
-    }
-    inline void DataMessage::clear_has_dstlayer() {
-        _has_bits_[0] &= ~0x00000010u;
-    }
-    inline void DataMessage::clear_dstlayer() {
-        if (dstlayer_ != &::google::protobuf::internal::kEmptyString) {
-            dstlayer_->clear();
-        }
-        clear_has_dstlayer();
-    }
-    inline const ::std::string & DataMessage::dstlayer() const {
-        return *dstlayer_;
-    }
-    inline void DataMessage::set_dstlayer(const ::std::string & value) {
-        set_has_dstlayer();
-        if (dstlayer_ == &::google::protobuf::internal::kEmptyString) {
-            dstlayer_ = new ::std::string;
-        }
-        dstlayer_->assign(value);
-    }
-    inline void DataMessage::set_dstlayer(const char * value) {
-        set_has_dstlayer();
-        if (dstlayer_ == &::google::protobuf::internal::kEmptyString) {
-            dstlayer_ = new ::std::string;
-        }
-        dstlayer_->assign(value);
-    }
-    inline void DataMessage::set_dstlayer(const char * value, size_t size) {
-        set_has_dstlayer();
-        if (dstlayer_ == &::google::protobuf::internal::kEmptyString) {
-            dstlayer_ = new ::std::string;
-        }
-        dstlayer_->assign(reinterpret_cast<const char *>(value), size);
-    }
-    inline ::std::string * DataMessage::mutable_dstlayer() {
-        set_has_dstlayer();
-        if (dstlayer_ == &::google::protobuf::internal::kEmptyString) {
-            dstlayer_ = new ::std::string;
-        }
-        return dstlayer_;
-    }
-    inline ::std::string * DataMessage::release_dstlayer() {
-        clear_has_dstlayer();
-        if (dstlayer_ == &::google::protobuf::internal::kEmptyString) {
-            return NULL;
-        }
-        else {
-            ::std::string * temp = dstlayer_;
-            dstlayer_ = const_cast< ::std::string *>
-                        (&::google::protobuf::internal::kEmptyString);
-            return temp;
-        }
-    }
-    inline void DataMessage::set_allocated_dstlayer(::std::string * dstlayer) {
-        if (dstlayer_ != &::google::protobuf::internal::kEmptyString) {
-            delete dstlayer_;
-        }
-        if (dstlayer) {
-            set_has_dstlayer();
-            dstlayer_ = dstlayer;
-        }
-        else {
-            clear_has_dstlayer();
-            dstlayer_ = const_cast< ::std::string *>
-                        (&::google::protobuf::internal::kEmptyString);
-        }
-    }
+inline bool DataMessage::has_dstlayer() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void DataMessage::set_has_dstlayer() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void DataMessage::clear_has_dstlayer() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void DataMessage::clear_dstlayer() {
+  if (dstlayer_ != &::google::protobuf::internal::kEmptyString) {
+    dstlayer_->clear();
+  }
+  clear_has_dstlayer();
+}
+inline const ::std::string& DataMessage::dstlayer() const {
+  return *dstlayer_;
+}
+inline void DataMessage::set_dstlayer(const ::std::string& value) {
+  set_has_dstlayer();
+  if (dstlayer_ == &::google::protobuf::internal::kEmptyString) {
+    dstlayer_ = new ::std::string;
+  }
+  dstlayer_->assign(value);
+}
+inline void DataMessage::set_dstlayer(const char* value) {
+  set_has_dstlayer();
+  if (dstlayer_ == &::google::protobuf::internal::kEmptyString) {
+    dstlayer_ = new ::std::string;
+  }
+  dstlayer_->assign(value);
+}
+inline void DataMessage::set_dstlayer(const char* value, size_t size) {
+  set_has_dstlayer();
+  if (dstlayer_ == &::google::protobuf::internal::kEmptyString) {
+    dstlayer_ = new ::std::string;
+  }
+  dstlayer_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* DataMessage::mutable_dstlayer() {
+  set_has_dstlayer();
+  if (dstlayer_ == &::google::protobuf::internal::kEmptyString) {
+    dstlayer_ = new ::std::string;
+  }
+  return dstlayer_;
+}
+inline ::std::string* DataMessage::release_dstlayer() {
+  clear_has_dstlayer();
+  if (dstlayer_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = dstlayer_;
+    dstlayer_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void DataMessage::set_allocated_dstlayer(::std::string* dstlayer) {
+  if (dstlayer_ != &::google::protobuf::internal::kEmptyString) {
+    delete dstlayer_;
+  }
+  if (dstlayer) {
+    set_has_dstlayer();
+    dstlayer_ = dstlayer;
+  } else {
+    clear_has_dstlayer();
+    dstlayer_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
 
 // repeated int32 features = 6;
-    inline int DataMessage::features_size() const {
-        return features_.size();
-    }
-    inline void DataMessage::clear_features() {
-        features_.Clear();
-    }
-    inline ::google::protobuf::int32 DataMessage::features(int index) const {
-        return features_.Get(index);
-    }
-    inline void DataMessage::set_features(int index,
-                                          ::google::protobuf::int32 value) {
-        features_.Set(index, value);
-    }
-    inline void DataMessage::add_features(::google::protobuf::int32 value) {
-        features_.Add(value);
-    }
-    inline const ::google::protobuf::RepeatedField< ::google::protobuf::int32 > &
-    DataMessage::features() const {
-        return features_;
-    }
-    inline ::google::protobuf::RepeatedField< ::google::protobuf::int32 > *
-    DataMessage::mutable_features() {
-        return &features_;
-    }
+inline int DataMessage::features_size() const {
+  return features_.size();
+}
+inline void DataMessage::clear_features() {
+  features_.Clear();
+}
+inline ::google::protobuf::int32 DataMessage::features(int index) const {
+  return features_.Get(index);
+}
+inline void DataMessage::set_features(int index, ::google::protobuf::int32 value) {
+  features_.Set(index, value);
+}
+inline void DataMessage::add_features(::google::protobuf::int32 value) {
+  features_.Add(value);
+}
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::int32 >&
+DataMessage::features() const {
+  return features_;
+}
+inline ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
+DataMessage::mutable_features() {
+  return &features_;
+}
 
 
 // @@protoc_insertion_point(namespace_scope)
@@ -876,18 +965,18 @@ namespace hpgc {
 
 #ifndef SWIG
 namespace google {
-    namespace protobuf {
+namespace protobuf {
 
-        template <>
-        inline const EnumDescriptor * GetEnumDescriptor< ::hpgc::MessageType>() {
-            return ::hpgc::MessageType_descriptor();
-        }
-        template <>
-        inline const EnumDescriptor * GetEnumDescriptor< ::hpgc::TaskType>() {
-            return ::hpgc::TaskType_descriptor();
-        }
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::hpgc::MessageType>() {
+  return ::hpgc::MessageType_descriptor();
+}
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::hpgc::TaskType>() {
+  return ::hpgc::TaskType_descriptor();
+}
 
-    }  // namespace google
+}  // namespace google
 }  // namespace protobuf
 #endif  // SWIG
 

@@ -1,57 +1,101 @@
 #include "SlaveRole.h"
-#include <mpiobject.h>
-#include <mpimessage.h>
-#include <mpioperator.sendmsg.h>
 #include "port.debug.h"
-#include "MessageTag.h"
+#include "timer.h"
+#include "common.h"
+#include "ScopeGuard.h"
 
-int hpgc::SlaveRole::Action() {
-    ReadyToGo();
-    bool isGameOver = false;
-    while (!isGameOver) {
-        auto data = ReceiveMasterMsg();
-        switch (data->IsOk) {
-        case MessageTag::MSG_TAG_DATA_OK: {
-            double startTime = m_mpi.GetNow();
-            auto status = m_alg->Compute(data->Barrel);
-            double endTime = m_mpi.GetNow();
-            TaskInfo info;
-            info.DataIndex = data->DataIndex;
-            info.StartTime = startTime;
-            info.EndTime = endTime;
-            info.IsOk = status;
-            SendTaskInfo(info);
-            break;
-        }
-        case MessageTag::MSG_TAG_DATA_WRONG: {
-            isGameOver = true;
-            break;
-        }
-        default: {
-            BUG("something is wrong");
-        }
-        }
-    }
-    return 1;
-}
+#define FLAGS_sleep_time 3
 
-hpgc::SlaveRole::SlaveRole(IV2VAlgorithm * task, MetaData * dst) {
-    m_alg = task;
-    m_dst = dst;
-}
+namespace hpgc{
 
-void hpgc::SlaveRole::ReadyToGo() {
-    for (auto i = 1; i < m_mpi.GetOurSize(); ++i) {
-        TaskInfo info;
-        info.IsOk = MessageTag::MSG_TAG_TASK_OK;
-        SendTaskInfo(info);
-    }
-}
 
-hpgc::DataInfo * hpgc::SlaveRole::ReceiveMasterMsg() {
-    return MPI_ReceiveDataInfo(m_mpi.GetMaster(), MessageTag::MSG_TAG_DATA);
-}
+	int SlaveRole::Action()
+	{
+		RegisterWorkerRequest req;
+		req.set_id(Id());
+		m_net->Send(0, REGISTER_WORKER, req);
 
-void hpgc::SlaveRole::SendTaskInfo(TaskInfo info) {
-    MPI_SendTaskInfo(info, m_mpi.GetMaster(), MessageTag::MSG_TAG_TASK);
+		DataMessage dRequest;
+		while (m_workRunning)
+		{
+			Timer idle;
+			while (!m_net->TryRead(0, WORKER_RUN_TASK, &dRequest))
+			{
+				Sleep(FLAGS_sleep_time);
+			}
+
+			if (!m_workRunning)
+			{
+				return;
+			}
+
+			m_taskRunning = true;
+
+			TaskMessage kRequest;
+
+			VectorBarral * barrel = BarralFromDataMessage(&dRequest);
+			ON_SCOPE_EXIT([&](){delete barrel; });
+
+
+			kRequest.set_starttime(Now());
+
+			if (m_alg->Compute(barrel))
+			{
+				kRequest.set_type(TASK_OK);
+			}
+			else
+			{
+				kRequest.set_type(TASK_WRONG);
+			}
+			
+			kRequest.set_endtime(Now());
+
+			m_taskRunning = false;
+
+			m_net->Send(0, WORKER_TASK_DONE, kRequest);
+			
+		}
+		
+		return 0;
+		
+	}
+
+	SlaveRole::SlaveRole(IV2VAlgorithm * task, MetaData * dst)
+	{
+		m_dst = dst;
+		m_alg = task;
+		m_net = RPCNetwork::Get();
+		m_workRunning = true;
+		m_taskRunning = false;
+
+		RegisterCallback(WORKER_FINALIZE, new EmptyMessage(),
+			new EmptyMessage, &SlaveRole::HandleGameOver, this);
+	}
+
+	int SlaveRole::Id()
+	{
+		return m_net->id();
+	}
+
+	void SlaveRole::HandleGameOver(const EmptyMessage & req, EmptyMessage * resp, const RPCInfo& rpc)
+	{
+		while (m_taskRunning)
+		{
+			Sleep(FLAGS_sleep_time);
+		}
+
+		m_taskRunning = false;
+		m_workRunning = false;
+
+	}
+
+	SlaveRole::~SlaveRole()
+	{
+		m_workRunning = false;
+	}
+
+
+
+
+
 }

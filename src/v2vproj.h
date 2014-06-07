@@ -8,11 +8,11 @@ namespace hpgc {
     class V2vProj : public IV2VAlgorithm {
     public:
         virtual bool Compute(VectorBarral * barrel);
-        V2vProj(const char * dst, const char * srs);
+		V2vProj(int argc, char ** argv);
 
     private:
-        const char * m_dst;
-        const char * m_srs;
+        const char * m_dst ;
+        const char * m_srs ;
         OGRSpatialReference * m_ogrSr;
     };
 }

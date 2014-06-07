@@ -1,11 +1,10 @@
 #include "rpc.h"
+#include "rpc.message.pb.h"
 #include "port.debug.h"
 #include "timer.h"
-#include "rpc.message.pb.h"
 
-#include <port.designpattern.h>
-#include <mpioperator.recvmsg.h>
-#include <mpioperator.sendmsg.h>
+#include <algorithm>
+
 
 #define FLAGS_sleep_time 3
 
@@ -30,10 +29,7 @@ namespace hpgc {
 
     RPCRequest::~RPCRequest() {}
 
-
-
-
-	RPCThread::RPCThread() {
+	RPCNetwork::RPCNetwork() {
 		if (!getenv("OMPI_COMM_WORLD_RANK")) {
 			world_ = nullptr;
 			id_ = -1;
@@ -45,38 +41,36 @@ namespace hpgc {
 
 		world_ = &MPI::COMM_WORLD;
 		running = 1;
-		t_ = new std::thread(&RPCThread::Run, this);
+		t_ = new std::thread(&RPCNetwork::Run, this);
 		id_ = world_->Get_rank();
 
-		for (int i = 0; i < kMaxMethods; ++i) {
-			callbacks_[i] = nullptr;
-		}
+		callbacks_.fill(nullptr);
 	}
 
-	bool RPCThread::active() const {
+	bool RPCNetwork::active() const {
 		return active_sends_.size() + pending_sends_.size() > 0;
 	}
 
-	int RPCThread::size() const {
+	int RPCNetwork::size() const {
 		return world_->Get_size();
 	}
 
-	int64_t RPCThread::pending_bytes() const {
+	int64_t RPCNetwork::pending_bytes() const {
 		std::lock_guard<std::recursive_mutex> sl(send_lock);
 		int64_t t = 0;
 
-		for (std::unordered_set<RPCRequest*>::const_iterator i = active_sends_.begin(); i != active_sends_.end(); ++i) {
-			t += (*i)->payload.size();
-		}
+		std::for_each(active_sends_.cbegin(), active_sends_.cend(), 
+			[&t](const RPCRequest * it){ t += it->payload.size(); }
+		);
 
-		for (int i = 0; i < pending_sends_.size(); ++i) {
-			t += pending_sends_[i]->payload.size();
-		}
+		std::for_each(pending_sends_.cbegin(), pending_sends_.cend(),
+			[&t](const RPCRequest * it){ t += it->payload.size(); }
+		);
 
 		return t;
 	}
 
-	void RPCThread::CollectActive() {
+	void RPCNetwork::CollectActive() {
 		if (active_sends_.empty())
 			return;
 
@@ -91,16 +85,17 @@ namespace hpgc {
 			}
 			++i;
 		}
+
 	}
 
-	void RPCThread::InvokeCallback(CallbackInfo *ci, RPCInfo rpc) {
+	void RPCNetwork::InvokeCallback(CallbackInfo *ci, RPCInfo rpc) {
 		ci->call(rpc);
 		Header reply_header;
 		reply_header.is_reply = true;
 		Send(new RPCRequest(rpc.source, rpc.tag, *ci->resp, reply_header));
 	}
 
-	void RPCThread::Run() {
+	void RPCNetwork::Run() {
 		while (running) {
 			MPI::Status st;
 
@@ -127,7 +122,7 @@ namespace hpgc {
 
 						RPCInfo rpc = { source, id(), tag };
 						if (ci->spawn_thread) {
-							std::thread(std::bind(&RPCThread::InvokeCallback, this, ci, rpc));
+							std::thread(std::bind(&RPCNetwork::InvokeCallback, this, ci, rpc));
 						}
 						else {
 							ci->call(rpc);
@@ -161,7 +156,7 @@ namespace hpgc {
 		}
 	}
 
-	bool RPCThread::check_request_queue(int src, int type, Message* data) {
+	bool RPCNetwork::check_request_queue(int src, int type, Message* data) {
 
 		Queue& q = requests[type][src];
 		if (!q.empty()) {
@@ -180,7 +175,7 @@ namespace hpgc {
 		return false;
 	}
 
-	bool RPCThread::check_reply_queue(int src, int type, Message* data) {
+	bool RPCNetwork::check_reply_queue(int src, int type, Message* data) {
 
 		Queue& q = replies[type][src];
 		if (!q.empty()) {
@@ -200,14 +195,14 @@ namespace hpgc {
 	}
 
 	// Blocking read for the given source and message type.
-	void RPCThread::Read(int desired_src, int type, Message* data, int *source) {
+	void RPCNetwork::Read(int desired_src, int type, Message* data, int *source) {
 		Timer t;
 		while (!TryRead(desired_src, type, data, source)) {
 			Sleep(FLAGS_sleep_time);
 		}
 	}
 
-	bool RPCThread::TryRead(int src, int type, Message* data, int *source) {
+	bool RPCNetwork::TryRead(int src, int type, Message* data, int *source) {
 		if (src == hpgc::ANY_SOURCE) {
 			for (int i = 0; i < world_->Get_size(); ++i) {
 				if (TryRead(i, type, data, source)) {
@@ -225,7 +220,7 @@ namespace hpgc {
 		return false;
 	}
 
-	void RPCThread::Call(int dst, int method, const Message &msg, Message *reply) {
+	void RPCNetwork::Call(int dst, int method, const Message &msg, Message *reply) {
 		Send(dst, method, msg);
 		Timer t;
 		while (!check_reply_queue(dst, method, reply)) {
@@ -234,18 +229,18 @@ namespace hpgc {
 	}
 
 	// Enqueue the given request for transmission.
-	void RPCThread::Send(RPCRequest *req) {
+	void RPCNetwork::Send(RPCRequest *req) {
 		std::lock_guard<std::recursive_mutex> sl(send_lock);
 		//    LOG(INFO) << "Sending... " << MP(req->target, req->rpc_type);
 		pending_sends_.push_back(req);
 	}
 
-	void RPCThread::Send(int dst, int method, const Message &msg) {
+	void RPCNetwork::Send(int dst, int method, const Message &msg) {
 		RPCRequest *r = new RPCRequest(dst, method, msg);
 		Send(r);
 	}
 
-	void RPCThread::Shutdown() {
+	void RPCNetwork::Shutdown() {
 		if (running) {
 			Flush();
 			running = false;
@@ -253,24 +248,24 @@ namespace hpgc {
 		}
 	}
 
-	void RPCThread::Flush() {
+	void RPCNetwork::Flush() {
 		while (active()) {
 			Sleep(FLAGS_sleep_time);
 		}
 	}
 
-	void RPCThread::Broadcast(int method, const Message& msg) {
+	void RPCNetwork::Broadcast(int method, const Message& msg) {
 		for (int i = 1; i < world_->Get_size(); ++i) {
 			Send(i, method, msg);
 		}
 	}
 
-	void RPCThread::SyncBroadcast(int method, const Message& msg) {
+	void RPCNetwork::SyncBroadcast(int method, const Message& msg) {
 		Broadcast(method, msg);
 		WaitForSync(method, world_->Get_size() - 1);
 	}
 
-	void RPCThread::WaitForSync(int method, int count) {
+	void RPCNetwork::WaitForSync(int method, int count) {
 		EmptyMessage empty;
 		std::unordered_set<int> pending;
 
@@ -291,7 +286,7 @@ namespace hpgc {
 		}
 	}
 
-	void RPCThread::_RegisterCallback(int message_type, Message *req, Message* resp, Callback cb) {
+	void RPCNetwork::_RegisterCallback(int message_type, Message *req, Message* resp, Callback cb) {
 		CallbackInfo *cbinfo = new CallbackInfo;
 
 		cbinfo->spawn_thread = false;
@@ -302,21 +297,21 @@ namespace hpgc {
 		callbacks_[message_type] = cbinfo;
 	}
 
-	void RPCThread::SpawnThreadFor(int req_type) {
+	void RPCNetwork::SpawnThreadFor(int req_type) {
 		callbacks_[req_type]->spawn_thread = true;
 	}
 
-	static RPCThread* net = nullptr;
-	RPCThread* RPCThread::Get() {
+	static RPCNetwork* net = nullptr;
+	RPCNetwork* RPCNetwork::Get() {
 		return net;
 	}
 
 	static void ShutdownMPI() {
-		RPCThread::Get()->Shutdown();
+		RPCNetwork::Get()->Shutdown();
 	}
 
-	void RPCThread::Init() {
-		net = new RPCThread();
+	void RPCNetwork::Init() {
+		net = new RPCNetwork();
 		atexit(&ShutdownMPI);
 	}
 
