@@ -35,7 +35,7 @@ namespace hpgc{
 
 	TaskState * GetPendingTask(){
 		auto result = std::find_if(m_task.begin(), m_task.end(),
-			[&](std::pair<Taskid, TaskState *> & pair){
+			[](std::pair<Taskid, TaskState *> & pair){
 			if (pair.second->status == TaskState::PENDING)
 			{
 				return true;
@@ -57,7 +57,7 @@ namespace hpgc{
 
 	bool CheckAllFinished(){
 		auto result = std::find_if(m_task.begin(), m_task.end(),
-			[&](std::pair<Taskid, TaskState *> & pair){
+			[](std::pair<Taskid, TaskState *> & pair){
 				if (pair.second->status == TaskState::PENDING ||
 					pair.second->status == TaskState::ACTIVE)
 				{
@@ -69,11 +69,11 @@ namespace hpgc{
 
 		if (result != m_task.end())
 		{
-			return true;
+			return false;
 		}
 		else
 		{
-			return false;
+			return true;
 		}
 		
 	}
@@ -87,8 +87,11 @@ namespace hpgc{
 			if (CheckAllFinished())
 			{
 				m_masterRuning = false;
+				break;
 			}
 
+
+			/// dispatch task
 			task = GetPendingTask();
 			
 			if (task != nullptr && !m_activeSlaves.empty())
@@ -97,6 +100,7 @@ namespace hpgc{
 				m_activeSlaves.pop();
 
 				drequest = DataMessageFromBarral(task->data);
+				ON_SCOPE_EXIT([&](){delete drequest; });
 
 				m_net->Send(slave, WORKER_RUN_TASK,*drequest);
 
@@ -104,6 +108,7 @@ namespace hpgc{
 				task->status = TaskState::ACTIVE;
 			}
 
+			// check active task 
 			std::for_each(m_task.begin(), m_task.end(), 
 				[&](std::pair<Taskid,TaskState *> & pair){
 					if (pair.second->status == TaskState::ACTIVE)
@@ -112,10 +117,12 @@ namespace hpgc{
 						TaskMessage tRequest;
 						if (m_net->TryRead(pair.second->slave, WORKER_TASK_DONE,&tRequest, &source))
 						{
-							Record * stat = RecordFromTaskMessage(&tRequest);
+							Record stat = RecordFromTaskMessage(&tRequest);
+							stat.slave = pair.second->slave;
 							m_statistics.push_back(stat);
 
 							pair.second->status = TaskState::FINISHED;
+							m_activeSlaves.push(pair.second->slave);
 						}
 						
 					}

@@ -22,7 +22,7 @@ namespace hpgc {
     private:
 		bool m_masterRuning;
 		std::queue<int> m_activeSlaves;
-		std::vector<Record * > m_statistics;
+		std::vector<Record > m_statistics;
 		RPCNetwork * m_net;
     };
 }

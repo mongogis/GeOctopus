@@ -19,7 +19,7 @@ namespace hpgc{
 	VectorBarral * BarralFromDataMessage(DataMessage * msg);
 	DataMessage *  DataMessageFromBarral(VectorBarral * barral);
 
-	Record * RecordFromTaskMessage(TaskMessage * msg);
+	Record  RecordFromTaskMessage(TaskMessage * msg);
 
 	
 }
