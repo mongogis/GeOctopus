@@ -12,16 +12,17 @@ namespace hpgc {
     public:
         virtual int Action();
         SlaveRole(IV2VAlgorithm * task, MetaData * dst);
-		~SlaveRole();
-		int Id();
+        ~SlaveRole();
+        int Id();
     private:
-		bool m_workRunning;
-		bool m_taskRunning;
+        bool m_workRunning;
+        bool m_taskRunning;
         IV2VAlgorithm * m_alg;
         MetaData * m_dst;
-		RPCNetwork * m_net;
+        RPCNetwork * m_net;
 
-		void HandleGameOver(const EmptyMessage & req,EmptyMessage * resp ,const RPCInfo& rpc );
+        void HandleGameOver(const EmptyMessage & req, EmptyMessage * resp ,
+                            const RPCInfo & rpc );
     };
 }
 #endif // SlaveRole_h__

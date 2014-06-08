@@ -24,9 +24,7 @@
 using namespace hpgc;
 
 int main(int argc, char ** argv) {
-	hpgc::HPGCInit(argc, argv);
-
-
+    hpgc::HPGCInit(argc, argv);
     const char * pszSrcFile = NULL;
     const char * pszDstFile = NULL;
     const char * pszSrcLayer = NULL;
@@ -43,7 +41,7 @@ int main(int argc, char ** argv) {
                                        pszDstLayer);
     auto partition = new EfcPartition(2);
     auto scheduler = new M2sScheduler();
-    auto vct = new V2vProj(argc,argv);
+    auto vct = new V2vProj(argc, argv);
     auto alg = new HpgcVectorAlgorithm(vct, scheduler, partition, metadata);
     alg->Run();
     return 0;

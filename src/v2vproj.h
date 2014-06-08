@@ -8,7 +8,7 @@ namespace hpgc {
     class V2vProj : public IV2VAlgorithm {
     public:
         virtual bool Compute(VectorBarral * barrel);
-		V2vProj(int argc, char ** argv);
+        V2vProj(int argc, char ** argv);
 
     private:
         const char * m_dst ;

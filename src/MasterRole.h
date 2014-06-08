@@ -10,20 +10,20 @@
 
 namespace hpgc {
 
-	struct TaskState;
-	struct Taskid;
+    struct TaskState;
+    struct Taskid;
 
     class MasterRole: public IRole {
     public:
         virtual int Action();
         MasterRole(VectorCellar * cellar);
-		~MasterRole();
+        ~MasterRole();
 
     private:
-		bool m_masterRuning;
-		std::queue<int> m_activeSlaves;
-		std::vector<Record > m_statistics;
-		RPCNetwork * m_net;
+        bool m_masterRuning;
+        std::queue<int> m_activeSlaves;
+        std::vector<Record > m_statistics;
+        RPCNetwork * m_net;
     };
 }
 #endif // MasterRole_h__
