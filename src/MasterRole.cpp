@@ -39,7 +39,7 @@ namespace hpgc {
 
     TaskState * GetPendingTask() {
         auto result = std::find_if(m_task.begin(), m_task.end(),
-        [](std::pair<Taskid, TaskState *> & pair) {
+        [](std::pair<const Taskid, TaskState *> & pair) {
             if (pair.second->status == TaskState::PENDING) {
                 return true;
             }
@@ -56,7 +56,7 @@ namespace hpgc {
 
     bool CheckAllFinished() {
         auto result = std::find_if(m_task.begin(), m_task.end(),
-        [](std::pair<Taskid, TaskState *> & pair) {
+        [](std::pair<const Taskid, TaskState *> & pair) {
             if (pair.second->status == TaskState::PENDING ||
                     pair.second->status == TaskState::ACTIVE) {
                 return true;
@@ -93,7 +93,7 @@ namespace hpgc {
             }
             // check active task
             std::for_each(m_task.begin(), m_task.end(),
-            [&](std::pair<Taskid, TaskState *> & pair) {
+            [&](std::pair<const Taskid, TaskState *> & pair) {
                 if (pair.second->status == TaskState::ACTIVE) {
                     int source = -1;
                     TaskMessage tRequest;
