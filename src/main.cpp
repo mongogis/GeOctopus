@@ -18,13 +18,12 @@
 #include "port.debug.h"
 #include "common.h"
 
-#include <mpiobject.h>
 #include <geoalgorithm.format.h>
 
 using namespace hpgc;
 
 int main(int argc, char ** argv) {
-    hpgc::HPGCInit(argc, argv);
+    HPGCInit(argc, argv);
     const char * pszSrcFile = NULL;
     const char * pszDstFile = NULL;
     const char * pszSrcLayer = NULL;

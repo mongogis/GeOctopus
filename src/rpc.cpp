@@ -2,6 +2,7 @@
 #include "rpc.message.pb.h"
 #include "port.debug.h"
 #include "timer.h"
+#include "common.h"
 
 #include <algorithm>
 
@@ -11,8 +12,10 @@
 
 namespace hpgc {
 
-    RPCRequest::RPCRequest(int target, int method, const Message & msg,
-                           Header h = Header()) {
+    int ANY_SOURCE = MPI::ANY_SOURCE;
+    int ANY_TAG = MPI::ANY_TAG;
+
+    RPCRequest::RPCRequest(int target, int method, const Message & msg, Header h ) {
         failures = 0;
         this->target = target;
         rpc_type = method;

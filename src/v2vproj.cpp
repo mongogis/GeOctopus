@@ -2,7 +2,6 @@
 #include "geoalgorithm.format.h"
 #include "ScopeGuard.h"
 #include <algorithm>
-#include <mpiobject.h>
 
 namespace hpgc {
 

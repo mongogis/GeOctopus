@@ -5,7 +5,7 @@
 #include <sys/time.h>
 
 namespace hpgc {
-    void HPGCInit(int argc, const char ** argv) {
+    void HPGCInit(int argc, char ** argv) {
         RPCNetwork::Init();
     }
 

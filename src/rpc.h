@@ -19,8 +19,8 @@ namespace hpgc {
 
     typedef google::protobuf::Message Message;
 
-    int ANY_SOURCE = MPI::ANY_SOURCE;
-    int ANY_TAG = MPI::ANY_TAG;
+    extern int ANY_SOURCE ;
+    extern int ANY_TAG ;
 
     struct RPCInfo {
         int target;

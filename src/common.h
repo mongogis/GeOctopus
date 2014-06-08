@@ -5,7 +5,7 @@
 #include "VectorBarrel.h"
 
 namespace hpgc {
-    void HPGCInit(int argc, const char ** argv);
+    void HPGCInit(int argc, char ** argv);
 	void Sleep(double t);
 
     struct Record {
