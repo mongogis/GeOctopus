@@ -12,7 +12,13 @@ namespace hpgc {
         Taskid(int i) :
             id(i) {
         }
+
+		bool operator<(const Taskid& b) const {
+			return id < b.id;
+		}
     };
+
+
 
     struct TaskState {
         enum Status {
