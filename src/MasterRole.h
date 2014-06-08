@@ -4,6 +4,7 @@
 #include "IRole.h"
 #include "IVectorScheduler.h"
 #include "rpc.h"
+#include "common.h"
 
 #include <queue>
 #include <map>

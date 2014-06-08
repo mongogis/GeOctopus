@@ -7,14 +7,15 @@ for subdir in modules:
     penv.SConscript("%s/SConscript" % subdir,{'env':env})
 
 penv['CPPPATH'].append('./geoformat')
-penv['CPPPATH'].append('./mpiobject')
 penv['LIBPATH'].append('./geoformat')
-penv['LIBPATH'].append('./mpiobject')
 
 penv['LIBPATH'].append(penv["ENV"]["GDAL_LIB"])
-penv['LIBPATH'].append(penv["ENV"]["MPI_LIB"])
-
 penv['CPPPATH'].append(penv["ENV"]["GDAL_INCLUDE"])
+
+penv['LIBPATH'].append(penv["ENV"]["MPI_LIB"])
 penv['CPPPATH'].append(penv["ENV"]["MPI_INCLUDE"])
 
-penv.Program('hpgc',Glob('*.cpp'),LIBS=['geoformat','mpiobject','gdal','mpi','mpi_cxx'])
+penv['LIBPATH'].append(penv["ENV"]["PROTO_LIB"])
+penv['CPPPATH'].append(penv["ENV"]["PROTO_INCLUDE"])
+
+penv.Program('hpgc',Glob('*.cpp'),LIBS=['geoformat','protobuf','gdal','mpi','mpi_cxx'])

@@ -1,7 +1,6 @@
 #include "HpgcVectorAlgorithm.h"
 #include "MasterRole.h"
 #include "SlaveRole.h"
-#include <mpiobject.h>
 
 hpgc::HpgcVectorAlgorithm::HpgcVectorAlgorithm(IV2VAlgorithm * alg,
         IVectorScheduler * she, IVectorPartition * par, VectorMetaData * meta) {

@@ -2,7 +2,6 @@
 #define RPC_h__
 
 #include "VectorBarrel.h"
-#include <mpiobject.h>
 
 #include <google/protobuf/message.h>
 #include <functional>
@@ -14,6 +13,7 @@
 #include <mutex>
 #include <unordered_set>
 #include <array>
+#include <mpi.h>
 
 namespace hpgc {
 
