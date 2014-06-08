@@ -1,17 +1,18 @@
 #include "M2sScheduler.h"
-#include <mpiobject.h>
-
 #include "MasterRole.h"
 #include "SlaveRole.h"
 #include "vector.metadata.h"
-#include <geoalgorithm.format.h>
 #include "ScopeGuard.h"
+#include "rpc.h"
+
+#include <geoalgorithm.format.h>
 
 void hpgc::M2sScheduler::Work(IV2VAlgorithm * task,
                               HpgcVectorAlgorithm * hpgcAlg) {
-    MPIObject mo;
+
+	int id = RPCNetwork::Get()->id();
     IRole * node = NULL;
-    if (mo.IsMaster()) {
+    if (id == 0) {
         auto meta = hpgcAlg->GetMetaData();
         auto partition = hpgcAlg->GetPartition();
         // TODO generate layer
