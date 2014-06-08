@@ -6,6 +6,7 @@
 
 namespace hpgc {
     void HPGCInit(int argc, const char ** argv);
+	void Sleep(double t);
 
     struct Record {
         double start_time;

@@ -20,7 +20,7 @@ namespace hpgc {
                 Sleep(FLAGS_sleep_time);
             }
             if (!m_workRunning) {
-                return;
+				return 1;
             }
             m_taskRunning = true;
             TaskMessage kRequest;
