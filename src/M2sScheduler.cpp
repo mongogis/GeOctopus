@@ -11,7 +11,6 @@ void hpgc::M2sScheduler::Work(IV2VAlgorithm * task,
                               HpgcVectorAlgorithm * hpgcAlg) {
 
 	int id = RPCNetwork::Get()->id();
-    IRole * node = NULL;
     if (id == 0) {
         auto meta = hpgcAlg->GetMetaData();
         auto partition = hpgcAlg->GetPartition();
@@ -21,13 +20,16 @@ void hpgc::M2sScheduler::Work(IV2VAlgorithm * task,
         auto dstlayer = dstds->CreateLayer(meta->GetDstMetaData()->GetLayerName(),
                                            NULL);
         VectorCellar * srcCellar = partition->Partition(meta);
-        node = new MasterRole(srcCellar);
+
+		MasterRole node = { srcCellar };
+		node.Action();
     }
     else {
         auto dst = hpgcAlg->GetMetaData()->GetDstMetaData();
-        node = new SlaveRole(task, dst);
+
+		SlaveRole node = { task, dst };
+		node.Action();
     }
-    node->Action();
 }
 
 

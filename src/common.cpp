@@ -3,10 +3,13 @@
 
 #include <asm/msr.h>
 #include <sys/time.h>
+#include <glog/logging.h>
 
 namespace hpgc {
     void HPGCInit(int argc, char ** argv) {
         RPCNetwork::Init();
+		google::InitGoogleLogging(argv[0]);
+		FLAGS_log_dir = "./log";
     }
 
     VectorBarral * BarralFromDataMessage(DataMessage * msg) {

@@ -19,11 +19,16 @@
 #include "common.h"
 
 #include <geoalgorithm.format.h>
+#include <glog/logging.h>
 
 using namespace hpgc;
 
 int main(int argc, char ** argv) {
     HPGCInit(argc, argv);
+
+	LOG(INFO) << "ok";
+
+	return 1;
     const char * pszSrcFile = NULL;
     const char * pszDstFile = NULL;
     const char * pszSrcLayer = NULL;

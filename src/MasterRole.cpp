@@ -125,6 +125,13 @@ namespace hpgc {
     }
 
     MasterRole::~MasterRole() {
+		for (int i = 0; i < m_net->size();++i)
+		{
+			EmptyMessage req;
+			int src = 0;
+			m_net->Send(i + 1, WORKER_FINALIZE,req);
+		}
+		
     }
 
 
