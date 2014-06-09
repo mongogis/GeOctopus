@@ -18,4 +18,7 @@ penv['CPPPATH'].append(penv["ENV"]["MPI_INCLUDE"])
 penv['LIBPATH'].append(penv["ENV"]["PROTO_LIB"])
 penv['CPPPATH'].append(penv["ENV"]["PROTO_INCLUDE"])
 
-penv.Program('hpgc',Glob('*.cpp'),LIBS=['geoformat','protobuf','gdal','mpi','mpi_cxx'])
+penv['LIBPATH'].append(penv["ENV"]["GLOG_LIB"])
+penv['CPPPATH'].append(penv["ENV"]["GLOG_INCLUDE"])
+
+penv.Program('hpgc',Glob('*.cpp'),LIBS=['geoformat','glog','protobuf','gdal','mpi','mpi_cxx'])
