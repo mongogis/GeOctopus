@@ -25,22 +25,11 @@ using namespace hpgc;
 
 int main(int argc, char ** argv) {
     HPGCInit(argc, argv);
+    const char * pszSrcFile = "/home/huangtao/hpgc_new/test";
+    const char * pszDstFile = "PG:dbname=postgis host=localhost port=5432 user=postgres password=postgres";
+    const char * pszSrcLayer = "test";
+    const char * pszDstLayer = "test";
 
-	LOG(INFO) << "ok";
-
-	return 1;
-    const char * pszSrcFile = NULL;
-    const char * pszDstFile = NULL;
-    const char * pszSrcLayer = NULL;
-    const char * pszDstLayer = NULL;
-    for (int i = 1; i < argc; i++) {
-        if (EQUAL(argv[i], "-s") && i < argc - 1) {
-            pszSrcFile = argv[++i];
-        }
-        else if (EQUAL(argv[i], "-d") && i < argc - 1) {
-            pszDstFile = argv[++i];
-        }
-    }
     auto metadata = new VectorMetaData(pszSrcFile, pszSrcLayer, pszDstFile,
                                        pszDstLayer);
     auto partition = new EfcPartition(2);
