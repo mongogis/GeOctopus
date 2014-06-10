@@ -17,6 +17,7 @@
 #include "M2sScheduler.h"
 #include "port.debug.h"
 #include "common.h"
+#include "rpc.h"
 
 #include <geoalgorithm.format.h>
 #include <glog/logging.h>
@@ -29,6 +30,17 @@ int main(int argc, char ** argv) {
     const char * pszDstFile = "PG:dbname=postgis host=localhost port=5432 user=postgres password=postgres";
     const char * pszSrcLayer = "test";
     const char * pszDstLayer = "test";
+
+	auto net = RPCNetwork::Get();
+	
+
+	if (net->id() == 0)
+	{
+		auto ds = VectorOpen(pszDstLayer, GA_Update);
+		ds->CreateLayer(pszDstLayer, NULL, wkbUnknown, NULL);
+		VectorClose(ds);
+	}
+	
 
     auto metadata = new VectorMetaData(pszSrcFile, pszSrcLayer, pszDstFile,
                                        pszDstLayer);
