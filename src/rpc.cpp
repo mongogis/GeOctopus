@@ -5,6 +5,7 @@
 #include "common.h"
 
 #include <algorithm>
+#include <stdlib.h>
 
 
 #define FLAGS_sleep_time 3

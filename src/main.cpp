@@ -21,21 +21,43 @@ int main(int argc, char ** argv) {
 
 	auto net = RPCNetwork::Get();
 	
+    char ** pszlist = NULL;
+    pszlist = CSLAddString(pszlist,"OVERWRITE=YES");
+    auto srs = (OGRSpatialReference *)OSRNewSpatialReference(NULL);
+    srs->SetFromUserInput("EPSG:4326");
+    BUG(srs);
 
 	if (net->id() == 0)
 	{
-		auto ds = VectorOpen(pszDstLayer, GA_Update);
-		ds->CreateLayer(pszDstLayer, NULL, wkbUnknown, NULL);
+		auto ds = VectorOpen(pszDstFile, GA_Update);
+        BUG(ds);
+		auto layer = ds->CreateLayer(pszDstLayer,srs, wkbPolygon, pszlist);
+        BUG(layer);
 		VectorClose(ds);
 	}
 
-	return 1;
-	
+    auto metadata = new VectorMetaData(pszSrcFile, pszSrcLayer, pszDstFile,pszDstLayer);
 
-    auto metadata = new VectorMetaData(pszSrcFile, pszSrcLayer, pszDstFile,
-                                       pszDstLayer);
+    BUG(metadata->GetSrcMetaData()->GetDataSourceName());
+    BUG(metadata->GetSrcMetaData()->GetLayerName());
+    BUG(metadata->GetDstMetaData()->GetDataSourceName());
+    BUG(metadata->GetDstMetaData()->GetLayerName());
+
     auto partition = new EfcPartition(2);
+
+    auto celler = partition->Partition(metadata);
+
+    for (int i = 0; i < celler->size(); ++i)
+    {
+        auto barrel = celler->GetByIndex(i);
+        auto ls = barrel->GetFeatures();
+        std::for_each(std::begin(ls),std::end(ls),[&](int x){BUG(x);});
+        BUG("========");
+    }
+
     auto scheduler = new M2sScheduler();
+
+    return 0;
     auto vct = new V2vProj(argc, argv);
     auto alg = new HpgcVectorAlgorithm(vct, scheduler, partition, metadata);
     alg->Run();

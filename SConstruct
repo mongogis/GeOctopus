@@ -9,7 +9,7 @@ release_env.Append(CPPDEFINES=['RELEASE'])
 release_env.VariantDir('build/release', 'src',duplicate=0)
 
 debug_env = common_env.Clone()
-debug_env.Append(CPPDEFINES=['DEBUG'])
+debug_env.Append(CPPDEFINES=['DEBUG',"TRACEON"])
 debug_env.VariantDir('build/debug', 'src',duplicate=0)
 
 modules = [
