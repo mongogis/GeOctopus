@@ -66,4 +66,7 @@ void VectorClean();
 ///清除栅格数据信息
 void RasterClean();
 
+///复制一个图层的属性信息
+void CopyLayerDefine(OGRLayer * source, OGRLayer * target);
+
 #endif

@@ -14,11 +14,6 @@ void hpgc::M2sScheduler::Work(IV2VAlgorithm * task,
     if (id == 0) {
         auto meta = hpgcAlg->GetMetaData();
         auto partition = hpgcAlg->GetPartition();
-        // TODO generate layer
-        auto dstds = VectorOpen(meta->GetDstMetaData()->GetDataSourceName(), GA_Update);
-        ON_SCOPE_EXIT([&dstds]() {OGRDataSource::DestroyDataSource(dstds); });
-        auto dstlayer = dstds->CreateLayer(meta->GetDstMetaData()->GetLayerName(),
-                                           NULL);
         VectorCellar * srcCellar = partition->Partition(meta);
 
 		MasterRole node = { srcCellar };
@@ -26,7 +21,6 @@ void hpgc::M2sScheduler::Work(IV2VAlgorithm * task,
     }
     else {
         auto dst = hpgcAlg->GetMetaData()->GetDstMetaData();
-
 		SlaveRole node = { task, dst };
 		node.Action();
     }

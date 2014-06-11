@@ -29,11 +29,16 @@ int main(int argc, char ** argv) {
 
 	if (net->id() == 0)
 	{
-		auto ds = VectorOpen(pszDstFile, GA_Update);
-        BUG(ds);
-		auto layer = ds->CreateLayer(pszDstLayer,srs, wkbPolygon, pszlist);
-        BUG(layer);
-		VectorClose(ds);
+		auto srcds = VectorOpen(pszSrcFile, GA_ReadOnly);
+		auto dstds = VectorOpen(pszDstFile, GA_Update);
+
+		auto srclayer = srcds->GetLayerByName(pszSrcLayer);
+		auto dstlayer = dstds->CreateLayer(pszDstLayer,srs, wkbPolygon, pszlist);
+
+		CopyLayerDefine(srclayer, dstlayer);
+
+		VectorClose(dstds);
+		VectorClose(srcds);
 	}
 
     auto metadata = new VectorMetaData(pszSrcFile, pszSrcLayer, pszDstFile,pszDstLayer);

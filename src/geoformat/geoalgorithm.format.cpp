@@ -91,3 +91,17 @@ void RegisterRaster() {
     GDALAllRegister();
 }
 
+void CopyLayerDefine(OGRLayer * source, OGRLayer * target)
+{
+	OGRFeatureDefn * poSrcFDefn = source->GetLayerDefn();
+	
+	target->SetStyleTable(source->GetStyleTable());
+	for (int i = 0; i < poSrcFDefn->GetFieldCount();++i)
+	{
+		OGRFieldDefn * poSrcFieldDefn = poSrcFDefn->GetFieldDefn(i);
+		target->CreateField(poSrcFieldDefn);
+	}
+	
+}
+
+
