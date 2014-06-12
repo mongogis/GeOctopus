@@ -21,7 +21,7 @@ void hpgc::M2sScheduler::Work(IV2VAlgorithm * task,
     }
     else {
         auto dst = hpgcAlg->GetMetaData()->GetDstMetaData();
-		SlaveRole node = { task, dst };
+		SlaveRole node = { task };
 		node.Action();
     }
 }

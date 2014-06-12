@@ -65,6 +65,8 @@ int main(int argc, char ** argv) {
 	BUG("TEST PROTOBUF");
 
 	auto barrel = celler->GetByIndex(1);
+	BUG(celler->size());
+	BUG(barrel->GetDstDataSource());
 
 	DataMessage * data = DataMessageFromBarral(barrel);
 

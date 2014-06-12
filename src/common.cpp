@@ -1,5 +1,6 @@
 #include "common.h"
 #include "rpc.h"
+#include "port.debug.h"
 
 #include <asm/msr.h>
 #include <sys/time.h>
@@ -31,8 +32,10 @@ namespace hpgc {
         dmsg->set_srclayer(barral->GetSrcLayer());
         dmsg->set_dstdatasource(barral->GetDstDataSource());
         dmsg->set_dstlayer(barral->GetDstLayer());
-        std::for_each(barral->GetFeatures().begin(), barral->GetFeatures().end(), 
-			[&](int id) { dmsg->add_features(id); } );
+	auto features = barral->GetFeatures();
+        std::for_each(features.begin(),features.end(), 
+			[&](int id) { BUG(id);dmsg->add_features(id); } );
+
         return dmsg;
     }
 
