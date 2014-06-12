@@ -57,84 +57,83 @@ int main(int argc, char ** argv) {
         auto barrel = celler->GetByIndex(i);
         auto ls = barrel->GetFeatures();
         std::for_each(std::begin(ls),std::end(ls),[&](int x){BUG(x);});
-        BUG("========");
+
+		// test celler to protobuf
+
+		BUG("TEST PROTOBUF");
+
+		auto barrel = celler->GetByIndex(1);
+		BUG(celler->size());
+		BUG(barrel->GetDstDataSource());
+
+		DataMessage * data = DataMessageFromBarral(barrel);
+
+		BUG(data->dstdatasource());
+		BUG(data->srcdatasource());
+		BUG(data->dstlayer());
+		BUG(data->srclayer());
+
+		std::string str = data->SerializeAsString();
+
+		DataMessage data1;
+		data1.ParseFromString(str);
+
+
+		auto barreltest = BarralFromDataMessage(&data1);
+
+		BUG(barreltest->GetDstDataSource());
+		BUG(barreltest->GetSrcDataSource());
+		BUG(barreltest->GetDstLayer());
+		BUG(barreltest->GetSrcLayer());
+
+
+		BUG("+++check+++");
+
+		if (barreltest->GetDstDataSource() == data->dstdatasource())
+		{
+			BUG("dst ds OK");
+		}
+		else
+		{
+			BUG("!! dst ds WRONG");
+		}
+
+		if (barreltest->GetDstLayer() == data->dstlayer())
+		{
+			BUG("dst layer OK");
+		}
+		else
+		{
+			BUG("!! dst layer WRONG") ;
+		}
+
+		if (barreltest->GetSrcDataSource() == data->srcdatasource())
+		{
+			BUG("src ds OK");
+		}
+		else
+		{
+			BUG("!! src datasource WRONG");
+		}
+
+		if (barreltest->GetSrcLayer() == data->srclayer())
+		{
+			BUG("src layer OK");
+		}
+		else
+		{
+			BUG("!! src layer WRONG");
+		}
+
+		if (barreltest->Id() == data->dataindex())
+		{
+			BUG("id OK");
+		}
+		else
+		{
+			BUG("!!id WRONG");
+		}
     }
-
-	// test celler to protobuf
-
-	BUG("TEST PROTOBUF");
-
-	auto barrel = celler->GetByIndex(1);
-	BUG(celler->size());
-	BUG(barrel->GetDstDataSource());
-
-	DataMessage * data = DataMessageFromBarral(barrel);
-
-	BUG(data->dstdatasource());
-	BUG(data->srcdatasource());
-	BUG(data->dstlayer());
-	BUG(data->srclayer());
-
-	std::string str = data->SerializeAsString();
-
-	DataMessage data1;
-	data1.ParseFromString(str);
-
-
-	auto barreltest = BarralFromDataMessage(&data1);
-
-	BUG(barreltest->GetDstDataSource());
-	BUG(barreltest->GetSrcDataSource());
-	BUG(barreltest->GetDstLayer());
-	BUG(barreltest->GetSrcLayer());
-
-
-	BUG("+++check+++");
-
-	if (barreltest->GetDstDataSource() == data->dstdatasource())
-	{
-		BUG("dst ds OK");
-	}
-	else
-	{
-		BUG("!! dst ds WRONG");
-	}
-
-	if (barreltest->GetDstLayer() == data->dstlayer())
-	{
-		BUG("dst layer OK");
-	}
-	else
-	{
-		BUG("!! dst layer WRONG") ;
-	}
-
-	if (barreltest->GetSrcDataSource() == data->srcdatasource())
-	{
-		BUG("src ds OK");
-	}
-	else
-	{
-		BUG("!! src datasource WRONG");
-	}
-
-	if (barreltest->GetSrcLayer() == data->srclayer())
-	{
-		BUG("src layer OK");
-	}
-	else
-	{
-		BUG("!! src layer WRONG");
-	}
-
-	if (barreltest->Id() == data->dataindex())
-	{
-		BUG("id OK");
-	}
-	else
-	{
-		BUG("!!id WRONG");
-	}
 
     auto scheduler = new M2sScheduler();
 

@@ -17,12 +17,12 @@ void hpgc::M2sScheduler::Work(IV2VAlgorithm * task,
         VectorCellar * srcCellar = partition->Partition(meta);
 
 		MasterRole node = { srcCellar };
-		node.Action();
+		//node.Action();
     }
     else {
         auto dst = hpgcAlg->GetMetaData()->GetDstMetaData();
 		SlaveRole node = { task };
-		node.Action();
+		//node.Action();
     }
 }
 

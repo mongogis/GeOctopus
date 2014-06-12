@@ -3,6 +3,8 @@
 #include "ScopeGuard.h"
 #include "rpc.message.pb.h"
 #include "common.h"
+
+#include <glog/logging.h>
 #include <geoalgorithm.format.h>
 
 namespace hpgc {
@@ -121,6 +123,7 @@ namespace hpgc {
             int src = 0;
             m_net->Read(hpgc::ANY_SOURCE, REGISTER_WORKER, &req , &src);
             m_activeSlaves.push(src);
+			LOG(INFO) <<" from "<<src<<" to "<<m_net->Id();
         }
     }
 
