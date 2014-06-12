@@ -16,7 +16,7 @@ hpgc::VectorCellar * hpgc::EfcPartition::Partition(VectorMetaData * meta) {
     // because push_back last feaure
     int efc_index = m_efc - 1;
     OGRFeature * current = NULL;
-
+	int id = 0;
     while (true) {
         current = srcLayer->GetNextFeature();
         if (current == NULL && srcFeatures.empty()) break;
@@ -35,7 +35,8 @@ hpgc::VectorCellar * hpgc::EfcPartition::Partition(VectorMetaData * meta) {
                                            , srcMeta->GetLayerName()
                                            , srcFeatures
                                            , dstMeta->GetDataSourceName()
-                                           , dstMeta->GetLayerName())
+                                           , dstMeta->GetLayerName()
+										   , id ++)
                          );
         srcFeatures.clear();
     }

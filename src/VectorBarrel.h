@@ -11,6 +11,8 @@ namespace hpgc {
 
     public:
 
+		int Id();
+
         std::string GetSrcDataSource();
 
         std::string GetSrcLayer();
@@ -22,12 +24,13 @@ namespace hpgc {
         std::string GetDstLayer();
 
         VectorBarral(std::string srcds, std::string srclayer, std::list<int> features,
-                     std::string dstds, std::string dstlayer)
+                     std::string dstds, std::string dstlayer,int id)
             : m_srcDatasource(srcds)
             , m_srcLayer(srclayer)
             , m_features(features)
             , m_dstDatasource(dstds)
-            , m_dstLayer(dstlayer) {
+            , m_dstLayer(dstlayer) 
+			, m_id(id){
         };
 
         VectorBarral() {};
@@ -38,6 +41,7 @@ namespace hpgc {
         std::list<int> m_features;
         std::string m_dstDatasource;
         std::string m_dstLayer;
+		int m_id;
     };
 
 }

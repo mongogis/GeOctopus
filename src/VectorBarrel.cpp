@@ -21,5 +21,9 @@ std::string hpgc::VectorBarral::GetDstLayer() {
     return m_dstLayer;
 }
 
+int hpgc::VectorBarral::Id(){
+	return m_id;
+}
+
 
 
