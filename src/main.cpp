@@ -93,13 +93,48 @@ int main(int argc, char ** argv) {
 
 	if (barreltest->GetDstDataSource() == data->dstdatasource())
 	{
-		BUG("OK");
+		BUG("dst ds OK");
 	}
 	else
 	{
-		BUG("WRONG");
+		BUG("!! dst ds WRONG");
 	}
 
+	if (barreltest->GetDstLayer() == data->dstlayer())
+	{
+		BUG("dst layer OK");
+	}
+	else
+	{
+		BUG("!! dst layer WRONG") ;
+	}
+
+	if (barreltest->GetSrcDataSource() == data->srcdatasource())
+	{
+		BUG("src ds OK");
+	}
+	else
+	{
+		BUG("!! src datasource WRONG");
+	}
+
+	if (barreltest->GetSrcLayer() == data->srclayer())
+	{
+		BUG("src layer OK");
+	}
+	else
+	{
+		BUG("!! src layer WRONG");
+	}
+
+	if (barreltest->Id() == data->dataindex())
+	{
+		BUG("id OK");
+	}
+	else
+	{
+		BUG("!!id WRONG");
+	}
 
     auto scheduler = new M2sScheduler();
 
