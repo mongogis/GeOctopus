@@ -36,49 +36,49 @@ namespace hpgc {
 
     RPCNetwork::RPCNetwork() {
         if (!getenv("OMPI_COMM_WORLD_RANK")) {
-            world_ = nullptr;
-            id_ = -1;
-            running = false;
+            m_word = nullptr;
+            m_id = -1;
+            m_running = false;
             return;
         }
         MPI::Init_thread(MPI_THREAD_SINGLE);
-        world_ = &MPI::COMM_WORLD;
-        running = 1;
-        t_ = new std::thread(&RPCNetwork::Run, this);
-        id_ = world_->Get_rank();
-        callbacks_.fill(nullptr);
+        m_word = &MPI::COMM_WORLD;
+        m_running = 1;
+        m_thread = new std::thread(&RPCNetwork::Run, this);
+        m_id = m_word->Get_rank();
+        m_callbacks.fill(nullptr);
     }
 
-    bool RPCNetwork::active() const {
-        return active_sends_.size() + pending_sends_.size() > 0;
+    bool RPCNetwork::Active() const {
+        return m_active_sends.size() + m_pending_sends.size() > 0;
     }
 
-    int RPCNetwork::size() const {
-        return world_->Get_size();
+    int RPCNetwork::Size() const {
+        return m_word->Get_size();
     }
 
-    int64_t RPCNetwork::pending_bytes() const {
-        std::lock_guard<std::recursive_mutex> sl(send_lock);
+    int64_t RPCNetwork::Pending_bytes() const {
+        std::lock_guard<std::recursive_mutex> sl(m_send_lock);
         int64_t t = 0;
-        std::for_each(active_sends_.cbegin(), active_sends_.cend(),
+        std::for_each(m_active_sends.cbegin(), m_active_sends.cend(),
         [&t](const RPCRequest * it) { t += it->payload.size(); }
                      );
-        std::for_each(pending_sends_.cbegin(), pending_sends_.cend(),
+        std::for_each(m_pending_sends.cbegin(), m_pending_sends.cend(),
         [&t](const RPCRequest * it) { t += it->payload.size(); }
                      );
         return t;
     }
 
     void RPCNetwork::CollectActive() {
-        if (active_sends_.empty())
+        if (m_active_sends.empty())
             return;
-        std::lock_guard<std::recursive_mutex> sl(send_lock);
-        std::unordered_set<RPCRequest *>::iterator i = active_sends_.begin();
-        while (i != active_sends_.end()) {
+        std::lock_guard<std::recursive_mutex> sl(m_send_lock);
+        std::unordered_set<RPCRequest *>::iterator i = m_active_sends.begin();
+        while (i != m_active_sends.end()) {
             RPCRequest * r = (*i);
             if (r->Finished()) {
                 delete r;
-                i = active_sends_.erase(i);
+                i = m_active_sends.erase(i);
                 continue;
             }
             ++i;
@@ -89,30 +89,30 @@ namespace hpgc {
         ci->call(rpc);
         Header reply_header;
         reply_header.is_reply = true;
-        Send(new RPCRequest(rpc.source, rpc.tag, *ci->resp, reply_header));
+        Send(new RPCRequest(rpc.source, rpc.tag, *ci->response, reply_header));
     }
 
     void RPCNetwork::Run() {
-        while (running) {
+        while (m_running) {
             MPI::Status st;
-            if (world_->Iprobe(hpgc::ANY_SOURCE, hpgc::ANY_TAG, st)) {
+            if (m_word->Iprobe(hpgc::ANY_SOURCE, hpgc::ANY_TAG, st)) {
                 int tag = st.Get_tag();
                 int source = st.Get_source();
                 int bytes = st.Get_count(MPI::BYTE);
                 std::string data;
                 data.resize(bytes);
-                world_->Recv(&data[0], bytes, MPI::BYTE, source, tag, st);
+                m_word->Recv(&data[0], bytes, MPI::BYTE, source, tag, st);
                 Header * h = (Header *)&data[0];
                 if (h->is_reply) {
-                    std::lock_guard<std::recursive_mutex> sl(q_lock[tag]);
-                    replies[tag][source].push_back(data);
+                    std::lock_guard<std::recursive_mutex> sl(m_q_lock[tag]);
+                    m_replies[tag][source].push_back(data);
                 }
                 else {
-                    if (callbacks_[tag] != nullptr) {
-                        CallbackInfo * ci = callbacks_[tag];
-                        ci->req->ParseFromArray(&data[0] + sizeof(Header),
+                    if (m_callbacks[tag] != nullptr) {
+                        CallbackInfo * ci = m_callbacks[tag];
+                        ci->request->ParseFromArray(&data[0] + sizeof(Header),
                                                 data.size() - sizeof(Header));
-                        RPCInfo rpc = { source, id(), tag };
+                        RPCInfo rpc = { source, Id(), tag };
                         if (ci->spawn_thread) {
                             std::thread(std::bind(&RPCNetwork::InvokeCallback, this, ci, rpc));
                         }
@@ -120,35 +120,35 @@ namespace hpgc {
                             ci->call(rpc);
                             Header reply_header;
                             reply_header.is_reply = true;
-                            Send(new RPCRequest(source, tag, *ci->resp, reply_header));
+                            Send(new RPCRequest(source, tag, *ci->response, reply_header));
                         }
                     }
                     else {
-                        std::lock_guard<std::recursive_mutex> sl(q_lock[tag]);
-                        requests[tag][source].push_back(data);
+                        std::lock_guard<std::recursive_mutex> sl(m_q_lock[tag]);
+                        m_requests[tag][source].push_back(data);
                     }
                 }
             }
             else {
                 Sleep(FLAGS_sleep_time);
             }
-            while (!pending_sends_.empty()) {
-                std::lock_guard<std::recursive_mutex> sl(send_lock);
-                RPCRequest * s = pending_sends_.back();
-                pending_sends_.pop_back();
+            while (!m_pending_sends.empty()) {
+                std::lock_guard<std::recursive_mutex> sl(m_send_lock);
+                RPCRequest * s = m_pending_sends.back();
+                m_pending_sends.pop_back();
                 s->start_time = Now();
-                s->mpi_req = world_->Issend(
+                s->mpi_req = m_word->Issend(
                                  s->payload.data(), s->payload.size(), MPI::BYTE, s->target, s->rpc_type);
-                active_sends_.insert(s);
+                m_active_sends.insert(s);
             }
             CollectActive();
         }
     }
 
     bool RPCNetwork::check_request_queue(int src, int type, Message * data) {
-        Queue & q = requests[type][src];
+        Queue & q = m_requests[type][src];
         if (!q.empty()) {
-            std::lock_guard<std::recursive_mutex> sl(q_lock[type]);
+            std::lock_guard<std::recursive_mutex> sl(m_q_lock[type]);
             if (q.empty())
                 return false;
             const std::string & s = q.front();
@@ -162,9 +162,9 @@ namespace hpgc {
     }
 
     bool RPCNetwork::check_reply_queue(int src, int type, Message * data) {
-        Queue & q = replies[type][src];
+        Queue & q = m_replies[type][src];
         if (!q.empty()) {
-            std::lock_guard<std::recursive_mutex> sl(q_lock[type]);
+            std::lock_guard<std::recursive_mutex> sl(m_q_lock[type]);
             if (q.empty())
                 return false;
             const std::string & s = q.front();
@@ -187,7 +187,7 @@ namespace hpgc {
 
     bool RPCNetwork::TryRead(int src, int type, Message * data, int * source) {
         if (src == hpgc::ANY_SOURCE) {
-            for (int i = 0; i < world_->Get_size(); ++i) {
+            for (int i = 0; i < m_word->Get_size(); ++i) {
                 if (TryRead(i, type, data, source)) {
                     return true;
                 }
@@ -213,9 +213,9 @@ namespace hpgc {
 
     // Enqueue the given request for transmission.
     void RPCNetwork::Send(RPCRequest * req) {
-        std::lock_guard<std::recursive_mutex> sl(send_lock);
+        std::lock_guard<std::recursive_mutex> sl(m_send_lock);
         //    LOG(INFO) << "Sending... " << MP(req->target, req->rpc_type);
-        pending_sends_.push_back(req);
+        m_pending_sends.push_back(req);
     }
 
     void RPCNetwork::Send(int dst, int method, const Message & msg) {
@@ -224,34 +224,34 @@ namespace hpgc {
     }
 
     void RPCNetwork::Shutdown() {
-        if (running) {
+        if (m_running) {
             Flush();
-            running = false;
+            m_running = false;
             MPI_Finalize();
         }
     }
 
     void RPCNetwork::Flush() {
-        while (active()) {
+        while (Active()) {
             Sleep(FLAGS_sleep_time);
         }
     }
 
     void RPCNetwork::Broadcast(int method, const Message & msg) {
-        for (int i = 1; i < world_->Get_size(); ++i) {
+        for (int i = 1; i < m_word->Get_size(); ++i) {
             Send(i, method, msg);
         }
     }
 
     void RPCNetwork::SyncBroadcast(int method, const Message & msg) {
         Broadcast(method, msg);
-        WaitForSync(method, world_->Get_size() - 1);
+        WaitForSync(method, m_word->Get_size() - 1);
     }
 
     void RPCNetwork::WaitForSync(int method, int count) {
         EmptyMessage empty;
         std::unordered_set<int> pending;
-        for (int i = 1; i < world_->Get_size(); ++i) {
+        for (int i = 1; i < m_word->Get_size(); ++i) {
             pending.insert(i);
         }
         while (!pending.empty()) {
@@ -270,14 +270,14 @@ namespace hpgc {
                                        Message * resp, Callback cb) {
         CallbackInfo * cbinfo = new CallbackInfo;
         cbinfo->spawn_thread = false;
-        cbinfo->req = req;
-        cbinfo->resp = resp;
+        cbinfo->request = req;
+        cbinfo->response = resp;
         cbinfo->call = cb;
-        callbacks_[message_type] = cbinfo;
+        m_callbacks[message_type] = cbinfo;
     }
 
     void RPCNetwork::SpawnThreadFor(int req_type) {
-        callbacks_[req_type]->spawn_thread = true;
+        m_callbacks[req_type]->spawn_thread = true;
     }
 
     static RPCNetwork * net = nullptr;

@@ -27,7 +27,7 @@ int main(int argc, char ** argv) {
     srs->SetFromUserInput("EPSG:4326");
     BUG(srs);
 
-	if (net->id() == 0)
+	if (net->Id() == 0)
 	{
 		auto srcds = VectorOpen(pszSrcFile, GA_ReadOnly);
 		auto dstds = VectorOpen(pszDstFile, GA_Update);
@@ -59,6 +59,45 @@ int main(int argc, char ** argv) {
         std::for_each(std::begin(ls),std::end(ls),[&](int x){BUG(x);});
         BUG("========");
     }
+
+	// test celler to protobuf
+
+	BUG("TEST PROTOBUF");
+
+	auto barrel = celler->GetByIndex(1);
+
+	DataMessage * data = DataMessageFromBarral(barrel);
+
+	BUG(data->dstdatasource());
+	BUG(data->srcdatasource());
+	BUG(data->dstlayer());
+	BUG(data->srclayer());
+
+	std::string str = data->SerializeAsString();
+
+	DataMessage data1;
+	data1.ParseFromString(str);
+
+
+	auto barreltest = BarralFromDataMessage(&data1);
+
+	BUG(barreltest->GetDstDataSource());
+	BUG(barreltest->GetSrcDataSource());
+	BUG(barreltest->GetDstLayer());
+	BUG(barreltest->GetSrcLayer());
+
+
+	BUG("+++check+++");
+
+	if (barreltest->GetDstDataSource() == data->dstdatasource())
+	{
+		BUG("OK");
+	}
+	else
+	{
+		BUG("WRONG");
+	}
+
 
     auto scheduler = new M2sScheduler();
 

@@ -11,14 +11,13 @@ namespace hpgc {
     class SlaveRole : public IRole {
     public:
         virtual int Action();
-        SlaveRole(IV2VAlgorithm * task, MetaData * dst);
+        SlaveRole(IV2VAlgorithm * task);
         ~SlaveRole();
         int Id();
     private:
         bool m_workRunning;
         bool m_taskRunning;
         IV2VAlgorithm * m_alg;
-        MetaData * m_dst;
         RPCNetwork * m_net;
 
         void HandleGameOver(const EmptyMessage & req, EmptyMessage * resp ,

@@ -40,8 +40,7 @@ namespace hpgc {
         return 0;
     }
 
-    SlaveRole::SlaveRole(IV2VAlgorithm * task, MetaData * dst) {
-        m_dst = dst;
+    SlaveRole::SlaveRole(IV2VAlgorithm * task) {
         m_alg = task;
         m_net = RPCNetwork::Get();
         m_workRunning = true;
@@ -51,7 +50,7 @@ namespace hpgc {
     }
 
     int SlaveRole::Id() {
-        return m_net->id();
+        return m_net->Id();
     }
 
     void SlaveRole::HandleGameOver(const EmptyMessage & req, EmptyMessage * resp,

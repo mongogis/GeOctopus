@@ -116,7 +116,7 @@ namespace hpgc {
             m_task[Taskid(i)] = new TaskState(Taskid(i), cellar->GetByIndex(i));
         }
         m_masterRuning = true;
-        for (int i = 0; i < m_net->size(); ++i) {
+        for (int i = 0; i < m_net->Size(); ++i) {
             RegisterWorkerRequest req;
             int src = 0;
             m_net->Read(hpgc::ANY_SOURCE, REGISTER_WORKER, &req , &src);
@@ -125,7 +125,7 @@ namespace hpgc {
     }
 
     MasterRole::~MasterRole() {
-		for (int i = 0; i < m_net->size();++i)
+		for (int i = 0; i < m_net->Size();++i)
 		{
 			EmptyMessage req;
 			int src = 0;

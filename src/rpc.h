@@ -66,8 +66,8 @@ namespace hpgc {
 
     class RPCNetwork {
     public:
-        bool active() const;
-        int64_t pending_bytes() const;
+        bool Active() const;
+        int64_t Pending_bytes() const;
 
         // Blocking read for the given source and message type.
         void Read(int desired_src, int type, Message * data, int * source = NULL);
@@ -87,8 +87,8 @@ namespace hpgc {
         void Flush();
         void Shutdown();
 
-        int id() { return id_; }
-        int size() const;
+        int Id() { return m_id; }
+        int Size() const;
 
         static RPCNetwork * Get();
         static void Init();
@@ -107,8 +107,8 @@ namespace hpgc {
         void SpawnThreadFor(int req_type);
 
         struct CallbackInfo {
-            Message * req;
-            Message * resp;
+            Message * request;
+            Message * response;
 
             Callback call;
 
@@ -121,21 +121,21 @@ namespace hpgc {
 
         typedef std::deque<std::string> Queue;
 
-        bool running;
+        bool m_running;
 
-        std::array<CallbackInfo *, kMaxMethods> callbacks_;
+        std::array<CallbackInfo *, kMaxMethods> m_callbacks;
 
-        std::vector<RPCRequest *> pending_sends_;
-        std::unordered_set<RPCRequest *> active_sends_;
+        std::vector<RPCRequest *> m_pending_sends;
+        std::unordered_set<RPCRequest *> m_active_sends;
 
-        Queue requests[kMaxMethods][kMaxHosts];
-        Queue replies[kMaxMethods][kMaxHosts];
+        Queue m_requests[kMaxMethods][kMaxHosts];
+        Queue m_replies[kMaxMethods][kMaxHosts];
 
-        MPI::Comm * world_;
-        mutable std::recursive_mutex send_lock;
-        mutable std::recursive_mutex q_lock[kMaxHosts];
-        mutable std::thread * t_;
-        int id_;
+        MPI::Comm * m_word;
+        mutable std::recursive_mutex m_send_lock;
+        mutable std::recursive_mutex m_q_lock[kMaxHosts];
+        mutable std::thread * m_thread;
+        int m_id;
 
         bool check_reply_queue(int src, int type, Message * data);
         bool check_request_queue(int src, int type, Message * data);

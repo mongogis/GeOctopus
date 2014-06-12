@@ -10,7 +10,7 @@
 void hpgc::M2sScheduler::Work(IV2VAlgorithm * task,
                               HpgcVectorAlgorithm * hpgcAlg) {
 
-	int id = RPCNetwork::Get()->id();
+	int id = RPCNetwork::Get()->Id();
     if (id == 0) {
         auto meta = hpgcAlg->GetMetaData();
         auto partition = hpgcAlg->GetPartition();
