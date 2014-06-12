@@ -19,11 +19,12 @@ namespace hpgc {
         auto dstds = msg->dstdatasource();
         auto dstlayer = msg->dstlayer();
         auto count = msg->features_size();
+	auto id = msg->dataindex();
         std::list<int> feats;
         for (int i = 0; i < count; ++i) {
             feats.push_back(msg->features(i));
         }
-        return new VectorBarral(srcds, srclayer, feats, dstds, dstlayer);
+        return new VectorBarral(srcds, srclayer, feats, dstds, dstlayer,id);
     }
 
     DataMessage * DataMessageFromBarral(VectorBarral * barral) {
@@ -32,6 +33,7 @@ namespace hpgc {
         dmsg->set_srclayer(barral->GetSrcLayer());
         dmsg->set_dstdatasource(barral->GetDstDataSource());
         dmsg->set_dstlayer(barral->GetDstLayer());
+	dmsg->set_dataindex(barral->Id());
 	auto features = barral->GetFeatures();
         std::for_each(features.begin(),features.end(), 
 			[&](int id) { BUG(id);dmsg->add_features(id); } );
