@@ -87,7 +87,7 @@ namespace hpgc {
         void Flush();
         void Shutdown();
 
-        int Id() { return m_id; }
+        int Id() const ;
         int Size() const;
 
         static RPCNetwork * Get();

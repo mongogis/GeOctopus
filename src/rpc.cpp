@@ -53,6 +53,10 @@ namespace hpgc {
         return m_active_sends.size() + m_pending_sends.size() > 0;
     }
 
+    int RPCNetwork::Id() const{
+	return m_word->Get_rank();
+    }
+
     int RPCNetwork::Size() const {
         return m_word->Get_size();
     }

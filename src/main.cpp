@@ -6,6 +6,7 @@
 #include "port.debug.h"
 #include "common.h"
 #include "rpc.h"
+#include "timer.h"
 
 #include <geoalgorithm.format.h>
 #include <glog/logging.h>
@@ -20,6 +21,8 @@ int main(int argc, char ** argv) {
     const char * pszDstLayer = "test";
 
 	auto net = RPCNetwork::Get();
+
+	BUG(net->Id());
 	
     char ** pszlist = NULL;
     pszlist = CSLAddString(pszlist,"OVERWRITE=YES");
@@ -59,6 +62,10 @@ int main(int argc, char ** argv) {
         std::for_each(std::begin(ls),std::end(ls),[&](int x){BUG(x);});
 
 		// test celler to protobuf
+	}
+
+	if(net->Id() == 0)
+	{
 
 		BUG("TEST PROTOBUF");
 
@@ -133,11 +140,13 @@ int main(int argc, char ** argv) {
 		{
 			BUG("!!id WRONG");
 		}
+
+	BUG(Now());
     }
+
 
     auto scheduler = new M2sScheduler();
 
-    return 0;
     auto vct = new V2vProj(argc, argv);
     auto alg = new HpgcVectorAlgorithm(vct, scheduler, partition, metadata);
     alg->Run();

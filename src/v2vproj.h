@@ -11,7 +11,6 @@ namespace hpgc {
         V2vProj(int argc, char ** argv);
 
     private:
-        const char * m_dst ;
         const char * m_srs ;
         OGRSpatialReference * m_ogrSr;
     };
