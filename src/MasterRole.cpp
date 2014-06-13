@@ -20,8 +20,6 @@ namespace hpgc {
 		}
     };
 
-
-
     struct TaskState {
         enum Status {
             PENDING = 0, ACTIVE = 1, FINISHED = 2

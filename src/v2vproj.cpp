@@ -1,6 +1,7 @@
 #include "v2vproj.h"
 #include "geoalgorithm.format.h"
 #include "ScopeGuard.h"
+#include "port.debug.h"
 #include <algorithm>
 
 namespace hpgc {
@@ -26,8 +27,11 @@ namespace hpgc {
         OGRCoordinateTransformation * poCT = poCT = OGRCreateCoordinateTransformation(
                 poSourceSRS, m_ogrSr);
         OGRFeatureDefn * poDstFeatureDefn = poDstLayer->GetLayerDefn();
-        std::for_each(begin(barrel->GetFeatures()), end(barrel->GetFeatures())
+
+        auto features = barrel->GetFeatures();
+        std::for_each(begin(features),end(features)
         , [&](int fid) {
+            poSrcLayer->GetFeature(fid);
             OGRFeature * poDstFeature = OGRFeature::CreateFeature(poDstFeatureDefn);
             ON_SCOPE_EXIT([&]() {OGRFeature::DestroyFeature(poDstFeature); });
             poDstFeature->SetFrom(poSrcLayer->GetFeature(fid));
