@@ -141,7 +141,7 @@ int main(int argc, char ** argv) {
 			BUG("!!id WRONG");
 		}
 
-	BUG(Now());
+		BUG(Now());
     }
 
 

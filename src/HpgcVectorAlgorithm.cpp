@@ -1,6 +1,7 @@
 #include "HpgcVectorAlgorithm.h"
 #include "MasterRole.h"
 #include "SlaveRole.h"
+#include "port.debug.h"
 
 hpgc::HpgcVectorAlgorithm::HpgcVectorAlgorithm(IV2VAlgorithm * alg,
         IVectorScheduler * she, IVectorPartition * par, VectorMetaData * meta) {
@@ -11,6 +12,8 @@ hpgc::HpgcVectorAlgorithm::HpgcVectorAlgorithm(IV2VAlgorithm * alg,
 }
 
 void hpgc::HpgcVectorAlgorithm::Run() {
+	auto id = RPCNetwork::Get()->Id();
+	BUG(id);
     m_scheduler->Work(m_algorithm, this);
 }
 
