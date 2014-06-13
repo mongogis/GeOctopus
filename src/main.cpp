@@ -21,14 +21,10 @@ int main(int argc, char ** argv) {
     const char * pszDstLayer = "test";
 
 	auto net = RPCNetwork::Get();
-
-	BUG(net->Id());
-	
     char ** pszlist = NULL;
     pszlist = CSLAddString(pszlist,"OVERWRITE=YES");
     auto srs = (OGRSpatialReference *)OSRNewSpatialReference(NULL);
     srs->SetFromUserInput("EPSG:4326");
-    BUG(srs);
 
 	if (net->Id() == 0)
 	{
@@ -46,55 +42,19 @@ int main(int argc, char ** argv) {
 
     auto metadata = new VectorMetaData(pszSrcFile, pszSrcLayer, pszDstFile,pszDstLayer);
 
-    BUG(metadata->GetSrcMetaData()->GetDataSourceName());
-    BUG(metadata->GetSrcMetaData()->GetLayerName());
-    BUG(metadata->GetDstMetaData()->GetDataSourceName());
-    BUG(metadata->GetDstMetaData()->GetLayerName());
-
     auto partition = new EfcPartition(2);
 
     auto celler = partition->Partition(metadata);
 
-    for (int i = 0; i < celler->size(); ++i)
-    {
-        auto barrel = celler->GetByIndex(i);
-        auto ls = barrel->GetFeatures();
-        std::for_each(std::begin(ls),std::end(ls),[&](int x){BUG(x);});
-
-		// test celler to protobuf
-	}
-
 	if(net->Id() == 0)
 	{
-
-		BUG("TEST PROTOBUF");
-
 		auto barrel = celler->GetByIndex(1);
-		BUG(celler->size());
-		BUG(barrel->GetDstDataSource());
-
 		DataMessage * data = DataMessageFromBarral(barrel);
-
-		BUG(data->dstdatasource());
-		BUG(data->srcdatasource());
-		BUG(data->dstlayer());
-		BUG(data->srclayer());
-
 		std::string str = data->SerializeAsString();
-
 		DataMessage data1;
 		data1.ParseFromString(str);
 
-
 		auto barreltest = BarralFromDataMessage(&data1);
-
-		BUG(barreltest->GetDstDataSource());
-		BUG(barreltest->GetSrcDataSource());
-		BUG(barreltest->GetDstLayer());
-		BUG(barreltest->GetSrcLayer());
-
-
-		BUG("+++check+++");
 
 		if (barreltest->GetDstDataSource() == data->dstdatasource())
 		{
@@ -141,12 +101,9 @@ int main(int argc, char ** argv) {
 			BUG("!!id WRONG");
 		}
 
-		BUG(Now());
     }
 
-
     auto scheduler = new M2sScheduler();
-
     auto vct = new V2vProj(argc, argv);
     auto alg = new HpgcVectorAlgorithm(vct, scheduler, partition, metadata);
     alg->Run();

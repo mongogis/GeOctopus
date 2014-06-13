@@ -6,9 +6,10 @@
 
 #include <algorithm>
 #include <stdlib.h>
+#include <iostream>
 
 
-#define FLAGS_sleep_time 3
+#define FLAGS_sleep_time 1
 
 
 namespace hpgc {
@@ -103,6 +104,7 @@ namespace hpgc {
                 int tag = st.Get_tag();
                 int source = st.Get_source();
                 int bytes = st.Get_count(MPI::BYTE);
+
                 std::string data;
                 data.resize(bytes);
                 m_word->Recv(&data[0], bytes, MPI::BYTE, source, tag, st);
@@ -136,6 +138,7 @@ namespace hpgc {
             else {
                 Sleep(FLAGS_sleep_time);
             }
+
             while (!m_pending_sends.empty()) {
                 std::lock_guard<std::recursive_mutex> sl(m_send_lock);
                 RPCRequest * s = m_pending_sends.back();
@@ -268,6 +271,10 @@ namespace hpgc {
             }
             Sleep(FLAGS_sleep_time);
         }
+    }
+
+    void RPCNetwork::Barrier(){
+       m_word->Barrier(); 
     }
 
     void RPCNetwork::_RegisterCallback(int message_type, Message * req,

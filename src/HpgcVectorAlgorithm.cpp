@@ -12,8 +12,6 @@ hpgc::HpgcVectorAlgorithm::HpgcVectorAlgorithm(IV2VAlgorithm * alg,
 }
 
 void hpgc::HpgcVectorAlgorithm::Run() {
-	auto id = RPCNetwork::Get()->Id();
-	BUG(id);
     m_scheduler->Work(m_algorithm, this);
 }
 

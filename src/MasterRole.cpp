@@ -114,11 +114,13 @@ namespace hpgc {
     }
 
     MasterRole::MasterRole(VectorCellar * cellar) {
+        m_masterRuning = true;
+        m_net = RPCNetwork::Get();
         for (int i = 0; i < cellar->size(); ++i) {
             m_task[Taskid(i)] = new TaskState(Taskid(i), cellar->GetByIndex(i));
         }
-        m_masterRuning = true;
-        for (int i = 0; i < m_net->Size(); ++i) {
+
+        for (int i = 0; i < m_net->Size()-1; ++i) {
             RegisterWorkerRequest req;
             int src = 0;
             m_net->Read(hpgc::ANY_SOURCE, REGISTER_WORKER, &req , &src);
@@ -128,13 +130,11 @@ namespace hpgc {
     }
 
     MasterRole::~MasterRole() {
-		for (int i = 0; i < m_net->Size();++i)
+		for (int i = 0; i < m_net->Size()-1;++i)
 		{
 			EmptyMessage req;
-			int src = 0;
 			m_net->Send(i + 1, WORKER_FINALIZE,req);
 		}
-		
     }
 
 

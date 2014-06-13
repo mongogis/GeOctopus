@@ -80,6 +80,7 @@ namespace hpgc {
         void Broadcast(int method, const Message & msg);
         void SyncBroadcast(int method, const Message & msg);
         void WaitForSync(int method, int count);
+        void Barrier();
 
         // Invoke 'method' on the destination, and wait for a reply.
         void Call(int dst, int method, const Message & msg, Message * reply);

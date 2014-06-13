@@ -36,7 +36,7 @@ namespace hpgc {
 	dmsg->set_dataindex(barral->Id());
 	auto features = barral->GetFeatures();
         std::for_each(features.begin(),features.end(), 
-			[&](int id) { BUG(id);dmsg->add_features(id); } );
+			[&](int id) {dmsg->add_features(id); } );
 
         return dmsg;
     }

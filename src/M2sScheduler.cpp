@@ -12,22 +12,20 @@ void hpgc::M2sScheduler::Work(IV2VAlgorithm * task,
                               HpgcVectorAlgorithm * hpgcAlg) {
 
 	int id = RPCNetwork::Get()->Id();
-	int size = RPCNetwork::Get()->Size();
-	BUG(id);
     if (id == 0) {
         auto meta = hpgcAlg->GetMetaData();
         auto partition = hpgcAlg->GetPartition();
         VectorCellar * srcCellar = partition->Partition(meta);
 
 		MasterRole node = { srcCellar };
-		BUG("Master");
 		//node.Action();
     }
     else {
 		SlaveRole node = { task };
-		BUG("Slave");
-		//node.Action();
+		node.Action();
     }
+
+    RPCNetwork::Get()->Barrier();
 }
 
 
