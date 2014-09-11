@@ -4,7 +4,7 @@ GeOctpus is a library that implements algorithmic algebra to help build distribu
 
 what is algorithmic algebra?
 ==================
-algorithmic algebra is a novel theory built to use algebra operators to organize algorithms so that distributed and parallel processing procedures can be easily cope with.
+algorithmic algebra is a novel theory built to use algebra operators for organizing algorithms so that distributed and parallel processing procedures can be easily cope with.
 
 Architecture
 ============
