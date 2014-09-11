@@ -8,7 +8,7 @@ algorithmic algebra is a novel theory built to use algebra operators to organize
 
 Architecture
 ============
-To Do.
+TBD.
 
 Required Environments
 =====================
